@@ -1,4 +1,12 @@
 const express = require('express');
+const knxController = require('./controllers/knxController');
+
+module.exports = (app) => {
+    app.get('/api/kniot/test',  knxController.test);
+}
+
+
+
 /*
 module.exports = (app,auth) => {
     //appel du controller
