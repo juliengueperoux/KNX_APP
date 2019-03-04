@@ -1,38 +1,96 @@
 const knx = require('knx')
 
+var interval = 1000;
+var startChain = true;
+
 var connection = new knx.Connection(
   {
   // ip address and port of the KNX router or interface
-  ipAddr: '192.168.0.5', ipPort: 3671,
+  ipAddr: '192.168.0.6', ipPort: 3671,
   // in case you need to specify the multicast interface (say if you have more than one)
   // define your event handlers here:
   handlers: {
+
     // wait for connection establishment before sending anything!
     connected: function() {
-      console.log('Hurray, I can talk KNX!');
-      // WRITE an arbitrary boolean request to a DPT1 group address
+      console.log('Connecté');
       
-      connection.write("0/1/1", 0) 
-      connection.write("0/1/2", 0) 
-      connection.write("0/1/3", 0) 
-      connection.write("0/1/4", 0) 
-      connection.write("0/1/2", 1)
-      connection.write("0/1/4", 1)
-      // you also WRITE to an explicit datapoint type, eg. DPT9.001 is temperature Celcius
-      //connection.write("2/1/0", 22.5, "DPT9.001");
-      // you can also issue a READ request and pass a callback to capture the response
-      //connection.read("1/0/1", (src, responsevalue) => {
-//...
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
       }
-    },
+      
+      async function launch() {
+        while(startChain){
+          if(!startChain) break;
+          start(1);
+          await sleep(interval);
+          end(1);
+          start(2);
+          await sleep(interval);
+          end(2);
+          start(3);
+          await sleep(interval);
+          end(3);
+          start(4);
+          await sleep(interval);
+          end(4);
+
+        }
+  
+        
+      }
+      
+      launch();
+
+   
+        function end(nb){
+          var par = "0/1/"+ nb;
+          console.log("END : " + par);
+          connection.write(par, 0) 
+        }
+
+        function start(nb){
+          var par = "0/1/"+ nb;
+          console.log("START : " + par);
+          connection.write(par, 1) 
+        }
+        
+      
+        
+      
+      },
+  
     // get notified for all KNX events:
-    event: function(evt, src, dest, value) { console.log(
-        "event: %s, src: %j, dest: %j, value: %j",
-        evt, src, dest, value
-      );
+    event: function(evt, src, dest, value) { 
+    
+      if(dest == "0/3/4"){
+          console.log("Appui dernier à droite : " + interval);
+          interval +=1000;
+      }
+      else if(dest == "0/3/3" && interval >1000){
+        console.log("Appui dernier à droite : " + interval);
+        interval -=1000;
+      }else if(dest == "0/3/2"){
+        startChain = true;
+        launch();
+      }else if(dest == "0/3/1"){
+        console.log("test");
+        startChain = false;
+      }
+
     },
     // get notified on connection errors
     error: function(connstatus) {
       console.log("** ERROR: %j", connstatus);
     }
+  
+  }
   });
+
+
+  // dernier droit 3/4
+  // a sa gauche 3/3
+  // a sa gauche 3/2
+  // dernier gauche 3/1
+
+
