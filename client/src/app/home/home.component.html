@@ -1,0 +1,33 @@
+<div fxLayout="column" fxLayoutGap="2%">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutAlign.xs="center" fxLayoutGap="2.5%" fxLayoutGap.xs="1%">
+    <button fxFlex="30" fxFlex.xs="80" mat-raised-button color="primary" (click)="connect()">Se connecter</button>
+    <button fxFlex="30" fxFlex.xs="80" mat-raised-button color="accent">Disabled</button>
+    <button fxFlex="30" fxFlex.xs="80" mat-raised-button color="warn" (click)="disconnect()">Se déconnecter</button>
+  </div>
+  
+  <div fxLayout="row" fxLayoutAlign="center">
+    <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="90">
+      <div fxLayout="column">
+        <mat-form-field fxFlex="30">
+          <input matInput placeholder="Input">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30">
+          <textarea matInput placeholder="Textarea"></textarea>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30">
+          <mat-select placeholder="Select">
+            <mat-option value="option">Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card>
+</div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutAlign.xs="center" fxLayoutGap="2.5%" fxLayoutGap.xs="1%">
+    <button fxFlex="30" fxFlex.xs="80" mat-raised-button (click)="on()">Allumer guirlande</button>
+    <button fxFlex="30" fxFlex.xs="80" mat-raised-button (click)="raiseSpeed()">Augmenter vitesse guirlande</button>
+    <button fxFlex="30" fxFlex.xs="80" mat-raised-button (click)="lowerSpeed()">Diminuer vitesse guirlande</button>
+  </div>
+</div>
