@@ -2,6 +2,8 @@ const knx = require('knx')
 
 var interval = 1000;
 var startChain = true;
+var arrayLamp = ["0/1/1","0/1/2","0/1/3","0/1/4"]
+var sensDirect = true;
 
 var connection = new knx.Connection(
   {
@@ -21,43 +23,17 @@ var connection = new knx.Connection(
       
       async function launch() {
         while(startChain){
-          if(!startChain) break;
-          start(1);
-          await sleep(interval);
-          end(1);
-          start(2);
-          await sleep(interval);
-          end(2);
-          start(3);
-          await sleep(interval);
-          end(3);
-          start(4);
-          await sleep(interval);
-          end(4);
-
+          var index = 0;
+          for(i=0;i<arrayLamp.length;i++){
+            index = (!sensDirect) ? arrayLamp.length-1 - i : i; // si sensDirect = true sensDirect normal sinon sensDirect à l envers!
+            connection.write(arrayLamp[index],1); // allumer
+            await sleep(interval);
+            connection.write(arrayLamp[index],0); // allumer
+          } 
         }
-  
-        
       }
-      
       launch();
 
-   
-        function end(nb){
-          var par = "0/1/"+ nb;
-          console.log("END : " + par);
-          connection.write(par, 0) 
-        }
-
-        function start(nb){
-          var par = "0/1/"+ nb;
-          console.log("START : " + par);
-          connection.write(par, 1) 
-        }
-        
-      
-        
-      
       },
   
     // get notified for all KNX events:
@@ -71,11 +47,16 @@ var connection = new knx.Connection(
         console.log("Appui dernier à droite : " + interval);
         interval -=1000;
       }else if(dest == "0/3/2"){
-        startChain = true;
-        launch();
+        if(startChain){
+          startChain = false;
+        }else{
+          startChain = true;
+          //launch();
+        }
       }else if(dest == "0/3/1"){
-        console.log("test");
-        startChain = false;
+        console.log("ICI");
+        if(sensDirect) sensDirect = false;
+        else sensDirect = true;
       }
 
     },
