@@ -1,9 +1,5 @@
 const functions = require('../functions'); 
 
-exports.test = (req, res) => {
-    res.send("test");
-};
-
 exports.connect = (req,res) =>{
     functions.connectionKnx();
 }
@@ -12,13 +8,32 @@ exports.disconnect = (req,res) =>{
     functions.deconnectionKnx();
 }
 
-exports.startLamp = (req, res) => {
-    functions.startLamp();
+exports.startAllLights = (req, res) => {
+    functions.startAllLights();
 };
 
-exports.stopLamp = (req, res) => {
-    functions.stopLamp();
+exports.stopAllLights = (req, res) => {
+    functions.stopAllLights();
 };
+
+exports.startLight = (req,res) => {
+    const id = req.params.id;
+    functions.startLight(id);
+}
+
+exports.stopLight = (req,res) => {
+    const id = req.params.id;
+    functions.stopLight(id);
+}
+
+exports.startChase = (req, res) => {
+    functions.startChase();
+};
+
+exports.stopChase = (req, res) => {
+    functions.stopChase();
+};
+
 
 exports.setUpInterval = (req, res) => {
     functions.setUpInterval();
