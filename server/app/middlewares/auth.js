@@ -51,7 +51,7 @@ exports.login = (req, res) => {
 				if(!isMatch || err) return res.send({success: false, errorMessage: 'Mot de passe incorrect'});
 				else {
 					let token = jwt.sign(user.toJSON(), privateKey, config.signOptions);
-					return res.status(200).send({success: true, token: 'JWT ' + token, tokenExpiresIn : config.signOptions.expiresIn,"admin": user.admin});
+					return res.status(200).send({success: true, token: 'JWT ' + token});
 				}
 			})
 		}
