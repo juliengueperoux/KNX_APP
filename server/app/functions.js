@@ -14,7 +14,27 @@ exports.deconnectionKnx = () => {
     connection.Disconnect();
 }
 
-exports.startLamp = async () => {
+exports.startLight = (id) => {
+    connection.write("0/1/"+id,1); 
+}
+
+exports.stopLight = (id) => {
+    connection.write("0/1/"+id,0); 
+}
+
+exports.startAllLights = () => {
+    for(i=0;i<variable.main.arrayLamp.length;i++){
+        connection.write(variable.main.arrayLamp[i],1); // allumer
+    } 
+}
+
+exports.stopAllLights = () => {
+    for(i=0;i<variable.main.arrayLamp.length;i++){
+        connection.write(variable.main.arrayLamp[i],0); // eteindre
+    } 
+}
+
+exports.startChase = async () => {
     variable.main.startChain = true;
     while(variable.main.startChain){
       var index = 0;
@@ -27,7 +47,7 @@ exports.startLamp = async () => {
     }
 }
  
-exports.stopLamp = () => {
+exports.stopChase = () => {
     variable.main.startChain = false;
 }
 

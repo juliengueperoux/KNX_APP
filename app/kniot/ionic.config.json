@@ -1,0 +1,7 @@
+{
+  "name": "kniot",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
