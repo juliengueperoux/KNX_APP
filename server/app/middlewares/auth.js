@@ -74,3 +74,14 @@ exports.getToken = headers => {
 	}
 	else return null;
 };
+
+getToken = headers => {
+	if (headers.authorization) {
+		let parted = headers.authorization.split(' ');
+		if(parted.length >= 1){
+			return parted[parted.indexOf('JWT')+1];
+		} 
+		else return null;
+	}
+	else return null;
+};

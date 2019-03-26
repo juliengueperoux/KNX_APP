@@ -56,7 +56,7 @@ import { StatesService } from './states.service';
     MatIconModule,
     MatListModule
   ],
-  providers: [JwtService,AuthGuard,StatesService],
+  providers: [StatesService,JwtService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
