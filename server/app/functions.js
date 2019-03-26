@@ -7,59 +7,129 @@ function sleep(ms){
 }
  
 exports.connectionKnx = () => {
-    connection.connected();
+    try{
+        connection.connected();
+        return true;        
+    }
+    catch(error) {
+        return error;
+    }
 }
 
 exports.deconnectionKnx = () => {
-    connection.Disconnect();
+    try{
+        connection.Disconnect();
+        return true;        
+    }
+    catch(error) {
+        return error;
+    }  
 }
 
 exports.startLight = (id) => {
-    connection.write("0/1/"+id,1); 
+    try{
+        connection.write("0/1/"+id,1);
+        return true;        
+    }
+    catch(error) {
+        return error;
+    }  
 }
 
 exports.stopLight = (id) => {
-    connection.write("0/1/"+id,0); 
+    try{
+        connection.write("0/1/"+id,0); 
+        return true;        
+    }
+    catch(error) {
+        return error;
+    }  
 }
 
 exports.startAllLights = () => {
-    for(i=0;i<variable.main.arrayLamp.length;i++){
-        connection.write(variable.main.arrayLamp[i],1); // allumer
-    } 
+    try{
+        for(i=0;i<variable.main.arrayLamp.length;i++){
+            connection.write(variable.main.arrayLamp[i],1); // allumer
+        } 
+        return true;        
+    }
+    catch(error) {
+        return error;
+    }  
+    
 }
 
 exports.stopAllLights = () => {
-    for(i=0;i<variable.main.arrayLamp.length;i++){
-        connection.write(variable.main.arrayLamp[i],0); // eteindre
-    } 
+    try{
+        for(i=0;i<variable.main.arrayLamp.length;i++){
+            connection.write(variable.main.arrayLamp[i],0); // eteindre
+        } 
+        return true;        
+    }
+    catch(error) {
+        return error;
+    }  
 }
 
 exports.startChase = async () => {
-    variable.main.startChain = true;
-    while(variable.main.startChain){
-      var index = 0;
-      for(i=0;i<variable.main.arrayLamp.length;i++){
-        index = (!variable.main.sensDirect) ? variable.main.arrayLamp.length-1 - i : i; // si variable.main.sensDirect = true variable.main.sensDirect normal sinon variable.main.sensDirect à l envers!
-        connection.write(variable.main.arrayLamp[index],1); // allumer
-        await sleep(variable.main.interval);
-        connection.write(variable.main.arrayLamp[index],0); // allumer
-      } 
+    try{
+        variable.main.startChain = true;
+        while(variable.main.startChain){
+            var index = 0;
+            for(i=0;i<variable.main.arrayLamp.length;i++){
+                index = (!variable.main.sensDirect) ? variable.main.arrayLamp.length-1 - i : i; // si variable.main.sensDirect = true variable.main.sensDirect normal sinon variable.main.sensDirect à l envers!
+                connection.write(variable.main.arrayLamp[index],1); // allumer
+                await sleep(variable.main.interval);
+                connection.write(variable.main.arrayLamp[index],0); // allumer
+            } 
+        }
+        return true;        
     }
+    catch(error) {
+        return error;
+    }  
+    
 }
  
 exports.stopChase = () => {
-    variable.main.startChain = false;
+    try{
+        variable.main.startChain = false;
+        return true;        
+    }
+    catch(error) {
+        return error;
+    }  
 }
 
 exports.setUpInterval = () => {
-    variable.main.interval +=1000;
+    try{
+        variable.main.interval +=1000;
+        return true;
+    }
+    catch(error) {
+        return error;
+    }  
+    
 };
 
 exports.setDownInterval = () => {
-    if(variable.main.interval>1000) variable.main.interval -=1000;
+    try{
+        if(variable.main.interval>1000) variable.main.interval -=1000;
+        return true;
+    }
+    catch(error) {
+        return error;
+    }  
+   
 };
 
 exports.reverse = () =>{
-    if(variable.main.sensDirect) variable.main.sensDirect = false;
-          else variable.main.sensDirect = true;
+    try{
+        variable.main.sensDirect = (variable.main.sensDirect) ? false :  true;
+        return true;
+    }
+    catch(error) {
+        return error;
+    }  
+    
 }
