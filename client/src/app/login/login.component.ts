@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from '../jwt.service';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
 import { StatesService } from "../states.service";
 
 @Component({
@@ -19,14 +18,11 @@ export class LoginComponent implements OnInit {
   }
 
   public submit() {
-    this.auth.login(this.username, this.password)
-      .pipe(first())
-      .subscribe(
-        result => {
+    this.auth.login(this.username, this.password).then((res:any) => {
+      if(res.data.success){
           this.router.navigate(['home'])
           this.states.getMessages()
         }
-       // err => this.error = 'Could not authenticate'
-      );
+      })
   }
 }

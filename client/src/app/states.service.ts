@@ -11,6 +11,7 @@ export class StatesService {
     login(){
       this.socket = io(this.url);
       this.socket.on('connect', function (newSocket) {
+        console.log("token "+ localStorage.getItem('access_token'))
         this.emit('authenticate', {token: localStorage.getItem('access_token')}) //send the jwt
         this.on('authenticated', function () {
           })

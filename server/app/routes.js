@@ -1,9 +1,7 @@
 const express = require('express');
 const knxController = require('./controllers/knxController');
-
 module.exports = (app,auth) => {
-    app.get('/api/kniot/test',  knxController.test);
-
+    
     app.get('/api/kniot/connect',  knxController.connect);
     app.get('/api/kniot/disconnect',  knxController.disconnect);
 
