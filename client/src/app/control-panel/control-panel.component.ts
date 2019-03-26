@@ -8,15 +8,22 @@ import KnxService from '../services/knxService';
 })
 export class ControlPanelComponent implements OnInit {
 
-  panelOpenState = false;
+  numeros =[1,2,3,4]
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  startAllLights(): void {
-    KnxService.startAllLights();
+  allLights(event): void {
+    if(event.checked) KnxService.startAllLights();
+    else KnxService.stopAllLights();
+    //KnxService.startAllLights();
+  }
+
+  stateLight(numero,event){
+    if(event.checked) KnxService.startLight(numero);
+    else KnxService.stopLight(numero);
   }
 
 }

@@ -16,39 +16,15 @@
                 <p>Toutes les lumières </p>
               </div>
               <div fxFlex="10">
-                <mat-slide-toggle (click)="startAllLights()"></mat-slide-toggle>
+                <mat-slide-toggle (change)="allLights($event)"></mat-slide-toggle>
               </div>
           </div>
-          <div fxLayout="row">
+          <div fxLayout="row" *ngFor="let numero of numeros">
               <div fxFlex="90">
-                <p>Lampe 1 </p>
+                <p>Lampe {{numero}} </p>
               </div>
               <div fxFlex="10">
-                <mat-slide-toggle></mat-slide-toggle>
-              </div>
-          </div>
-          <div fxLayout="row">
-              <div fxFlex="90">
-                <p>Lampe 2 </p>
-              </div>
-              <div fxFlex="10">
-                <mat-slide-toggle></mat-slide-toggle>
-              </div>
-          </div>
-          <div fxLayout="row">
-              <div fxFlex="90">
-                <p>Lampe 3 </p>
-              </div>
-              <div fxFlex="10">
-                <mat-slide-toggle></mat-slide-toggle>
-              </div>
-          </div>
-          <div fxLayout="row">
-              <div fxFlex="90">
-                <p>Lampe 4 </p>
-              </div>
-              <div fxFlex="10">
-                <mat-slide-toggle></mat-slide-toggle>
+                <mat-slide-toggle (change)="stateLight(numero,$event)"></mat-slide-toggle>
               </div>
           </div>
         </div>
