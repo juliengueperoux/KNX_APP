@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import KnxService from '../services/knxService';
 
 @Component({
   selector: 'app-control-panel',
@@ -12,6 +13,10 @@ export class ControlPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  startAllLights(): void {
+    KnxService.startAllLights();
   }
 
 }
