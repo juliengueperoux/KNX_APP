@@ -18,8 +18,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  on(): void {
+    console.log("ici");
+    this.router.navigate(['home']);
+    this.states.getMessages();
+  }
+
   public submit() {
-    this.auth.login(this.username, this.password)
+    /*this.auth.login(this.username, this.password)
       .pipe(first())
       .subscribe(
         result => {
@@ -27,6 +33,6 @@ export class LoginComponent implements OnInit {
           this.states.getMessages()
         }
        // err => this.error = 'Could not authenticate'
-      );
+      );*/
   }
 }
