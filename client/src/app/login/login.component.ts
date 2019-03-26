@@ -17,9 +17,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-
-
   public submit() {
+    console.log("submit")
     this.auth.login(this.username, this.password).then((res:any) => {
       if(res.data.success){
           this.router.navigate(['home'])

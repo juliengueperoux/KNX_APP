@@ -1,8 +1,8 @@
 
 <div fxLayout="row" fxLayoutAlign="center">
   <mat-card fxFlex.gt-sm="30">
-    <form class="example-form">
-        <div fxLayout="column">
+    <form (ngSubmit)="submit()">
+        <div fxLayout="column" (ngSubmit)="submit()">
           <mat-form-field fxFlex="30" class="example-full-width">
             <input matInput placeholder="Login" type="text" name="username" [(ngModel)]="username" />
           </mat-form-field>
@@ -12,7 +12,7 @@
           </mat-form-field>
     
           <div class="form-group col-3">
-            <button class="btn btn-primary"  type="submit">Login</button>
+            <button type="submit">Login</button>
           </div>
         </div>
     </form>
