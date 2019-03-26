@@ -4,7 +4,7 @@ var variable = require('./variables');
 var connection = new knx.Connection(
     {
     // ip address and port of the KNX router or interface
-    ipAddr: '192.168.0.10', ipPort: 3671,
+    ipAddr: '192.168.0.6', ipPort: 3671,
     // in case you need to specify the multicast interface (say if you have more than one)
     // define your event handlers here:
     handlers: {  
