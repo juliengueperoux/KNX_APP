@@ -1,0 +1,76 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-accordion fxFlex.gt-lg="60" fxFlex.gt-sm="80">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Gestions des lampes
+        </mat-panel-title>
+        <mat-panel-description>
+          Allumer / Eteindre
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      
+      <div fxLayout="column">
+          <div fxLayout="row">
+              <div fxFlex="90">
+                <p>Toutes les lumières </p>
+              </div>
+              <div fxFlex="10">
+                <mat-slide-toggle></mat-slide-toggle>
+              </div>
+          </div>
+          <div fxLayout="row">
+              <div fxFlex="90">
+                <p>Lampe 1 </p>
+              </div>
+              <div fxFlex="10">
+                <mat-slide-toggle></mat-slide-toggle>
+              </div>
+          </div>
+          <div fxLayout="row">
+              <div fxFlex="90">
+                <p>Lampe 2 </p>
+              </div>
+              <div fxFlex="10">
+                <mat-slide-toggle></mat-slide-toggle>
+              </div>
+          </div>
+          <div fxLayout="row">
+              <div fxFlex="90">
+                <p>Lampe 3 </p>
+              </div>
+              <div fxFlex="10">
+                <mat-slide-toggle></mat-slide-toggle>
+              </div>
+          </div>
+          <div fxLayout="row">
+              <div fxFlex="90">
+                <p>Lampe 4 </p>
+              </div>
+              <div fxFlex="10">
+                <mat-slide-toggle></mat-slide-toggle>
+              </div>
+          </div>
+        </div>
+           
+     </mat-expansion-panel>
+   
+      <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Gestions du chenillard
+            </mat-panel-title>
+            <mat-panel-description>
+              Allumer | Vitesse | Inverse
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          Chenillard <mat-slide-toggle></mat-slide-toggle>
+          <mat-panel-description>
+              Vitesse
+            </mat-panel-description>
+          <mat-slider min="1" max="5" step="0.5" value="1.5"></mat-slider>
+          Reverse<mat-slide-toggle></mat-slide-toggle>
+        </mat-expansion-panel>
+  
+</mat-accordion>
+</div>
