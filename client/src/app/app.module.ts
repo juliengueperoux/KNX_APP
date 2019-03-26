@@ -21,6 +21,7 @@ import { AuthGuard } from './auth.guard';
 import { JwtService } from './jwt.service';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import { StatesService } from './states.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +56,7 @@ import { FormsModule } from '@angular/forms';
     MatIconModule,
     MatListModule
   ],
-  providers: [JwtService,AuthGuard],
+  providers: [JwtService,AuthGuard,StatesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
