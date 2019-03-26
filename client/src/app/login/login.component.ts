@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   on(): void {
     console.log("ici");
     this.router.navigate(['home']);
-    this.states.getMessages();
+   
   }
 
   public submit() {

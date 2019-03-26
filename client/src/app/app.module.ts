@@ -22,13 +22,19 @@ import { JwtService } from './jwt.service';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { StatesService } from './states.service';
+import { ControlPanelComponent } from './control-panel/control-panel.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSliderModule} from '@angular/material/slider';
+
 @NgModule({
   declarations: [
     AppComponent,
     SideBarComponent,
     HomeComponent,
     ProfilComponent,
-    LoginComponent
+    LoginComponent,
+    ControlPanelComponent
   ],
   imports: [
     JwtModule.forRoot({
@@ -54,7 +60,10 @@ import { StatesService } from './states.service';
     LayoutModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    MatSliderModule
   ],
   providers: [JwtService,AuthGuard,StatesService],
   bootstrap: [AppComponent]
