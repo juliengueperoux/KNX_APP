@@ -26,6 +26,10 @@ import { ControlPanelComponent } from './control-panel/control-panel.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
+
 
 @NgModule({
   declarations: [
@@ -63,7 +67,9 @@ import {MatSliderModule} from '@angular/material/slider';
     MatListModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    MatSliderModule
+    MatSliderModule,
+    MatMenuModule,
+    MatSnackBarModule
   ],
   providers: [StatesService,JwtService,AuthGuard],
   bootstrap: [AppComponent]
