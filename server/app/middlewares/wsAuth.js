@@ -14,7 +14,7 @@ exports.authenticate = (data, callback) => {
 		jwt.verify(token, publicKey, (err, decodedToken) => {
 			if(err) return callback(new Error("Invalid Auth"+err))
 			else {
-				return callback(null,true)
+				return callback(null,true,decodedToken._id)
 			}
 		})
     }
