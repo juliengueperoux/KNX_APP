@@ -87,6 +87,10 @@ export class ControlPanelComponent implements OnInit {
       (res.data.success) ? this.openSnackBar("Chenillard inversé","Ok") : this.openSnackBar("Error" + res.data,"Ok");
     });
   }
+
+  setIntervalChase(event) : void{
+    console.log(event.value);
+  }
   
 
 }

@@ -28,6 +28,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SettingPanelComponent } from './setting-panel/setting-panel.component';
 
 
 
@@ -38,7 +39,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     HomeComponent,
     ProfilComponent,
     LoginComponent,
-    ControlPanelComponent
+    ControlPanelComponent,
+    SettingPanelComponent
   ],
   imports: [
     JwtModule.forRoot({
