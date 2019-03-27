@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import 'hammerjs';
 import { Router } from '@angular/router';
-import { JwtService } from '../jwt.service';
-import { StatesService } from "../states.service";
+import { JwtService } from '../../jwt.service';
+import { StatesService } from "../../states.service";
 
 
 @Component({
@@ -12,7 +12,7 @@ import { StatesService } from "../states.service";
 })
 
 export class AppComponent implements OnInit{
-  title = 'todoApp'
+  title = 'Kniot'
   
   constructor(private auth: JwtService, private router: Router,private states: StatesService){ }
 

@@ -1,14 +1,12 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+  <mat-sidenav *ngIf="auth.loggedIn" #drawer class="sidenav" fixedInViewport="true"
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="!(isHandset$ | async)">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item [routerLink]="'/home'" *ngIf="auth.loggedIn">Acceuil</a>
-      <a mat-list-item [routerLink]="'/profil'" *ngIf="auth.loggedIn">Profil</a>
-      <a mat-list-item routerLink="login" routerLinkActive="active" *ngIf="!auth.loggedIn">Login</a>
-      <a mat-list-item (click)="logout()" href="#" *ngIf="auth.loggedIn">Logout</a>
+      <a mat-list-item [routerLink]="'/setting'" *ngIf="auth.loggedIn">Paramètres</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -22,10 +20,13 @@
         
       </button>
       <span>Kniot</span>
-      <button style="float: right;display:block" mat-button [matMenuTriggerFor]="menu"><mat-icon aria-label="toggle icon">face</mat-icon></button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Se deconnecter</button>
-      </mat-menu>
+      <span flex></span>
+      <div *ngIf="auth.loggedIn">
+        <button mat-button [matMenuTriggerFor]="menu"><mat-icon aria-label="toggle icon">account_circle</mat-icon></button>
+        <mat-menu #menu="matMenu">
+          <button (click)="logout()"  mat-menu-item>Se deconnecter</button>
+        </mat-menu>
+      </div>
     </mat-toolbar>
     <ng-content>
     </ng-content>

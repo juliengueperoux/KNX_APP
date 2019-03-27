@@ -101,6 +101,17 @@ exports.stopChase = () => {
     }  
 }
 
+exports.setInterval = (interval) =>{
+    try{
+        console.log("INTERVAL : " + variable.main.interval);
+        (interval >=500) ? variable.main.interval = interval : variable.main.interval = 500;
+        return true;
+    }
+    catch(error) {
+        return error;
+    }
+}
+
 exports.setUpInterval = () => {
     try{
         variable.main.interval +=1000;
@@ -132,4 +143,34 @@ exports.reverse = () =>{
         return error;
     }  
     
+}
+
+exports.getAllLight = () =>{
+    try{
+        return {'success' : true, 'data' : variable.main.arrayLamp};
+    }
+    catch(error) {
+        return error;
+    } 
+}
+
+exports.addLight = (name) =>{
+    try{
+        variable.main.arrayLamp.push(name);
+        return true;
+    }
+    catch(error) {
+        return error;
+    } 
+}
+
+exports.removeLight = (name) =>{
+    try{
+        let index = variable.main.arrayLamp.indexOf(name);
+        variable.main.arrayLamp.splice(index, 1);
+        return true;
+    }
+    catch(error) {
+        return error;
+    } 
 }

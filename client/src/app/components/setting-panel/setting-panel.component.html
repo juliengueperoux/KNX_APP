@@ -11,7 +11,7 @@
                 <p>Connection à Knx </p>
               </div>
               <div fxFlex="10">
-                <mat-slide-toggle (change)="allLights($event)"></mat-slide-toggle>
+                <mat-slide-toggle  [checked]="true" (change)="connect($event)"></mat-slide-toggle>
               </div>
           </div>
   

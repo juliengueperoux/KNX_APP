@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import KnxService from '../services/knxService';
 
 @Component({
   selector: 'app-home',
@@ -13,12 +12,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  connect():void{
-    KnxService.connect()
-  }
-
-  disconnect():void{
-    KnxService.disconnect()
-  }
+  
   
 }
