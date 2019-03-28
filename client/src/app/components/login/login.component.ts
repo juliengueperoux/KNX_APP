@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { JwtService } from '../jwt.service';
+import { JwtService } from '../../jwt.service';
 import { Router } from '@angular/router';
-import { StatesService } from "../states.service";
+import { StatesService } from "../../states.service";
 
 @Component({
   selector: 'app-login',

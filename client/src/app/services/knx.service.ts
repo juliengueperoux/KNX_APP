@@ -25,6 +25,9 @@ export default {
   stopChase () {
     return Api.get('/kniot/stopChase')
   },
+  intervalValue(param){
+    return Api.get('/kniot/interval/'+param)
+  },
   intervalUp (){
     return Api.get('/kniot/interval/up')
   },
@@ -33,5 +36,14 @@ export default {
   },
   reverse (){
     return Api.get('/kniot/reverse')
+  },
+  getAllLight(){
+    return Api.get('kniot/allLight/')
+  },
+  addLight(param){
+    return Api.get('kniot/addLight/' + param)
+  },
+  removeLight(param){
+    return Api.get('kniot/removeLight/' + param)
   }
 }

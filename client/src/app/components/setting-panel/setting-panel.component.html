@@ -1,0 +1,78 @@
+<div fxLayout="column">
+  <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
+    <mat-card fxFlex="50">
+      <mat-card-title>
+        Paramètrage Serveur KNX
+      </mat-card-title>
+      <mat-card-content>
+        <div fxLayout="column">
+          <div fxLayout="row">
+              <div fxFlex="90">
+                <p>Connection à Knx </p>
+              </div>
+              <div fxFlex="10">
+                <mat-slide-toggle  [checked]="true" (change)="connect($event)"></mat-slide-toggle>
+              </div>
+          </div>
+  
+          <div fxLayout="row">
+              <div fxFlex="40">
+                  <p>Paramètrage réseau </p>
+                </div>
+              <div fxFlex="30">
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Adresse IP" value="192.168.0.6">
+                </mat-form-field>
+              </div>
+              <div fxFlex="30">
+                  <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Port " value="3671">
+                  </mat-form-field>
+              </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
+      <mat-accordion fxFlex="50">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Paramètrage des lampes
+              </mat-panel-title>
+              <mat-panel-description>
+                Ajouter | Modifier | Supprimer
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <div fxLayout="column">
+                <div fxLayout="row">
+                    <div fxFlex="90">
+                      <p>Ajouter des lumières </p>
+                    </div>
+                    <div fxFlex="10">
+                      <button mat-button (click)="openDialog()"><mat-icon aria-label="toggle icon">add</mat-icon></button>                  
+                    </div>
+                </div>
+                <div fxLayout="row" *ngFor="let numero of numeros">
+                    <div fxFlex="90">
+                      <p>Lampe {{numero}} </p>
+                    </div>
+                    <div fxFlex="10">
+                        <div fxLayout="row">
+                          <div fxFlex="50">
+                            <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
+                          </div>
+                          <div fxFlex="50">
+                            <button mat-button><mat-icon aria-label="toggle icon">delete_sweep</mat-icon></button>
+                          </div>    
+                        </div>
+                    </div>
+                </div>
+              </div>
+                 
+           </mat-expansion-panel>
+          </mat-accordion>
+    </div>
+</div>

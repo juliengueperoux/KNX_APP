@@ -42,6 +42,10 @@ exports.stopChase = (req, res) => {
     (state) ? res.send({success:true}) : res.send(state);
 };
 
+exports.setInterval = (req, res) => {
+    var state = functions.setInterval(req.params.value);
+    (state) ? res.send({success:true}) : res.send(state);
+};
 
 exports.setUpInterval = (req, res) => {
     var state = functions.setUpInterval();
@@ -55,5 +59,20 @@ exports.setDownInterval = (req, res) => {
 
 exports.reverse = (req, res) => {
     var state = functions.reverse();
+    (state) ? res.send({success:true}) : res.send(state);
+};
+
+exports.getAllLight = (req, res) => { 
+    var state = functions.getAllLight();
+    (state.success) ? res.send(state.data) : res.send(state);
+};
+
+exports.addLight = (req, res) => { 
+    var state = functions.addLight(req.params.name);
+    (state) ? res.send({success:true}) : res.send(state);
+};
+
+exports.removeLight = (req, res) => { 
+    var state = functions.removeLight(req.params.name);
     (state) ? res.send({success:true}) : res.send(state);
 };

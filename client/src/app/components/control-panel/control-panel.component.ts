@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import KnxService from '../services/knxService';
+import KnxService from '../../services/knx.service';
 import {MatSnackBar} from '@angular/material';
 
 @Component({
@@ -15,13 +15,18 @@ export class ControlPanelComponent implements OnInit {
   constructor(private snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    // FINIR DE TRAITER LA PROMISE
+    KnxService.getAllLight().then((res) =>{
+      this.numeros = res.data; 
+    });
+    console.log(this.numeros);
   }
 
   setCSSclass(name,classCss,action) : void{
     (action) ? document.getElementById(name).classList.add(classCss) : document.getElementById(name).classList.remove(classCss);
   }
 
-  openSnackBar(message: string, action: string) {
+  openSnackBar(message: string, action: string) : void{
     this.snackBar.open(message, action, {
       duration: 3000,
     });
@@ -87,6 +92,17 @@ export class ControlPanelComponent implements OnInit {
       (res.data.success) ? this.openSnackBar("Chenillard inversé","Ok") : this.openSnackBar("Error" + res.data,"Ok");
     });
   }
+
+  setIntervalChase(event) : void{
+    this.interval = event.value;
+  }
+
+  intervalChaseService() : void{
+    KnxService.startLight(this.interval).then((res) =>{
+      (res.data.success) ? this.openSnackBar("Interval de " + this.interval + " µs","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+    });
+  }
   
+
 
 }

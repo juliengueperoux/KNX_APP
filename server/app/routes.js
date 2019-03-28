@@ -11,13 +11,18 @@ module.exports = (app,auth) => {
     app.get('/api/kniot/startLight/:id',  knxController.startLight);
     app.get('/api/kniot/stopLight/:id',  knxController.stopLight);
 
-
     app.get('/api/kniot/startChase',  knxController.startChase);
     app.get('/api/kniot/stopChase',  knxController.stopChase);
+    app.get('/api/kniot/inteval/:value', knxController.setInterval)
     app.get('/api/kniot/interval/up',  knxController.setUpInterval);
     app.get('/api/kniot/interval/down',  knxController.setDownInterval);
-
     app.get('/api/kniot/reverse',  knxController.reverse);
+
+    //SETTINGS
+    app.get('/api/kniot/allLight', knxController.getAllLight)    
+    app.get('/api/kniot/addLight/:name', knxController.addLight)
+    app.get('/api/kniot/removeLight/:name', knxController.removeLight)
+
 
     //AUTH
     app.post('/api/login', auth.login);

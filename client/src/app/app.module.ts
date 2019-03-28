@@ -2,14 +2,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './rootComponent/app.component';
+import { AppComponent } from './components/app/app.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
-import { SideBarComponent } from './side-bar/side-bar.component';
-import { HomeComponent } from './home/home.component';
-import { ProfilComponent } from './profil/profil.component';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { HomeComponent } from './components/home/home.component';
+import { ProfilComponent } from './components/profil/profil.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
@@ -19,15 +19,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from './auth.guard';
 import { JwtService } from './jwt.service';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { StatesService } from './states.service';
-import { ControlPanelComponent } from './control-panel/control-panel.component';
+import { ControlPanelComponent } from './components/control-panel/control-panel.component';
+import { SettingPanelComponent } from './components/setting-panel/setting-panel.component';
+import { DialogAddComponent } from './components/dialog-add/dialog-add.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 
@@ -38,7 +41,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     HomeComponent,
     ProfilComponent,
     LoginComponent,
-    ControlPanelComponent
+    ControlPanelComponent,
+    SettingPanelComponent,
+    DialogAddComponent
   ],
   imports: [
     JwtModule.forRoot({
@@ -69,7 +74,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatExpansionModule,
     MatSliderModule,
     MatMenuModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [StatesService,JwtService,AuthGuard],
   bootstrap: [AppComponent]
