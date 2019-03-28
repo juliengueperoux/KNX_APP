@@ -23,12 +23,14 @@ import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { StatesService } from './states.service';
 import { ControlPanelComponent } from './components/control-panel/control-panel.component';
+import { SettingPanelComponent } from './components/setting-panel/setting-panel.component';
+import { DialogAddComponent } from './components/dialog-add/dialog-add.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { SettingPanelComponent } from './components/setting-panel/setting-panel.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 
@@ -40,7 +42,8 @@ import { SettingPanelComponent } from './components/setting-panel/setting-panel.
     ProfilComponent,
     LoginComponent,
     ControlPanelComponent,
-    SettingPanelComponent
+    SettingPanelComponent,
+    DialogAddComponent
   ],
   imports: [
     JwtModule.forRoot({
@@ -71,7 +74,8 @@ import { SettingPanelComponent } from './components/setting-panel/setting-panel.
     MatExpansionModule,
     MatSliderModule,
     MatMenuModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [StatesService,JwtService,AuthGuard],
   bootstrap: [AppComponent]

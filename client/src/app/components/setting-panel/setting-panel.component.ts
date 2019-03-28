@@ -1,18 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import KnxService from '../../services/knx.service';
 import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
+export interface DialogData {
+  animal: 'panda' | 'unicorn' | 'lion';
+}
+
 
 @Component({
   selector: 'app-setting-panel',
   templateUrl: './setting-panel.component.html',
   styleUrls: ['./setting-panel.component.css']
 })
+
+
+
 export class SettingPanelComponent implements OnInit {
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar, public dialog: MatDialog) { }
   
   numeros =[1,2,3,4]
-  
+  nameLight: string;
+
+
   ngOnInit() {
   }
 
@@ -22,6 +33,13 @@ export class SettingPanelComponent implements OnInit {
     });
   }
   
+  openDialog() {
+    this.dialog.open(DialogAdd, {
+      data: {
+        animal: 'panda'
+      }
+    });
+  }
 
   /**
    * KNX PART 
@@ -37,6 +55,13 @@ export class SettingPanelComponent implements OnInit {
       });
     }
   }
+}
 
 
+@Component({
+  selector: 'dialog-add',
+  templateUrl: './components/dialog-add/dialog-add.html',
+})
+export class DialogAdd {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 }

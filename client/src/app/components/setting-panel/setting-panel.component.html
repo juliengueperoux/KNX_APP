@@ -52,7 +52,7 @@
                       <p>Ajouter des lumières </p>
                     </div>
                     <div fxFlex="10">
-                      <button mat-button><mat-icon aria-label="toggle icon">add</mat-icon></button>                  
+                      <button mat-button (click)="openDialog()"><mat-icon aria-label="toggle icon">add</mat-icon></button>                  
                     </div>
                 </div>
                 <div fxLayout="row" *ngFor="let numero of numeros">
