@@ -1,6 +1,16 @@
 import Api from './Api'
 
 export default {
+
+  addConfig(params){
+    return Api.post('/kniot/addKnxConfig',params)
+  },
+  deleteConfig(params){
+    return Api.post('/kniot/deleteKnxConfig',params)
+  },
+  findMyConfigs(params){
+    return Api.get('/kniot/fingMyKNXConfigs')
+  },
   connect () {
     return Api.get('/kniot/connect')
   },

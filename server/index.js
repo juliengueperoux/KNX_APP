@@ -59,8 +59,9 @@ io.on("connection", socket => {
       if(err) socket.disconnect('unauthorized');
       else{
         socket.emit("authenticated")
-        socket.userId = option
-        usersConnected.push(socket)
+        usersConnected[option]={
+          "socket" : socket.id
+        }
       }
     })
   })

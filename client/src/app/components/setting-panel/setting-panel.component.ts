@@ -32,7 +32,7 @@ export class SettingPanelComponent implements OnInit {
       duration: 3000,
     });
   }
-  
+  /*
   openDialog() {
     this.dialog.open(DialogAdd, {
       data: {
@@ -40,7 +40,7 @@ export class SettingPanelComponent implements OnInit {
       }
     });
   }
-
+*/
   /**
    * KNX PART 
    */
@@ -57,11 +57,12 @@ export class SettingPanelComponent implements OnInit {
   }
 }
 
-
+/*
 @Component({
   selector: 'dialog-add',
   templateUrl: './components/dialog-add/dialog-add.html',
 })
 export class DialogAdd {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-}
+
+}*/
