@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const KNXConfig = new mongoose.Schema({
-    idUSer:{
+    idUser:{
         type:String,
         required:true
     },

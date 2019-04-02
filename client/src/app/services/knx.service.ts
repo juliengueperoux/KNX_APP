@@ -8,8 +8,8 @@ export default {
   deleteConfig(params){
     return Api.post('/kniot/deleteKnxConfig',params)
   },
-  findMyConfigs(params){
-    return Api.get('/kniot/fingMyKNXConfigs')
+  findConfigs(){
+    return Api.get('/kniot/fingKNXConfigs')
   },
   connect () {
     return Api.get('/kniot/connect')

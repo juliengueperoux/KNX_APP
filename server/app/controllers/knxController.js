@@ -4,13 +4,13 @@ const KNXConfigModel = require('../models/knxConfig')
 exports.addConfig = (req,res) =>{
     const config = {
         idUser: req.apiToken._id,
-        ipaddr: req.body.ipaddr,
+        ipAddr: req.body.ipaddr,
         port : req.body.port
     }
     KNXConfigModel.findOne({
         $and:[
             {idUser: req.apiToken._id},
-            {ipaddr: req.body.ipaddr},
+            {ipAddr: req.body.ipaddr},
             {port : req.body.port}
             ]
     }, 
@@ -30,7 +30,7 @@ exports.deleteConfig = (req,res) =>{
     KNXConfigModel.findOne({
         $and:[
             {idUser: req.apiToken._id},
-            {ipaddr: req.body.ipaddr},
+            {ipAddr: req.body.ipaddr},
             {port : req.body.port}
             ]
     }, 
@@ -41,7 +41,7 @@ exports.deleteConfig = (req,res) =>{
             KNXConfigModel.deleteOne({
                 $and:[
                     {idUser: req.apiToken._id},
-                    {ipaddr: req.body.ipaddr},
+                    {ipAddr: req.body.ipaddr},
                     {port : req.body.port}
                     ]}
                 , (err, result) => {
@@ -52,15 +52,15 @@ exports.deleteConfig = (req,res) =>{
     })
 }
 
-exports.findMyConfigs = (req,res) =>{
-    KNXConfigModel.find({idUSer: req.apiToken._id}, (err, results) => {
+exports.findConfigs = (req,res) =>{
+    KNXConfigModel.find({}, (err, results) => {
         if(err) return res.send({success : false, errorMessage : "Erreur lros de la récupération des configurations KNX: "+err})
         return results
     })
 }
 
 exports.connect = (req,res) =>{
-    var state = functions.connectionKnx();
+    var state = functions.connectionKnx(req.apiToken._id);
     if (state) {
         res.send({success:true})
         // ajouter dans la socket que le mec c'est co à la machine KNX

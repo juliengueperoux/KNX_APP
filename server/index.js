@@ -12,7 +12,7 @@ const auth = require('./app/middlewares/auth');
 const io = require("socket.io")(http);
 const wsAuth = require('./app/middlewares/wsAuth');
 
-const usersConnected=[]
+const connectedUsers=[]
 //maquettefing1
 
 app.use(cookieParser())
@@ -59,7 +59,7 @@ io.on("connection", socket => {
       if(err) socket.disconnect('unauthorized');
       else{
         socket.emit("authenticated")
-        usersConnected[option]={
+        connectedUsers[option]={
           "socket" : socket.id
         }
       }
@@ -87,5 +87,6 @@ io.on("connection", socket => {
 
  io.listen(server);
 
-
-exports = module.exports = app;
+module.exports.app = app
+module.exports.connectedUsers = connectedUsers
+exports = module.exports
