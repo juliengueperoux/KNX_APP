@@ -48,18 +48,18 @@
             
             <div fxLayout="column">
                 <div fxLayout="row">
-                    <div fxFlex="90">
+                    <div fxFlex="80">
                       <p>Ajouter des lumières </p>
                     </div>
-                    <div fxFlex="10">
+                    <div fxFlex="20">
                       <button mat-button (click)="openDialog()"><mat-icon aria-label="toggle icon">add</mat-icon></button>                  
                     </div>
                 </div>
                 <div fxLayout="row" *ngFor="let numero of numeros">
-                    <div fxFlex="90">
+                    <div fxFlex="80">
                       <p>Lampe {{numero}} </p>
                     </div>
-                    <div fxFlex="10">
+                    <div fxFlex="20">
                         <div fxLayout="row">
                           <div fxFlex="50">
                             <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>

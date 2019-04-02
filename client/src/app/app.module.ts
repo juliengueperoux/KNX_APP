@@ -45,6 +45,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     SettingPanelComponent,
     DialogAddComponent
   ],
+  entryComponents:[DialogAddComponent],
   imports: [
     JwtModule.forRoot({
       config: {

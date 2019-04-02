@@ -9,16 +9,22 @@ import {MatSnackBar} from '@angular/material';
 })
 export class ControlPanelComponent implements OnInit {
 
-  numeros =[1,2,3,4]
+  numeros = [];
   interval = 1000;
   active = true; 
   constructor(private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     // FINIR DE TRAITER LA PROMISE
+    this.getAllLights();
+  }
+
+  getAllLights() : void{
     KnxService.getAllLight().then((res) =>{
       this.numeros = res.data; 
+      console.log(this.numeros);
     });
+
     console.log(this.numeros);
   }
 
@@ -38,7 +44,7 @@ export class ControlPanelComponent implements OnInit {
         (res.data.success) ? this.openSnackBar("Lampes allumées","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
       this.numeros.forEach(element => {
-        let nameLight = "svg-light-" + element
+        let nameLight = "svg-light-" + element.id
         //let nameToggle = "toggle-" + element
         //document.getElementById(nameToggle). = true;
         this.setCSSclass(nameLight,'is-activated',true);
@@ -50,7 +56,7 @@ export class ControlPanelComponent implements OnInit {
         (res.data.success) ? this.openSnackBar("Lampes éteintes","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
       this.numeros.forEach(element => {
-        let name = "svg-light-" + element
+        let name = "svg-light-" + element.id
         this.setCSSclass(name,'is-activated',false);
       })
     } 
