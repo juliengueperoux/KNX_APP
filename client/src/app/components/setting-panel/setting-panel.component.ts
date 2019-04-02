@@ -59,8 +59,8 @@ export class SettingPanelComponent implements OnInit {
 
 
 @Component({
-  selector: 'dialog-add',
-  templateUrl: './components/dialog-add/dialog-add.html',
+  selector: '../dialog-add/app-dialog-add',
+  templateUrl: '../dialog-add/dialog-add.component.html',
 })
 export class DialogAdd {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}

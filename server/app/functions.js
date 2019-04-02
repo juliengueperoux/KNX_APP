@@ -28,7 +28,7 @@ exports.deconnectionKnx = () => {
 
 exports.startLight = (id) => {
     try{
-        connection.write("0/1/"+id,1);
+        connection.write(id,1);
         return true;        
     }
     catch(error) {
@@ -38,7 +38,7 @@ exports.startLight = (id) => {
 
 exports.stopLight = (id) => {
     try{
-        connection.write("0/1/"+id,0); 
+        connection.write(id,0); 
         return true;        
     }
     catch(error) {
