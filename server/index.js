@@ -88,5 +88,6 @@ io.on("connection", socket => {
  io.listen(server);
 
 module.exports.app = app
+module.exports.io = io
 module.exports.connectedUsers = connectedUsers
 exports = module.exports
