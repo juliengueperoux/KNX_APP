@@ -1,8 +1,71 @@
 const functions = require('../functions'); 
+const KNXConfigModel = require('../models/knxConfig')
+
+exports.addConfig = (req,res) =>{
+    const config = {
+        idUser: req.apiToken._id,
+        ipAddr: req.body.ipaddr,
+        port : req.body.port
+    }
+    KNXConfigModel.findOne({
+        $and:[
+            {idUser: req.apiToken._id},
+            {ipAddr: req.body.ipaddr},
+            {port : req.body.port}
+            ]
+    }, 
+    (err, result) => {
+        if(err) return res.send({success : false, errorMessage : "Erreur lors de l'ajout d'une nouvelle configuration KNX: "+err})
+        if(result) return res.send({success:false, errorMessage : "Une configuration de machine KNX éxiste déjà avec ces options"})
+        else{
+            KNXConfigModel.create(config, (err, result) => {
+                if(err) return res.send({success : false, errorMessage : "Erreur lors de l'ajout d'une nouvelle configuration KNX: "+err})
+                return res.send({success:true});
+          })
+        }
+    })
+}
+
+exports.deleteConfig = (req,res) =>{
+    KNXConfigModel.findOne({
+        $and:[
+            {idUser: req.apiToken._id},
+            {ipAddr: req.body.ipaddr},
+            {port : req.body.port}
+            ]
+    }, 
+    (err, result) => {
+        if(err) return res.send({success : false, errorMessage : "Erreur lors de la suppression de la configuration KNX: "+err})
+        if(!result) return res.send({success:false, errorMessage : "Aucune machine KNX n'éxiste avec ces options"})
+        else{
+            KNXConfigModel.deleteOne({
+                $and:[
+                    {idUser: req.apiToken._id},
+                    {ipAddr: req.body.ipaddr},
+                    {port : req.body.port}
+                    ]}
+                , (err, result) => {
+                if(err) return res.send({success : false, errorMessage : "Erreur lors de la suppression de la configuration KNX: "+err})
+                return res.send({success:true});
+          })
+        }
+    })
+}
+
+exports.findConfigs = (req,res) =>{
+    KNXConfigModel.find({}, (err, results) => {
+        if(err) return res.send({success : false, errorMessage : "Erreur lros de la récupération des configurations KNX: "+err})
+        return results
+    })
+}
 
 exports.connect = (req,res) =>{
-    var state = functions.connectionKnx();
-    (state) ? res.send({success:true}) : res.send(state);
+    var state = functions.connectionKnx(req.apiToken._id);
+    if (state) {
+        res.send({success:true})
+        // ajouter dans la socket que le mec c'est co à la machine KNX
+     }
+     else res.send(state);
 }
 
 exports.disconnect = (req,res) =>{

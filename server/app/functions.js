@@ -1,12 +1,10 @@
 const variable = require('./variables'); 
 const connection = require('./connection')
-
-
 function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
  
-exports.connectionKnx = () => {
+exports.connectionKnx = (idUser) => {
     try{
         connection.connected();
         return true;        
