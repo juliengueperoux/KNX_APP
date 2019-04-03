@@ -1,4 +1,8 @@
 const connectedUsers=[]
+const http = require('http');
+const io = require("socket.io")(http);
+const wsAuth = require('./middlewares/wsAuth');
+const app = require('../index')
 
 io.on("connection", socket => {
     // Log whenever a user connects
@@ -47,4 +51,4 @@ const server = http.createServer(app).listen(3001, () => {
 io.listen(server);
 
 
-export const io = io
+module.exports = io
