@@ -12,7 +12,7 @@ const auth = require('./app/middlewares/auth');
 const io = require("socket.io")(http);
 const wsAuth = require('./app/middlewares/wsAuth');
 
-const connectedUsers=[]
+import {io} from './app/webSocket'
 //maquettefing1
 
 app.use(cookieParser())
@@ -88,6 +88,4 @@ io.on("connection", socket => {
  io.listen(server);
 
 module.exports.app = app
-module.exports.io = io
-module.exports.connectedUsers = connectedUsers
 exports = module.exports
