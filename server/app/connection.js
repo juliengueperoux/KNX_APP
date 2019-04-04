@@ -2,6 +2,9 @@ const knx = require('knx');
 const variable = require('./variables');
 let ipAddress = '192.168.0.5'
 let ipPort = 3671
+
+const io = require('./app/webSocket')
+
 const connection = new knx.Connection({
   // ip address and port of the KNX router or interface
   ipAddr: ipAddress,
@@ -16,6 +19,8 @@ const connection = new knx.Connection({
 
     // get notified for all KNX events:
     event: function (evt, src, dest, value) {
+      // cette commande permet d'envoyer un message à toutes les sockets
+      io.sockets.emit(dest)
 
       if (dest == "0/3/4") {
         console.log("Appui dernier à droite : " + variable.main.interval);
@@ -44,11 +49,11 @@ const connection = new knx.Connection({
 });
 
 setIpPort = function (newIpPort) {
-  ipPort = newIpPort
+  connection.ipPort = newIpPort
 };
 
 setIpAdress = function (newIpAddress) {
-  ipAddress = newIpAddress
+  connection.ipAddr = newIpAddress
 };
 
 module.exports = {
