@@ -6,7 +6,7 @@ function sleep(ms){
  
 exports.connectionKnx = (idUser) => {
     try{
-        connection.connected();
+        connection.connection.connected();
         return true;        
     }
     catch(error) {
@@ -16,7 +16,7 @@ exports.connectionKnx = (idUser) => {
 
 exports.deconnectionKnx = () => {
     try{
-        connection.Disconnect();
+        connection.connection.Disconnect();
         return true;        
     }
     catch(error) {
@@ -26,7 +26,7 @@ exports.deconnectionKnx = () => {
 
 exports.startLight = (id) => {
     try{
-        connection.write(id,1);
+        connection.connection.write(id,1);
         return true;        
     }
     catch(error) {
@@ -36,7 +36,7 @@ exports.startLight = (id) => {
 
 exports.stopLight = (id) => {
     try{
-        connection.write(id,0); 
+        connection.connection.write(id,0); 
         return true;        
     }
     catch(error) {
@@ -45,6 +45,7 @@ exports.stopLight = (id) => {
 }
 
 exports.startAllLights = () => {
+
 
     for(i=0;i<variable.main.arrayLamp.length;i++){
         try{
@@ -60,7 +61,7 @@ exports.startAllLights = () => {
 exports.stopAllLights = () => {
     try{
         for(i=0;i<variable.main.arrayLamp.length;i++){
-            connection.write(variable.main.arrayLamp[i].id,0); // eteindre
+           connection.connection.write(variable.main.arrayLamp[i],0); // eteindre
         } 
         return true;        
     }
@@ -76,9 +77,9 @@ exports.startChase = async () => {
             var index = 0;
             for(i=0;i<variable.main.arrayLamp.length;i++){
                 index = (!variable.main.sensDirect) ? variable.main.arrayLamp.length-1 - i : i; // si variable.main.sensDirect = true variable.main.sensDirect normal sinon variable.main.sensDirect à l envers!
-                connection.write(variable.main.arrayLamp[index],1); // allumer
+                connection.connection.write(variable.main.arrayLamp[index],1); // allumer
                 await sleep(variable.main.interval);
-                connection.write(variable.main.arrayLamp[index],0); // allumer
+                connection.connection.write(variable.main.arrayLamp[index],0); // allumer
             } 
         }
         return true;        
