@@ -45,22 +45,22 @@ exports.stopLight = (id) => {
 }
 
 exports.startAllLights = () => {
-    try{
-        for(i=0;i<variable.main.arrayLamp.length;i++){
-            connection.write(variable.main.arrayLamp[i],1); // allumer
-        } 
-        return true;        
-    }
-    catch(error) {
-        return error;
-    }  
-    
+
+    for(i=0;i<variable.main.arrayLamp.length;i++){
+        try{
+            connection.write(variable.main.arrayLamp[i].id,1); // allumer        
+        }
+        catch(error) {
+            return error;
+        }  
+    } 
+    return true;        
 }
 
 exports.stopAllLights = () => {
     try{
         for(i=0;i<variable.main.arrayLamp.length;i++){
-            connection.write(variable.main.arrayLamp[i],0); // eteindre
+            connection.write(variable.main.arrayLamp[i].id,0); // eteindre
         } 
         return true;        
     }
