@@ -3,7 +3,7 @@ const variable = require('./variables');
 let ipAddress = '192.168.0.5'
 let ipPort = 3671
 
-const io = require('./app/webSocket')
+const io = require('./webSocket')
 
 const connection = new knx.Connection({
   // ip address and port of the KNX router or interface

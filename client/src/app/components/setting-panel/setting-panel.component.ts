@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import KnxService from '../../services/knx.service';
 import {MatSnackBar} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
@@ -18,13 +19,30 @@ export interface DialogData {
 
 export class SettingPanelComponent implements OnInit {
 
-  constructor(private snackBar: MatSnackBar, public dialog: MatDialog) { }
+  constructor(private snackBar: MatSnackBar, public dialog: MatDialog,private _formBuilder: FormBuilder) { }
   
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+
+
+  inputIpKnx ="";
+  inputPortKnx = 0;
+  inputNameLamp = "";
+  inputIdLamp = "";
+  
+  tabNewLamp = [];
+
   numeros =[1,2,3,4]
   nameLight: string;
 
 
   ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({     
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
   }
 
   openSnackBar(message: string, action: string) {
@@ -32,7 +50,33 @@ export class SettingPanelComponent implements OnInit {
       duration: 3000,
     });
   }
-  /*
+
+  createNewKnxMachine() : void{
+    let objToSend = {
+      'name' : "",
+      'ipAddr' : this.inputIpKnx,
+      'port' : this.inputPortKnx,
+      'arrayLights' : this.tabNewLamp,
+    }
+    console.log(JSON.stringify(objToSend));
+
+  }
+
+
+  addNewLamp():void{
+    if(this.inputIdLamp != " "  && this.inputNameLamp != " ")
+    {
+      this.tabNewLamp.push(
+        {
+          'id' : this.inputIdLamp,
+          'name' :  this.inputNameLamp,
+        }
+      ) 
+      this.inputIdLamp = " ";
+      this.inputNameLamp = " ";
+    }
+  }
+   /*
   openDialog() {
     this.dialog.open(DialogAdd, {
       data: {

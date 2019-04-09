@@ -20,7 +20,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from './auth.guard';
 import { JwtService } from './jwt.service';
 import { LoginComponent } from './components/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { StatesService } from './states.service';
 import { ControlPanelComponent } from './components/control-panel/control-panel.component';
 import { SettingPanelComponent } from './components/setting-panel/setting-panel.component';
@@ -31,6 +31,9 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatAutocompleteModule} from '@angular/material/';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 
 
@@ -55,6 +58,7 @@ import {MatDialogModule} from '@angular/material/dialog';
         blacklistedRoutes: ['http://localhost:3000/auth/login']
       }
     }),
+    ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
     MatCardModule,
@@ -76,7 +80,10 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatSliderModule,
     MatMenuModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatStepperModule,
+    MatAutocompleteModule, 
+    MatGridListModule
   ],
   providers: [StatesService,JwtService,AuthGuard],
   bootstrap: [AppComponent]
