@@ -72,7 +72,7 @@ exports.findConfigs = (req, res) => {
             success: false,
             errorMessage: "Erreur lros de la récupération des configurations KNX: " + err
         })
-        return results
+        return res.send(results);
     })
 }
 
