@@ -1,8 +1,86 @@
 <div fxLayout="column">
   <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
-    <mat-card fxFlex="50">
+    
+    <mat-horizontal-stepper fxFlex="80" [linear]="isLinear"> 
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">  
+            
+              <div fxLayout="row">
+                  <div fxFlex="40">
+                      <p>Paramètrage réseau </p>
+                    </div>
+        
+                  <div fxFlex="30">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx"   formControlName="secondCtrl"  required>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="30">
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Port "  [(ngModel)]="inputPortKnx" formControlName="secondCtrl" required>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+
+            <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
+            <button mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>        
+          </form>
+        </mat-step>
+    
+        <mat-step [stepControl]="secondFormGroup">
+          <form [formGroup]="secondFormGroup">
+          
+            <div fxLayout="row">
+                  <div fxFlex="25">
+                      <p>Ajouter une lampes </p>
+                    </div>
+                  <div fxFlex="25">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="ID" [(ngModel)]="inputIdLamp" formControlName="secondCtrl"  required>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25">
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Nom " [(ngModel)]="inputNameLamp"  formControlName="secondCtrl"  required>
+                      </mat-form-field>
+                  </div>
+                  <div fxFlex="25">
+                      <button mat-button color="primary" (click)="addNewLamp()" >Ajouter</button>                  
+                  </div>
+              </div>
+
+
+              <mat-grid-list cols="2" rowHeight="50px">
+                <div *ngFor="let lamp of tabNewLamp">
+                  <mat-grid-tile><p> Id : {{ lamp.id }} </p></mat-grid-tile>
+                  <mat-grid-tile><p> Nom : {{ lamp.name }} </p></mat-grid-tile>
+                </div>
+                </mat-grid-list>
+            
+
+            <ng-template matStepLabel>Ajouts des éléments </ng-template>
+            <button mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>          
+            <button mat-button mat-raised-button color="" matStepperPrevious>Retour</button>        
+          </form>
+        </mat-step>
+    
+        <mat-step>
+          <ng-template matStepLabel icon>Connection</ng-template>
+           Le paramétrage est fini vous pouvez vous connecter      
+          <button mat-button mat-raised-button (click)="createNewKnxMachine()" color="primary" >Connection</button>      
+        </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+
+<br>
+<br>
+<br>
+  <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
+
+    <mat-card fxFlex="80">
       <mat-card-title>
-        Paramètrage Serveur KNX
+        Machine KNX : 1
       </mat-card-title>
       <mat-card-content>
         <div fxLayout="column">
@@ -30,49 +108,49 @@
                   </mat-form-field>
               </div>
           </div>
-        </div>
+
+          <mat-accordion fxFlex="50">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Paramètrage des lampes
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Ajouter | Modifier | Supprimer
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                
+                <div fxLayout="column">
+                    <div fxLayout="row">
+                        <div fxFlex="80">
+                          <p>Ajouter des lumières </p>
+                        </div>
+                        <div fxFlex="20">
+                          <button mat-button (click)="openDialog()"><mat-icon aria-label="toggle icon">add</mat-icon></button>                  
+                        </div>
+                    </div>
+                    <div fxLayout="row" *ngFor="let numero of numeros">
+                        <div fxFlex="80">
+                          <p>Lampe {{numero}} </p>
+                        </div>
+                        <div fxFlex="20">
+                            <div fxLayout="row">
+                              <div fxFlex="50">
+                                <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
+                              </div>
+                              <div fxFlex="50">
+                                <button mat-button><mat-icon aria-label="toggle icon">delete_sweep</mat-icon></button>
+                              </div>    
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                      
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
       </mat-card-content>
     </mat-card>
   </div>
-  <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
-      <mat-accordion fxFlex="50">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Paramètrage des lampes
-              </mat-panel-title>
-              <mat-panel-description>
-                Ajouter | Modifier | Supprimer
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            
-            <div fxLayout="column">
-                <div fxLayout="row">
-                    <div fxFlex="80">
-                      <p>Ajouter des lumières </p>
-                    </div>
-                    <div fxFlex="20">
-                      <button mat-button (click)="openDialog()"><mat-icon aria-label="toggle icon">add</mat-icon></button>                  
-                    </div>
-                </div>
-                <div fxLayout="row" *ngFor="let numero of numeros">
-                    <div fxFlex="80">
-                      <p>Lampe {{numero}} </p>
-                    </div>
-                    <div fxFlex="20">
-                        <div fxLayout="row">
-                          <div fxFlex="50">
-                            <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
-                          </div>
-                          <div fxFlex="50">
-                            <button mat-button><mat-icon aria-label="toggle icon">delete_sweep</mat-icon></button>
-                          </div>    
-                        </div>
-                    </div>
-                </div>
-              </div>
-                 
-           </mat-expansion-panel>
-          </mat-accordion>
-    </div>
+
 </div>
