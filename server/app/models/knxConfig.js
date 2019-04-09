@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const KNXConfig = new mongoose.Schema({
-    idUser:{
-        type:String,
-        required:true
-    },
+	name : {
+		type : String,
+		resuired : true
+	},
 	ipAddr: {
 		type: String,
 		required: true,
@@ -12,7 +12,13 @@ const KNXConfig = new mongoose.Schema({
 	port: {
 		type: Number,
 		required: true
-    }
+	},
+	lights:[
+		{
+		  id: String,
+		  name: String
+		}
+	  ]
 });
 
 module.exports = mongoose.model('KNXConfig', KNXConfig);

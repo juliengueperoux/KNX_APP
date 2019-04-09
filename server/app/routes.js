@@ -2,30 +2,28 @@ const express = require('express');
 const knxController = require('./controllers/knxController');
 module.exports = (app,auth) => {
 
-    app.get('/api/kniot/connect',auth.isAuth, knxController.connect);
-    app.get('/api/kniot/disconnect',auth.isAuth,  knxController.disconnect);
+    app.get('/api/kniot/connect/:idKnx',auth.isAuth, knxController.connect);
+    app.get('/api/kniot/disconnect/:idKnx',auth.isAuth,  knxController.disconnect);
 
-    app.get('/api/kniot/startAllLights',auth.isAuth,  knxController.startAllLights);
-    app.get('/api/kniot/stopAllLights',auth.isAuth,  knxController.stopAllLights);
+    app.get('/api/kniot/startAllLights/:idKnx',auth.isAuth,  knxController.startAllLights);
+    app.get('/api/kniot/stopAllLights/:idKnx',auth.isAuth,  knxController.stopAllLights);
 
-    app.get('/api/kniot/startLight/:id',auth.isAuth,  knxController.startLight);
-    app.get('/api/kniot/stopLight/:id',auth.isAuth,  knxController.stopLight);
+    app.post('/api/kniot/startLight',auth.isAuth,  knxController.startLight);
+    app.post('/api/kniot/stopLight',auth.isAuth,  knxController.stopLight);
 
-    app.get('/api/kniot/startChase',auth.isAuth,  knxController.startChase);
-    app.get('/api/kniot/stopChase',auth.isAuth,  knxController.stopChase);
-    app.get('/api/kniot/inteval/:value',auth.isAuth, knxController.setInterval)
-    app.get('/api/kniot/interval/up',auth.isAuth,  knxController.setUpInterval);
-    app.get('/api/kniot/interval/down',auth.isAuth,  knxController.setDownInterval);
-    app.get('/api/kniot/reverse',auth.isAuth,  knxController.reverse);
+    app.get('/api/kniot/startChase/:idKnx',auth.isAuth,  knxController.startChase);
+    app.get('/api/kniot/stopChase/:idKnx',auth.isAuth,  knxController.stopChase);
+    app.post('/api/kniot/interval',auth.isAuth, knxController.setInterval)
+    app.get('/api/kniot/reverse/:idKnx',auth.isAuth,  knxController.reverse);
 
     //SETTINGS
-    app.get('/api/kniot/allLight',auth.isAuth, knxController.getAllLight)    
-    app.get('/api/kniot/addLight/:name',auth.isAuth, knxController.addLight)
-    app.get('/api/kniot/removeLight/:name',auth.isAuth, knxController.removeLight)
+    app.get('/api/kniot/allLight/:idKnx',auth.isAuth, knxController.getAllLight)    
+    app.post('/api/kniot/addLight',auth.isAuth, knxController.addLight)
+    app.post('/api/kniot/removeLight',auth.isAuth, knxController.removeLight)
 
     app.post('/api/kniot/addKnxConfig', auth.isAuth, knxController.addConfig)
-    app.post('/api/kniot/deleteKnxConfig', auth.isAuth, knxController.deleteConfig)
-    app.get('/api/kniot/fingMyKNXConfigs',auth.isAuth, knxController.findConfigs)
+    app.get('/api/kniot/deleteKnxConfig/:idKnx', auth.isAuth, knxController.deleteConfig)
+    app.get('/api/kniot/findKNXConfigs',auth.isAuth, knxController.findConfigs)
 
     //AUTH
     app.post('/api/login', auth.login);

@@ -3,7 +3,7 @@ const variable = require('./variables');
 let ipAddress = '192.168.0.5'
 let ipPort = 3671
 
-const io = require('./app/webSocket')
+const io = require('./webSocket')
 
 const connection = new knx.Connection({
   // ip address and port of the KNX router or interface
@@ -23,11 +23,11 @@ const connection = new knx.Connection({
       io.sockets.emit(dest)
 
       if (dest == "0/3/4") {
-        console.log("Appui dernier à droite : " + variable.main.interval);
-        variable.main.interval += 1000;
-      } else if (dest == "0/3/3" && variable.main.interval > 1000) {
-        console.log("Appui dernier à droite : " + variable.main.interval);
-        variable.main.interval -= 1000;
+        console.log("Appui dernier à droite : " + this.interval);
+        this.interval += 1000;
+      } else if (dest == "0/3/3" && this.interval > 1000) {
+        console.log("Appui dernier à droite : " + this.interval);
+        this.interval -= 1000;
       } else if (dest == "0/3/2") {
         if (startChain) {
           startChain = false;
@@ -36,8 +36,8 @@ const connection = new knx.Connection({
           //launch();
         }
       } else if (dest == "0/3/1") {
-        if (variable.main.sensDirect) variable.main.sensDirect = false;
-        else variable.main.sensDirect = true;
+        if (this.sensDirect) this.sensDirect = false;
+        else this.sensDirect = true;
       }
 
     },
@@ -48,19 +48,7 @@ const connection = new knx.Connection({
   }
 });
 
-setIpPort = function (newIpPort) {
-  connection.ipPort = newIpPort
-};
-
-setIpAdress = function (newIpAddress) {
-  connection.ipAddr = newIpAddress
-};
-
-module.exports = {
-  connection,
-  setIpAdress,
-  setIpPort
-};
+module.exports = connection
 
 // dernier droit 3/4
 // a sa gauche 3/3
