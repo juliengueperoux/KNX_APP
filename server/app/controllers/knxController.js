@@ -3,16 +3,15 @@ const KNXConfigModel = require('../models/knxConfig')
 
 exports.addConfig = (req, res) => {
     const config = {
-        idUser: req.apiToken._id,
-        ipAddr: req.body.ipaddr,
-        port: req.body.port
+        ipAddr: req.body.ipAddr,
+        port: req.body.port,
+        lights : req.body.arrayLights,
+        name : req.body.name
     }
     KNXConfigModel.findOne({
-            $and: [{
-                    idUser: req.apiToken._id
-                },
+            $and: [
                 {
-                    ipAddr: req.body.ipaddr
+                    ipAddr: req.body.ipAddr
                 },
                 {
                     port: req.body.port
@@ -43,18 +42,7 @@ exports.addConfig = (req, res) => {
 }
 
 exports.deleteConfig = (req, res) => {
-    KNXConfigModel.findOne({
-            $and: [{
-                    idUser: req.apiToken._id
-                },
-                {
-                    ipAddr: req.body.ipaddr
-                },
-                {
-                    port: req.body.port
-                }
-            ]
-        },
+    KNXConfigModel.findOne({_id : req.params.idKnx},
         (err, result) => {
             if (err) return res.send({
                 success: false,
@@ -65,18 +53,7 @@ exports.deleteConfig = (req, res) => {
                 errorMessage: "Aucune machine KNX n'éxiste avec ces options"
             })
             else {
-                KNXConfigModel.deleteOne({
-                    $and: [{
-                            idUser: req.apiToken._id
-                        },
-                        {
-                            ipAddr: req.body.ipaddr
-                        },
-                        {
-                            port: req.body.port
-                        }
-                    ]
-                }, (err, result) => {
+                KNXConfigModel.deleteOne({_id: result._id}, (err, result) => {
                     if (err) return res.send({
                         success: false,
                         errorMessage: "Erreur lors de la suppression de la configuration KNX: " + err
@@ -100,7 +77,7 @@ exports.findConfigs = (req, res) => {
 }
 
 exports.connect = (req, res) => {
-    var state = functions.connectionKnx(req.apiToken._id);
+    var state = functions.connectionKnx(req.params.idKnx);
     if (state) {
         res.send({
             success: true
@@ -110,99 +87,124 @@ exports.connect = (req, res) => {
 }
 
 exports.disconnect = (req, res) => {
-    var state = functions.deconnectionKnx();
+    var state = functions.deconnectionKnx(req.params.idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 }
 
 exports.startAllLights = (req, res) => {
-    var state = functions.startAllLights();
+    var state = functions.startAllLights(req.params.idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
 exports.stopAllLights = (req, res) => {
-    var state = functions.stopAllLights();
+    var state = functions.stopAllLights(req.params.idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
 exports.startLight = (req, res) => {
-    const id = req.params.id;
-    var state = functions.startLight(id);
+    const id = req.body.id;
+    const idKnx = req.body.idKnx
+    var state = functions.startLight(id,idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 }
 
 exports.stopLight = (req, res) => {
-    const id = req.params.id;
-    var state = functions.stopLight(id);
+    const id = req.body.id;
+    const idKnx = req.body.idKnx
+    var state = functions.stopLight(id,idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 }
 
 exports.startChase = (req, res) => {
-    var state = functions.startChase();
+    const idKnx = req.params.idKnx
+    var state = functions.startChase(idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
 exports.stopChase = (req, res) => {
-    var state = functions.stopChase();
+    const idKnx = req.params.idKnx
+    var state = functions.stopChase(idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
 exports.setInterval = (req, res) => {
-    var state = functions.setInterval(req.params.value);
-    (state) ? res.send({
-        success: true
-    }): res.send(state);
-};
-
-exports.setUpInterval = (req, res) => {
-    var state = functions.setUpInterval();
-    (state) ? res.send({
-        success: true
-    }): res.send(state);
-};
-
-exports.setDownInterval = (req, res) => {
-    var state = functions.setDownInterval();
+    const interval = req.body.interval;
+    const idKnx = req.body.idKnx
+    var state = functions.setInterval(interval,idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
 exports.reverse = (req, res) => {
-    var state = functions.reverse();
+    var state = functions.reverse(req.params.idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
 exports.getAllLight = (req, res) => {
-    var state = functions.getAllLight();
+    var state = functions.getAllLight(req.params.idKnx);
     (state.success) ? res.send(state.data): res.send(state);
 };
 
 exports.addLight = (req, res) => {
-    var state = functions.addLight(req.params.name);
+    const light = req.body.light;
+    const idKnx = req.body.idKnx
+    var state = functions.addLight(light,idKnx);
+    addLight(light,idKnx)
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
 exports.removeLight = (req, res) => {
-    var state = functions.removeLight(req.params.name);
-    (state) ? res.send({
-        success: true
-    }): res.send(state);
+    const light = req.body.light;
+    const idKnx = req.body.idKnx
+    var state = functions.removeLight(light,idKnx);
+    removeLight(light,idKnx,(res)=>{
+        (state && res.success) ? res.send({
+            success: true
+        }): res.send(state);
+    })
 };
+
+addLight = (light,idKnx,callback)=>{
+    KNXConfigModel.findOneAndUpdate(
+        { _id: idKnx }, 
+        { $push: { lights: light  } },
+       function (error, res) {
+             if (error) {
+                return callback({success:false, errorMessage:"Erreur lors de l'ajout de la lumière dans la base de données: "+err})
+             } else {
+                return callback({success:true})
+             }
+         });
+}
+
+removeLight = (light,idKnx,callback)=>{
+    KNXConfigModel.findOneAndUpdate(
+        { _id: idKnx }, 
+        { $pull: { lights: light  } },
+       function (error, res) {
+             if (error) {
+                 return callback({success:false, errorMessage:"Erreur lors de la suppression de la lumière dans la base de données: "+err})
+             } else {
+                return callback({success:true})
+             }
+         });
+}

@@ -1,12 +1,30 @@
-const variable = require('./variables'); 
-const connection = require('./connection')
+const knxController = require('./controllers/knxController');
+const connectionsList = []
 function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
- 
-exports.connectionKnx = (idUser) => {
+
+exports.initConnections=()=>{
+    const allConfigs = knxController.findConfigs()
+    for(config in allConfigs){
+        const connection = new(require('./connection'))
+        connection.ipPort = config.port
+        connection.ipAddr = config.ipAddr
+        connection._id= config._id
+        connection.interval = 1000
+        connection.startChain = false,
+        connection.arrayLamp = config.lights
+        connection.sensDirect = true
+        connectionsList.push(config)
+    }
+    return true
+}
+
+
+exports.connectionKnx = (idUser,idKnx) => {
     try{
-        connection.connection.connected();
+        const connection = getKNXConfig(idKnx)
+        connection.connected();
         return true;        
     }
     catch(error) {
@@ -14,9 +32,10 @@ exports.connectionKnx = (idUser) => {
     }
 }
 
-exports.deconnectionKnx = () => {
+exports.deconnectionKnx = (idKnx) => {
     try{
-        connection.connection.Disconnect();
+        const connection = getKNXConfig(idKnx)
+        connection.Disconnect();
         return true;        
     }
     catch(error) {
@@ -24,9 +43,10 @@ exports.deconnectionKnx = () => {
     }  
 }
 
-exports.startLight = (id) => {
+exports.startLight = (id,idKnx) => {
     try{
-        connection.connection.write(id,1);
+        const connection = getKNXConfig(idKnx)
+        connection.write(id,1);
         return true;        
     }
     catch(error) {
@@ -34,9 +54,10 @@ exports.startLight = (id) => {
     }  
 }
 
-exports.stopLight = (id) => {
+exports.stopLight = (id,idKnx) => {
     try{
-        connection.connection.write(id,0); 
+        const connection = getKNXConfig(idKnx)
+        connection.write(id,0); 
         return true;        
     }
     catch(error) {
@@ -44,12 +65,11 @@ exports.stopLight = (id) => {
     }  
 }
 
-exports.startAllLights = () => {
-
-
-    for(i=0;i<variable.main.arrayLamp.length;i++){
+exports.startAllLights = (idKnx) => {
+    const connection = getKNXConfig(idKnx)
+    for(i=0;i<connection.arrayLamp.length;i++){
         try{
-            connection.write(variable.main.arrayLamp[i].id,1); // allumer        
+            connection.write(connection.arrayLamp[i].id,1); // allumer        
         }
         catch(error) {
             return error;
@@ -58,10 +78,11 @@ exports.startAllLights = () => {
     return true;        
 }
 
-exports.stopAllLights = () => {
+exports.stopAllLights = (idKnx) => {
+    const connection = getKNXConfig(idKnx)
     try{
-        for(i=0;i<variable.main.arrayLamp.length;i++){
-           connection.connection.write(variable.main.arrayLamp[i],0); // eteindre
+        for(i=0;i<connection.arrayLamp.length;i++){
+           connection.write(connection.arrayLamp[i],0); // eteindre
         } 
         return true;        
     }
@@ -70,16 +91,17 @@ exports.stopAllLights = () => {
     }  
 }
 
-exports.startChase = async () => {
+exports.startChase = async (idKnx) => {
+    const connection = getKNXConfig(idKnx)
     try{
-        variable.main.startChain = true;
-        while(variable.main.startChain){
+        connection.startChain = true;
+        while(connection.startChain){
             var index = 0;
-            for(i=0;i<variable.main.arrayLamp.length;i++){
-                index = (!variable.main.sensDirect) ? variable.main.arrayLamp.length-1 - i : i; // si variable.main.sensDirect = true variable.main.sensDirect normal sinon variable.main.sensDirect à l envers!
-                connection.connection.write(variable.main.arrayLamp[index],1); // allumer
-                await sleep(variable.main.interval);
-                connection.connection.write(variable.main.arrayLamp[index],0); // allumer
+            for(i=0;i<connection.arrayLamp.length;i++){
+                index = (!connection.sensDirect) ? connection.arrayLamp.length-1 - i : i; // si connection.sensDirect = true connection.sensDirect normal sinon connection.sensDirect à l envers!
+                connection.write(connection.arrayLamp[index],1); // allumer
+                await sleep(connection.interval);
+                connection.write(connection.arrayLamp[index],0); // allumer
             } 
         }
         return true;        
@@ -90,9 +112,10 @@ exports.startChase = async () => {
     
 }
  
-exports.stopChase = () => {
+exports.stopChase = (idKnx) => {
+    const connection = getKNXConfig(idKnx)
     try{
-        variable.main.startChain = false;
+        connection.startChain = false;
         return true;        
     }
     catch(error) {
@@ -100,10 +123,11 @@ exports.stopChase = () => {
     }  
 }
 
-exports.setInterval = (interval) =>{
+exports.setInterval = (interval,idKnx) =>{
+    const connection = getKNXConfig(idKnx)
     try{
-        console.log("INTERVAL : " + variable.main.interval);
-        (interval >=500) ? variable.main.interval = interval : variable.main.interval = 500;
+        console.log("INTERVAL : " + connection.interval);
+        (connection.interval >=500) ? connection.interval = interval : connection.interval = 500;
         return true;
     }
     catch(error) {
@@ -111,9 +135,10 @@ exports.setInterval = (interval) =>{
     }
 }
 
-exports.setUpInterval = () => {
+exports.setUpInterval = (idKnx) => {
+    const connection = getKNXConfig(idKnx)
     try{
-        variable.main.interval +=1000;
+        connection.interval +=1000;
         return true;
     }
     catch(error) {
@@ -122,9 +147,10 @@ exports.setUpInterval = () => {
     
 };
 
-exports.setDownInterval = () => {
+exports.setDownInterval = (idKnx) => {
+    const connection = getKNXConfig(idKnx)
     try{
-        if(variable.main.interval>1000) variable.main.interval -=1000;
+        if(connection.interval>1000) connection.interval -=1000;
         return true;
     }
     catch(error) {
@@ -133,9 +159,10 @@ exports.setDownInterval = () => {
    
 };
 
-exports.reverse = () =>{
+exports.reverse = (idKnx) =>{
+    const connection = getKNXConfig(idKnx)
     try{
-        variable.main.sensDirect = (variable.main.sensDirect) ? false :  true;
+        connection.sensDirect = (connection.sensDirect) ? false :  true;
         return true;
     }
     catch(error) {
@@ -144,18 +171,20 @@ exports.reverse = () =>{
     
 }
 
-exports.getAllLight = () =>{
+exports.getAllLight = (idKnx) =>{
+    const connection = getKNXConfig(idKnx)
     try{
-        return {'success' : true, 'data' : variable.main.arrayLamp};
+        return {'success' : true, 'data' : connection.arrayLamp};
     }
     catch(error) {
         return error;
     } 
 }
 
-exports.addLight = (name) =>{
+exports.addLight = (name,idKnx) =>{
+    const connection = getKNXConfig(idKnx)
     try{
-        variable.main.arrayLamp.push(name);
+        connection.arrayLamp.push(name);
         return true;
     }
     catch(error) {
@@ -163,13 +192,20 @@ exports.addLight = (name) =>{
     } 
 }
 
-exports.removeLight = (name) =>{
+exports.removeLight = (name,idKnx) =>{
+    const connection = getKNXConfig(idKnx)
     try{
-        let index = variable.main.arrayLamp.indexOf(name);
-        variable.main.arrayLamp.splice(index, 1);
+        let index = connection.arrayLamp.indexOf(name);
+        connection.arrayLamp.splice(index, 1);
         return true;
     }
     catch(error) {
         return error;
     } 
+}
+
+getKNXConfig = (idConfigKNX)=>{
+    connectionsList.find(function(element) {
+        return element._id == idConfigKNX;
+      });
 }
