@@ -15,7 +15,10 @@ exports.initConnections=()=>{
         connection.startChain = false,
         connection.arrayLamp = config.lights
         connection.sensDirect = true
-        connectionsList.push(config)
+        connection.connected().then(()=>{
+            connection.connect = true
+        })
+        connectionsList.push(connection)
     }
     return true
 }
