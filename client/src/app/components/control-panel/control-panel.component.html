@@ -1,103 +1,122 @@
-<div fxLayout="row" id="blockLight" fxLayoutAlign="center">
-  <div fxFlex="10"  *ngFor="let numero of numeros">
-    <svg id="svg-light-{{numero.id}}" class="svg-content light-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-      <path id="bulb" d="M315.764 331.543c0-48.588 88.86-76.217 88.86-182.92C404.623 66.544 338.083 0 256 0S107.38 66.542 107.38 148.624c0 106.702 88.86 134.33 88.86 182.92h119.526z" />
-      <path id="wires" d="M227.215 339.787c-4.554 0-8.244-3.69-8.244-8.244 0-42.72-12.296-61.258-25.315-80.884-12.092-18.228-24.595-37.075-24.595-73.778 0-4.553 3.69-8.244 8.244-8.244s8.244 3.69 8.244 8.244c0 31.73 10.124 46.99 21.845 64.662 13.156 19.83 28.065 42.307 28.065 90 0 4.552-3.69 8.243-8.243 8.243zM284.785 339.787c-4.554 0-8.244-3.69-8.244-8.244 0-47.692 14.91-70.168 28.066-90 11.72-17.67 21.845-32.93 21.845-64.66 0-4.554 3.69-8.245 8.245-8.245 4.554 0 8.244 3.69 8.244 8.244 0 36.703-12.504 55.55-24.596 73.777-13.02 19.625-25.316 38.163-25.316 80.883.002 4.553-3.688 8.244-8.243 8.244z" />
-      <path id="filament" d="M282.882 214.907c-2.496 0-4.86-1.132-6.425-3.078L256 186.39l-20.455 25.44c-1.565 1.945-3.928 3.077-6.425 3.077-2.496 0-4.86-1.132-6.425-3.078l-26.88-33.427c-2.854-3.548-2.29-8.738 1.26-11.592 3.548-2.852 8.737-2.29 11.59 1.26l20.456 25.438 20.457-25.438c1.565-1.946 3.928-3.078 6.425-3.078s4.86 1.132 6.425 3.078l20.456 25.438 20.455-25.438c2.854-3.547 8.042-4.112 11.592-1.26 3.548 2.855 4.11 8.044 1.26 11.593l-26.88 33.426c-1.57 1.945-3.932 3.077-6.428 3.077z" />
-      <path id="ring" d="M190.877 310.85c3.37 6.654 5.362 13.44 5.362 20.693h119.525c0-7.254 1.992-14.04 5.362-20.692h-130.25z" opacity=".1" />
-      <g id="base">
-        <circle cx="256.004" cy="491.738" r="20.264" fill="#5C6670" />
-        <path d="M256 471.473c-11.193 0-20.263 9.072-20.263 20.264 0 .897.078 1.774.19 2.64 6.33 2.027 13.072 3.13 20.073 3.13 7 0 13.743-1.104 20.072-3.13.112-.866.19-1.743.19-2.64 0-11.192-9.07-20.264-20.26-20.264z" opacity=".1" />
-        <circle cx="256.004" cy="431.741" r="59.997" fill="#333E48" />
-        <path d="M256 371.745c-33.135 0-59.995 26.862-59.995 59.996 0 4.358.476 8.602 1.36 12.695h117.273c.884-4.094 1.36-8.337 1.36-12.694-.002-33.134-26.864-59.995-59.997-59.995z" opacity=".1" />
-        <path d="M341.083 411.442c0 11.164-9.135 20.3-20.298 20.3h-129.57c-11.163 0-20.298-9.135-20.298-20.3v-63.054c0-11.164 9.135-20.3 20.3-20.3h129.568c11.163 0 20.298 9.136 20.298 20.3v63.054z" fill="#5C6670" />
-        <path d="M170.922 352.232h170.164v16.49H170.922zM170.922 391.112h170.164v16.49H170.922z" fill="#333E48" />
-      </g>
-    </svg>
-    <p style="text-align: center">{{ numero.name }}</p>
-  </div>
-</div>
-<div fxLayout="row" fxLayoutAlign="center">
-  <div fxFlex.gt-lg="60" fxFlex.gt-sm="80">
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Gestion des lampes
-        </mat-panel-title>
-        <mat-panel-description>
-          Allumer / Eteindre
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      
-      <div fxLayout="column">
-          <div fxLayout="row">
-              <div fxFlex="90">
-                <p>Toutes les lumières </p>
-              </div>
-              <div fxFlex="10">
-                <mat-slide-toggle (change)="allLights($event)"></mat-slide-toggle>
-              </div>
-          </div>
-          <div fxLayout="row" *ngFor="let numero of numeros">
-              <div fxFlex="90">
-                <p>Lampe {{numero.name}} </p>
-              </div>
-              <div fxFlex="10">
-                <mat-slide-toggle id="toggle-{{numero.id}}" (change)="stateLight(numero.id,$event)"></mat-slide-toggle>
-              </div>
-          </div>
-        </div>
-           
-     </mat-expansion-panel>
-   
-      <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Gestion du chenillard
-            </mat-panel-title>
-            <mat-panel-description>
-              Allumer | Vitesse | Inverse
-            </mat-panel-description>
-          </mat-expansion-panel-header>
+<div fxLayout="column" id="blockLight" fxLayoutAlign="center">
 
-          <div fxLayout="column">
-              <div fxLayout="row">
-                  <div fxFlex="90">
-                    <p>Chenillard</p>
-                  </div>
-                  <div fxFlex="10">
-                    <mat-slide-toggle (change)="chase($event)"></mat-slide-toggle>
+    <mat-card fxFlex="80"  *ngFor="let knx of arrayKnx; index as i" style="margin-bottom: 20px;margin-left:10%;margin-right:10%">
+        <mat-card-title>
+          Machine KNX : {{ knx.name }}
+        </mat-card-title>
+        <mat-card-content>
+          
+          <div fxLayout="column" fxLayoutAlign="center">
+        
+              <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
+                
+                
+                <div fxFlex="5" *ngFor="let numero of knx.lights">
+        
+                    <svg id="svg-light-{{numero.id}}-{{ i }}" class="svg-content light-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
+                      <path id="bulb" d="M315.764 331.543c0-48.588 88.86-76.217 88.86-182.92C404.623 66.544 338.083 0 256 0S107.38 66.542 107.38 148.624c0 106.702 88.86 134.33 88.86 182.92h119.526z" />
+                      <path id="wires" d="M227.215 339.787c-4.554 0-8.244-3.69-8.244-8.244 0-42.72-12.296-61.258-25.315-80.884-12.092-18.228-24.595-37.075-24.595-73.778 0-4.553 3.69-8.244 8.244-8.244s8.244 3.69 8.244 8.244c0 31.73 10.124 46.99 21.845 64.662 13.156 19.83 28.065 42.307 28.065 90 0 4.552-3.69 8.243-8.243 8.243zM284.785 339.787c-4.554 0-8.244-3.69-8.244-8.244 0-47.692 14.91-70.168 28.066-90 11.72-17.67 21.845-32.93 21.845-64.66 0-4.554 3.69-8.245 8.245-8.245 4.554 0 8.244 3.69 8.244 8.244 0 36.703-12.504 55.55-24.596 73.777-13.02 19.625-25.316 38.163-25.316 80.883.002 4.553-3.688 8.244-8.243 8.244z" />
+                      <path id="filament" d="M282.882 214.907c-2.496 0-4.86-1.132-6.425-3.078L256 186.39l-20.455 25.44c-1.565 1.945-3.928 3.077-6.425 3.077-2.496 0-4.86-1.132-6.425-3.078l-26.88-33.427c-2.854-3.548-2.29-8.738 1.26-11.592 3.548-2.852 8.737-2.29 11.59 1.26l20.456 25.438 20.457-25.438c1.565-1.946 3.928-3.078 6.425-3.078s4.86 1.132 6.425 3.078l20.456 25.438 20.455-25.438c2.854-3.547 8.042-4.112 11.592-1.26 3.548 2.855 4.11 8.044 1.26 11.593l-26.88 33.426c-1.57 1.945-3.932 3.077-6.428 3.077z" />
+                      <path id="ring" d="M190.877 310.85c3.37 6.654 5.362 13.44 5.362 20.693h119.525c0-7.254 1.992-14.04 5.362-20.692h-130.25z" opacity=".1" />
+                      <g id="base">
+                        <circle cx="256.004" cy="491.738" r="20.264" fill="#5C6670" />
+                        <path d="M256 471.473c-11.193 0-20.263 9.072-20.263 20.264 0 .897.078 1.774.19 2.64 6.33 2.027 13.072 3.13 20.073 3.13 7 0 13.743-1.104 20.072-3.13.112-.866.19-1.743.19-2.64 0-11.192-9.07-20.264-20.26-20.264z" opacity=".1" />
+                        <circle cx="256.004" cy="431.741" r="59.997" fill="#333E48" />
+                        <path d="M256 371.745c-33.135 0-59.995 26.862-59.995 59.996 0 4.358.476 8.602 1.36 12.695h117.273c.884-4.094 1.36-8.337 1.36-12.694-.002-33.134-26.864-59.995-59.997-59.995z" opacity=".1" />
+                        <path d="M341.083 411.442c0 11.164-9.135 20.3-20.298 20.3h-129.57c-11.163 0-20.298-9.135-20.298-20.3v-63.054c0-11.164 9.135-20.3 20.3-20.3h129.568c11.163 0 20.298 9.136 20.298 20.3v63.054z" fill="#5C6670" />
+                        <path d="M170.922 352.232h170.164v16.49H170.922zM170.922 391.112h170.164v16.49H170.922z" fill="#333E48" />
+                      </g>
+                    </svg>
+                  
+                    <p style="text-align: center">{{ numero.name }}</p>
+                
                   </div>
               </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="center">
+                <div fxFlex.gt-lg="100" fxFlex.gt-sm="80">
+                <mat-accordion>
+                  <mat-expansion-panel  class="mat-elevation-z0" >
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Gestion des lampes
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        Allumer / Eteindre
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    
+                    <div fxLayout="column">
+                        <div fxLayout="row">
+                            <div fxFlex="90">
+                              <p>Toutes les lumières </p>
+                            </div>
+                            <div fxFlex="10">
+                              <mat-slide-toggle (change)="allLights($event,i,knx._id)"></mat-slide-toggle>
+                            </div>
+                        </div>
+                        <div fxLayout="row" *ngFor="let numero of knx.lights">
+                            <div fxFlex="90">
+                              <p>Lampe {{numero.name}} </p>
+                            </div>
+                            <div fxFlex="10">
+                              <mat-slide-toggle id="toggle-{{numero.id}}" (change)="stateLight(numero.id,$event,i,knx._id)"></mat-slide-toggle>
+                            </div>
+                        </div>
+                      </div>
+                         
+                   </mat-expansion-panel>
+                 
+                    <mat-expansion-panel  class="mat-elevation-z0">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            Gestion du chenillard
+                          </mat-panel-title>
+                          <mat-panel-description>
+                            Allumer | Vitesse | Inverse
+                          </mat-panel-description>
+                        </mat-expansion-panel-header>
               
-              <div fxLayout="row">
-                  <div fxFlex="90">
-                    <p>Reverse</p>
-                  </div>
-                  <div fxFlex="10">
-                    <mat-slide-toggle (change)="reverse($event)"></mat-slide-toggle>
-                  </div>
-              </div>
-              <div fxLayout="row">
-                  <div fxFlex="60">
-                    <p>Vitesse</p>
-                  </div>
-                  <div fxFlex="40">
-                      <mat-slider
-                      style="width:100%"
-                      thumbLabel
-                      (input)="setIntervalChase($event)"
-                      (mouseup)="intervalChaseService()"
-                      [displayWith]="formatLabel"
-                      tickInterval="500"
-                      min="500"
-                      max="5000"></mat-slider>
-                  </div>
-              </div>
-             
+                        <div fxLayout="column">
+                            <div fxLayout="row">
+                                <div fxFlex="90">
+                                  <p>Chenillard</p>
+                                </div>
+                                <div fxFlex="10">
+                                  <mat-slide-toggle (change)="chase($event,knx._id)"></mat-slide-toggle>
+                                </div>
+                            </div>
+                            
+                            <div fxLayout="row">
+                                <div fxFlex="90">
+                                  <p>Reverse</p>
+                                </div>
+                                <div fxFlex="10">
+                                  <mat-slide-toggle (change)="reverse($event,knx._id)"></mat-slide-toggle>
+                                </div>
+                            </div>
+                            <div fxLayout="row">
+                                <div fxFlex="60">
+                                  <p>Vitesse</p>
+                                </div>
+                                <div fxFlex="40">
+                                    <mat-slider
+                                    style="width:100%"
+                                    thumbLabel
+                                    (input)="setIntervalChase($event)"
+                                    (mouseup)="intervalChaseService()"
+                                    [displayWith]="formatLabel"
+                                    tickInterval="500"
+                                    min="500"
+                                    max="5000"></mat-slider>
+                                </div>
+                            </div>
+                           
+                          </div>
+                      </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
             </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+        </mat-card-content>
+    </mat-card>
 </div>

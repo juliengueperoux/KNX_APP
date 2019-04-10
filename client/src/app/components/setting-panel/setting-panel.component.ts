@@ -33,11 +33,12 @@ export class SettingPanelComponent implements OnInit {
   
   tabNewLamp = [];
 
-  numeros =[1,2,3,4]
+  arrayKnx = [];
   nameLight: string;
 
 
   ngOnInit() {
+    this.getAllLights();
     this.firstFormGroup = this._formBuilder.group({     
     });
     this.secondFormGroup = this._formBuilder.group({
@@ -60,6 +61,14 @@ export class SettingPanelComponent implements OnInit {
     }
     console.log(JSON.stringify(objToSend));
 
+  }
+
+
+  getAllLights() : void{
+    KnxService.findConfigs().then((res) =>{
+      this.arrayKnx = res.data;
+      console.log(this.arrayKnx);
+    });
   }
 
 

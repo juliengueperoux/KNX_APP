@@ -68,11 +68,12 @@ exports.deleteConfig = (req, res) => {
 
 exports.findConfigs = (req, res) => {
     KNXConfigModel.find({}, (err, results) => {
+        console.log(results);
         if (err) return res.send({
             success: false,
             errorMessage: "Erreur lros de la récupération des configurations KNX: " + err
         })
-        return results
+        return res.send(results);
     })
 }
 
