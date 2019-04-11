@@ -26,6 +26,11 @@ io.on("connection", socket => {
         })
     })
 
+    setInterval(()=>{
+        console.log("un beau message !")
+        socket.emit('hello',"un beau message !")
+    },10000)
+
     // Log whenever a client disconnects from our websocket server
     socket.on("disconnect", function () {
         console.log("user disconnected");
