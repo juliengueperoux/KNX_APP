@@ -6,7 +6,7 @@ export default {
     return Api.post('/kniot/addKnxConfig',params)
   },
   deleteConfig(params){
-    return Api.post('/kniot/deleteKnxConfig',params)
+    return Api.get('/kniot/deleteKnxConfig/'+params)
   },
   findConfigs(){
     return Api.get('/kniot/findKNXConfigs')

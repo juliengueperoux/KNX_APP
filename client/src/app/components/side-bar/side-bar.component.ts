@@ -3,7 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { JwtService } from '../../jwt.service';
+import { JwtService } from '../../services/jwt.service';
 
 @Component({
   selector: 'app-side-bar',

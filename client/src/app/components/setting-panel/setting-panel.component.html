@@ -2,47 +2,50 @@
   <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
     
     <mat-horizontal-stepper fxFlex="80" [linear]="isLinear"> 
-        <mat-step [stepControl]="firstFormGroup">
-            <form [formGroup]="firstFormGroup">  
+        <mat-step [stepControl]="knxGroup">
+            <form [formGroup]="knxGroup">  
             
               <div fxLayout="row">
-                  <div fxFlex="40">
-                      <p>Paramètrage réseau </p>
-                    </div>
-        
-                  <div fxFlex="30">
+                  <div fxFlex="25">
+                    <p>Paramètrage réseau </p>
+                  </div>
+                  <div fxFlex="25">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx"   formControlName="secondCtrl"  required>
+                       <!-- <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx" [formControl]="inputNameKnxControl" required>-->
                     </mat-form-field>
                   </div>
-                  <div fxFlex="30">
-                      <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Port "  [(ngModel)]="inputPortKnx" formControlName="secondCtrl" required>
-                      </mat-form-field>
+                  <div fxFlex="25">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx" [formControl]="inputIpKnxControl" required>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Port "  [(ngModel)]="inputPortKnx" [formControl]="inputPortControl" required>
+                    </mat-form-field>
                   </div>
               </div>
-
 
             <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
             <button mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>        
           </form>
         </mat-step>
     
-        <mat-step [stepControl]="secondFormGroup">
-          <form [formGroup]="secondFormGroup">
+        <mat-step [stepControl]="lampsGroup">
+          <form [formGroup]="lampsGroup">
           
             <div fxLayout="row">
                   <div fxFlex="25">
                       <p>Ajouter une lampes </p>
-                    </div>
+                  </div>
                   <div fxFlex="25">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="ID" [(ngModel)]="inputIdLamp" formControlName="secondCtrl"  required>
+                        <input matInput placeholder="ID" [(ngModel)]="inputIdLamp" formControlName="inputNameLampControl"  required>
                     </mat-form-field>
                   </div>
                   <div fxFlex="25">
                       <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Nom " [(ngModel)]="inputNameLamp"  formControlName="secondCtrl"  required>
+                          <input matInput placeholder="Nom " [(ngModel)]="inputNameLamp"  formControlName="inputIdLampControl"  required>
                       </mat-form-field>
                   </div>
                   <div fxFlex="25">
@@ -52,7 +55,7 @@
 
 
               <mat-grid-list cols="2" rowHeight="50px">
-                <div *ngFor="let lamp of tabNewLamp">
+                <div *ngFor="let lamp of arrayNewLamp">
                   <mat-grid-tile><p> Id : {{ lamp.id }} </p></mat-grid-tile>
                   <mat-grid-tile><p> Nom : {{ lamp.name }} </p></mat-grid-tile>
                 </div>
@@ -78,7 +81,8 @@
 <br>
     <mat-card fxFlex="80"  *ngFor="let knx of arrayKnx; index as i" style="margin-bottom: 20px;margin-left:10%;margin-right:10%">
       <mat-card-title>
-        Machine KNX : {{ knx.name }}
+        Machine KNX : {{ knx.name }}  <button mat-button style="float:right" (click)="deleteKnxMachine(knx._id)"><mat-icon aria-label="toggle icon">delete</mat-icon></button>
+
       </mat-card-title>
       <mat-card-content>
         <div fxLayout="column">
