@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import 'hammerjs';
 import { Router } from '@angular/router';
 import { JwtService } from '../../jwt.service';
-import { StatesService } from "../../states.service";
 
 
 @Component({
@@ -14,19 +13,9 @@ import { StatesService } from "../../states.service";
 export class AppComponent implements OnInit{
   title = 'Kniot'
   
-  constructor(private auth: JwtService, private router: Router,private states: StatesService){ }
+  constructor(private auth: JwtService, private router: Router){ }
 
   ngOnInit() {
-    if (this.states.socketCreated()){
-      this.states
-        .getMessages()
-        .subscribe((message: string) => {
-      });
-    }
-  }
-
-  sendMessage() {
-    this.states.sendMessage("Test Message");
   }
 
   logout() {

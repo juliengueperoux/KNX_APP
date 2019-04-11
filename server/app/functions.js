@@ -1,25 +1,29 @@
-const knxController = require('./controllers/knxController');
+const KNXConfigModel = require('./models/knxConfig')
 const connectionsList = []
 function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 exports.initConnections=()=>{
-    const allConfigs = knxController.findConfigs()
-    for(config in allConfigs){
-        const connection = new(require('./connection'))
-        connection.ipPort = config.port
-        connection.ipAddr = config.ipAddr
-        connection._id= config._id
-        connection.interval = 1000
-        connection.startChain = false,
-        connection.arrayLamp = config.lights
-        connection.sensDirect = true
-        connection.connected().then(()=>{
-            connection.connect = true
-        })
-        connectionsList.push(connection)
-    }
+   KNXConfigModel.find({}, (err, results) => {
+        if (err) return
+        else {
+            for(config in results){
+                const connection = new(require('./connection'))
+                connection.ipPort = config.port
+                connection.ipAddr = config.ipAddr
+                connection._id= config._id
+                connection.interval = 1000
+                connection.startChain = false,
+                connection.arrayLamp = config.lights
+                connection.sensDirect = true
+                connection.connected().then(()=>{
+                    connection.connect = true
+                })
+                connectionsList.push(connection)
+            }
+        }
+    })
     return true
 }
 
