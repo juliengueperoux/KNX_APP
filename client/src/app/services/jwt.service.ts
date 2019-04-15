@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {StatesService} from './states.service'
 import { Router } from '@angular/router';
-import api from "./services/Api"
+import api from "./Api"
 import axios from 'axios'
 
 @Injectable({

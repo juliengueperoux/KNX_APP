@@ -1,13 +1,16 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import KnxService from '../../services/knx.service';
+import {FormBuilder, FormGroup, FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
+import KnxService from '../../services/knx.service';
+import { KnxMachine } from '../../models/knx-machine';
+import { Lamp } from '../../models/lamp';
+
 
 export interface DialogData {
   animal: 'panda' | 'unicorn' | 'lion';
 }
-
 
 @Component({
   selector: 'app-setting-panel',
@@ -15,34 +18,38 @@ export interface DialogData {
   styleUrls: ['./setting-panel.component.css']
 })
 
-
-
 export class SettingPanelComponent implements OnInit {
 
   constructor(private snackBar: MatSnackBar, public dialog: MatDialog,private _formBuilder: FormBuilder) { }
   
-  isLinear = false;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-
-
-  inputIpKnx ="";
-  inputPortKnx = 0;
-  inputNameLamp = "";
-  inputIdLamp = "";
+  isLinear:boolean = false;
   
-  tabNewLamp = [];
+  
+  lampsGroup = new FormGroup({
+    inputNameLampControl: new FormControl(''),
+    inputIdLampControl: new FormControl(''),
+  });
+  
+  knxGroup = new FormGroup({
+    inputNameKnxControl: new FormControl(''),
+    inputIpKnxControl: new FormControl(''),
+    inputPortKnxControl: new FormControl(''),
+  });
 
-  numeros =[1,2,3,4]
+
+  inputNameKnx: string;
+  inputIpKnx: string;
+  inputPortKnx: number;
+  inputNameLamp: string;
+  inputIdLamp: string;
   nameLight: string;
-
+  knx: KnxMachine;
+  
+  arrayNewLamp:Array<Lamp> = [];
+  arrayKnx:Array<KnxMachine> = [];
 
   ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({     
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
+    this.getAllLights();
   }
 
   openSnackBar(message: string, action: string) {
@@ -52,28 +59,33 @@ export class SettingPanelComponent implements OnInit {
   }
 
   createNewKnxMachine() : void{
-    let objToSend = {
-      'name' : "",
-      'ipAddr' : this.inputIpKnx,
-      'port' : this.inputPortKnx,
-      'arrayLights' : this.tabNewLamp,
-    }
-    console.log(JSON.stringify(objToSend));
+    this.knx = new KnxMachine(this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
+    console.log(JSON.stringify(this.knx));
 
+    KnxService.addConfig(this.knx).then((res) =>{
+      console.log(res);
+    });
+  }
+  
+  deleteKnxMachine(id : String) : void{
+    KnxService.deleteConfig(id).then((res) =>{
+      console.log(res);
+    });
   }
 
+  getAllLights() : void{
+    KnxService.findConfigs().then((res) =>{
+      this.arrayKnx = res.data;
+      console.log(this.arrayKnx);
+    });
+  }
 
   addNewLamp():void{
     if(this.inputIdLamp != " "  && this.inputNameLamp != " ")
     {
-      this.tabNewLamp.push(
-        {
-          'id' : this.inputIdLamp,
-          'name' :  this.inputNameLamp,
-        }
-      ) 
-      this.inputIdLamp = " ";
-      this.inputNameLamp = " ";
+      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp));
+      this.inputIdLamp = null;
+      this.inputNameLamp = null;
     }
   }
    /*

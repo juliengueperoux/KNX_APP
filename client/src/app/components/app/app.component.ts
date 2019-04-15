@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import 'hammerjs';
 import { Router } from '@angular/router';
-import { JwtService } from '../../jwt.service';
-import { StatesService } from "../../states.service";
+import { JwtService } from '../../services/jwt.service';
+import { StatesService } from "../../services/states.service";
 
 
 @Component({
