@@ -10,6 +10,7 @@ const router = require('./app/routes');
 const mongoose = require('mongoose');
 const auth = require('./app/middlewares/auth');
 const io = require('./app/webSocket')
+const functions = require('./app/functions');
 
 //maquettefing1
 
@@ -40,6 +41,7 @@ mongoose.connection.on('disconnected', () => {
 
 http.createServer(app).listen(port, () => {
    console.log('Listening on ' + port);
+   functions.initConnections()
 });
 
 module.exports.app = app

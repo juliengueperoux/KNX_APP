@@ -11,49 +11,43 @@ export default {
   findConfigs(){
     return Api.get('/kniot/findKNXConfigs')
   },
-  connect () {
-    return Api.get('/kniot/connect')
+  connect (param) {
+    return Api.get('/kniot/connect/'+param)
   },
-  disconnect () {
-    return Api.get('/kniot/disconnect')
+  disconnect (param) {
+    return Api.get('/kniot/disconnect/'+param)
   },
-  startAllLights () {
-    return Api.get('/kniot/startAllLights')
+  startAllLights (param) {
+    return Api.get('/kniot/startAllLights/'+param)
   },
-  stopAllLights () {
-    return Api.get('/kniot/stopAllLights')
+  stopAllLights (param) {
+    return Api.get('/kniot/stopAllLights/'+param)
   },
   startLight (param) {
-    return Api.get('/kniot/startLight/'+param)
+    return Api.post('/kniot/startLight',param)
   },
   stopLight (param) {
-    return Api.get('/kniot/stopLight/'+param)
+    return Api.post('/kniot/stopLight',param)
   },
-  startChase () {
-    return Api.get('/kniot/startChase')
+  startChase (param) {
+    return Api.get('/kniot/startChase/'+param)
   },
-  stopChase () {
-    return Api.get('/kniot/stopChase')
+  stopChase (param) {
+    return Api.get('/kniot/stopChase/'+param)
   },
   intervalValue(param){
-    return Api.get('/kniot/interval/'+param)
+    return Api.post('/kniot/interval',param)
   },
-  intervalUp (){
-    return Api.get('/kniot/interval/up')
+  reverse (param){
+    return Api.get('/kniot/reverse/',param)
   },
-  intervalDown (){
-    return Api.get('/kniot/interval/down')
-  },
-  reverse (){
-    return Api.get('/kniot/reverse')
-  },
-  getAllLight(){
-    return Api.get('kniot/allLight/')
+  getAllLight(param){
+    return Api.get('kniot/allLight/'+param)
   },
   addLight(param){
-    return Api.get('kniot/addLight/' + param)
+    return Api.post('kniot/addLight' , param)
   },
   removeLight(param){
-    return Api.get('kniot/removeLight/' + param)
+    return Api.post('kniot/removeLight' , param)
   }
 }
