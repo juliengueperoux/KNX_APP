@@ -42,6 +42,7 @@ exports.addConfig = (req, res) => {
 }
 
 exports.deleteConfig = (req, res) => {
+    console.log(res);
     KNXConfigModel.findOne({_id : req.params.idKnx},
         (err, result) => {
             if (err) return res.send({
@@ -66,14 +67,14 @@ exports.deleteConfig = (req, res) => {
         })
 }
 
-exports.findConfigs = (req, res) => {
+exports.findConfigs = (req,res) => {
     KNXConfigModel.find({}, (err, results) => {
         console.log(results);
         if (err) return res.send({
             success: false,
             errorMessage: "Erreur lros de la récupération des configurations KNX: " + err
         })
-        return res.send(results);
+       return res.send(results)
     })
 }
 

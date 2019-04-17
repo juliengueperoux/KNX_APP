@@ -24,19 +24,17 @@ export class SettingPanelComponent implements OnInit {
   
   isLinear:boolean = false;
   
+  knxGroup = new FormGroup({
+    inputNameKnxControl: new FormControl(''),
+    inputIpKnxControl: new FormControl(''),
+    inputPortKnxControl: new FormControl(''),
+  });
   
   lampsGroup = new FormGroup({
     inputNameLampControl: new FormControl(''),
     inputIdLampControl: new FormControl(''),
   });
   
-  knxGroup = new FormGroup({
-    inputNameKnxControl: new FormControl(''),
-    inputIpKnxControl: new FormControl(''),
-    inputPortKnxControl: new FormControl(''),
-  });
-
-
   inputNameKnx: string;
   inputIpKnx: string;
   inputPortKnx: number;
@@ -100,13 +98,13 @@ export class SettingPanelComponent implements OnInit {
   /**
    * KNX PART 
    */
-  connect(event):void{
+  connect(event,id):void{
     if(event.checked){
-      KnxService.connect().then((res) =>{
+      KnxService.connect(id).then((res) =>{
         (res.data.success) ? this.openSnackBar("Connecté à KNX","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
     }else{
-      KnxService.disconnect().then((res) =>{
+      KnxService.disconnect(id).then((res) =>{
         (res.data.success) ? this.openSnackBar("Deconnecté à KNX","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
     }
