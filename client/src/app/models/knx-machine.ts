@@ -1,6 +1,7 @@
 import { Lamp } from "./lamp";
 
 export class KnxMachine {
+    _id: string;
     name: string;
     ipAddr: string;
     port: number;
@@ -25,7 +26,6 @@ export class KnxMachine {
      getPort():number{
         return this.port;
      }
-
 
      getLights():Array<Lamp>{
         return this.lights;

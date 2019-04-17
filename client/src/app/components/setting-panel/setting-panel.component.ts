@@ -1,16 +1,15 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import {FormBuilder, FormGroup, FormControl} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import KnxService from '../../services/knx.service';
+import UtilsService from '../../services/utils.service'
 import { KnxMachine } from '../../models/knx-machine';
 import { Lamp } from '../../models/lamp';
+import { DialogUpdateComponent } from '../dialog-update/dialog-update.component';
+import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 
-
-export interface DialogData {
-  animal: 'panda' | 'unicorn' | 'lion';
-}
 
 @Component({
   selector: 'app-setting-panel',
@@ -20,14 +19,28 @@ export interface DialogData {
 
 export class SettingPanelComponent implements OnInit {
 
-  constructor(private snackBar: MatSnackBar, public dialog: MatDialog,private _formBuilder: FormBuilder) { }
+  constructor( public dialog: MatDialog,private _formBuilder: FormBuilder, private _utils: UtilsService) { }
   
-  isLinear:boolean = false;
-  
+  isLinear: boolean = false;
+  validate: boolean = false;
+  animal: string;
+  name: string;
+
+
   knxGroup = new FormGroup({
-    inputNameKnxControl: new FormControl(''),
-    inputIpKnxControl: new FormControl(''),
-    inputPortKnxControl: new FormControl(''),
+    inputNameKnxControl: new FormControl([
+      Validators.required,
+      Validators.minLength(4),
+    ]),
+    inputIpKnxControl: new FormControl([
+      Validators.required,
+      Validators.minLength(4),
+      Validators.pattern(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/)
+    ]),
+    inputPortKnxControl: new FormControl([
+      Validators.required,
+      Validators.maxLength(5),
+    ]),
   });
   
   lampsGroup = new FormGroup({
@@ -49,26 +62,52 @@ export class SettingPanelComponent implements OnInit {
   ngOnInit() {
     this.getAllLights();
   }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 3000,
-    });
+  
+  addNewLamp():void{
+      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp));
+      this.lampsGroup.reset();
   }
 
   createNewKnxMachine() : void{
     this.knx = new KnxMachine(this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
-    console.log(JSON.stringify(this.knx));
-
     KnxService.addConfig(this.knx).then((res) =>{
-      console.log(res);
+      if(res.data.success){
+        this._utils.openSnackBar("Machine KNX  ajoutée à la base de données","Ok");
+        this.arrayKnx.push(this.knx);
+        this.arrayNewLamp = [];
+        this.knxGroup.reset();
+        this.lampsGroup.reset();
+      }
     });
   }
   
-  deleteKnxMachine(id : String) : void{
-    KnxService.deleteConfig(id).then((res) =>{
-      console.log(res);
-    });
+  deleteKnxMachine(indice) : void{
+    let data = {
+      validate : this.validate,
+      id: this.arrayKnx[indice]._id,
+      name: this.arrayKnx[indice].name, 
+      sentence : 'Étes-vous sur de vouloir supprimer la machine Knx' + this.arrayKnx[indice].name,
+      fun : function (id){
+        KnxService.deleteConfig(id).then((res) =>{
+          if(res.data.success){
+            this._utils.openSnackBar("La machine KNX a été supprimée","Ok");
+            this.arrayKnx.forEach((element, i) => {
+              if(element._id==id){
+                this.arrayKnx.splice(i, 1); 
+                return true;
+              }
+            });
+          }else{
+            this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok");
+          }
+        });
+    }
+    }
+    this.openDialog(data,DialogDeleteComponent);
+  }
+
+  public deleteKnxMachineValidate(id) : void{
+    
   }
 
   getAllLights() : void{
@@ -78,45 +117,60 @@ export class SettingPanelComponent implements OnInit {
     });
   }
 
-  addNewLamp():void{
-    if(this.inputIdLamp != " "  && this.inputNameLamp != " ")
-    {
-      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp));
-      this.inputIdLamp = null;
-      this.inputNameLamp = null;
+  
+  /**
+   * UPDATA : Knx Setting 
+   * Construction de l'objet  à envoyer à la dialog générique pour la construire 
+   * name : le noms
+   * imputs : array des champs à modifier
+   * function : service pour update
+   * @param indice 
+   */
+  updateSettingKnxMachine(indice){
+    let data = {
+      name: this.arrayKnx[indice].name, 
+      inputs: {
+        'name' : this.arrayKnx[indice].name,
+        'ipAddr' : this.arrayKnx[indice].ipAddr,
+        'port' : this.arrayKnx[indice].port
+      },
+      //function : 
     }
+    this.openDialog(data,DialogUpdateComponent);
   }
-   /*
-  openDialog() {
-    this.dialog.open(DialogAdd, {
-      data: {
-        animal: 'panda'
-      }
+
+  /**
+   * Call la dialog générique avec les paramètres à afficher 
+   * @param data 
+   */
+  openDialog(data,dialog) {
+    const dialogRef = this.dialog.open(dialog, {
+      width: '450px',
+      data: data
+    });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log('RESULT :  ' + result)
+      this.validate = result;
+      console.log("VALIDATE : " + this.validate);
     });
   }
-*/
+
+ 
   /**
    * KNX PART 
    */
   connect(event,id):void{
     if(event.checked){
       KnxService.connect(id).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Connecté à KNX","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Connecté à KNX","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });
     }else{
       KnxService.disconnect(id).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Deconnecté à KNX","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Deconnecté à KNX","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });
     }
   }
 }
 
-/*
-@Component({
-  selector: '../dialog-add/app-dialog-add',
-  templateUrl: '../dialog-add/dialog-add.component.html',
-})
-export class DialogAdd {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-}*/

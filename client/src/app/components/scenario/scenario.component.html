@@ -1,0 +1,101 @@
+<div fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="center">
+
+    <mat-horizontal-stepper fxFlex="80" [linear]="isLinear" #stepper> 
+        <mat-step > <!--[stepControl]="knxGroup"-->
+            <form> <!-- [formGroup]="knxGroup" -->  
+              <div fxLayout="column">
+                  <div fxLayout="row">
+                      <div fxFlex="100">
+                        <!-- 
+                          Choix de la lamp
+                        -->
+                        <mat-form-field>
+                            <mat-label>Machine Knx</mat-label>
+                            <mat-select (selectionChange)="setCurrentLampArray('nextLamp',$event.value)">
+                              <mat-option *ngFor="let knx of arrayKnx" [value]="knx._id">
+                                {{knx.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                      </div>
+                  </div>
+              </div>
+            <ng-template matStepLabel>Choix de la machine Knx</ng-template>  
+            <button mat-button mat-raised-button id="nextLamp" type="submit" color="primary" matStepperNext disabled>Suivant</button>        
+          </form>
+        </mat-step>
+    
+        <mat-step > <!--[stepControl]="knxGroup"-->
+            <form> <!-- [formGroup]="knxGroup" -->  
+              <div fxLayout="column">
+                  <div fxLayout="row">
+                      <div fxFlex="100">
+                        <!-- 
+                          Choix de la lamp
+                        -->
+                        <mat-form-field style="width:50%">
+                            <mat-label>Lamps </mat-label>
+                            <mat-select (selectionChange)="setArrayLamp('nextHours',$event.value)" multiple>
+                                <mat-option *ngFor="let lamp of arrayLamp" [value]="lamp">
+                                  {{lamp.name}}
+                                </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                      </div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="10">
+                     <!-- 
+                      Choix de l action (eteindre allumer)
+                    -->
+                      {{ action }}
+                    </div>
+                    <div fxFlex="40">
+                      <mat-slide-toggle  [checked]="false" (change)="changeAction($event)"></mat-slide-toggle>
+                    </div>
+                </div>
+              </div>
+             
+              
+
+            <ng-template matStepLabel>Lampe</ng-template>  
+            <button mat-button mat-raised-button id="nextHours" type="submit" color="primary" matStepperNext disabled>Suivant</button>        
+          </form>
+        </mat-step>
+
+        <mat-step > <!--[stepControl]="knxGroup"-->
+            <form> <!-- [formGroup]="knxGroup" -->  
+             <!-- 
+                Choix de l heure 
+              -->
+              a faire
+              <!-- 
+                Choix de la répition (date precisie, tous les jours, 1 semaines (choix du jours) )
+              -->
+            <ng-template matStepLabel>Horraire</ng-template>  
+            <button mat-button mat-raised-button type="submit" color="primary" matStepperNext>Suivant</button>        
+          </form>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel icon>Validation</ng-template>
+           Recapitulatif et validation du scénarios
+          <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Valider</button>      
+        </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+
+  <div fxLayout="row" style="margin-top:20px" fxLayoutAlign="center">
+    <mat-table #table [dataSource]="dataSource" matSort fxFlex="80">
+      <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+
+</div>

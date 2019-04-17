@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import KnxService from '../../services/knx.service';
 import {MatSnackBar} from '@angular/material';
+import UtilsService from '../../services/utils.service';
 
 @Component({
   selector: 'app-control-panel',
@@ -12,7 +13,7 @@ export class ControlPanelComponent implements OnInit {
   arrayKnx = [];
   interval = 1000;
   active = true; 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar, private _utils: UtilsService) { }
 
   ngOnInit() {
     // FINIR DE TRAITER LA PROMISE
@@ -30,16 +31,10 @@ export class ControlPanelComponent implements OnInit {
     (action) ? document.getElementById(name).classList.add(classCss) : document.getElementById(name).classList.remove(classCss);
   }
 
-  openSnackBar(message: string, action: string) : void{
-    this.snackBar.open(message, action, {
-      duration: 3000,
-    });
-  }
-
   allLights(event,indice,id): void {
     if(event.checked){
       KnxService.startAllLights(id).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Lampes allumées","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });
       this.arrayKnx[indice].lights.forEach(element => {
         let nameLight = "svg-light-" + element.id + "-" + indice;
@@ -49,7 +44,7 @@ export class ControlPanelComponent implements OnInit {
     }
     else{
       KnxService.stopAllLights(id).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Lampes éteintes","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Lampes éteintes","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });
       this.arrayKnx[indice].lights.forEach(element => {
         let nameLight = "svg-light-" + element.id + "-" + indice;
@@ -60,16 +55,22 @@ export class ControlPanelComponent implements OnInit {
 
   stateLight(numero,event,indice,id): void{
     if(event.checked){
-      KnxService.startLight(numero).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Lampe numéro " + numero + " allumée","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+      KnxService.startLight({
+        'id' : numero,
+        'idKnx' : id
+      }).then((res) =>{
+        (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " allumée","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });
       let nameLight = "svg-light-" + numero + "-" + indice;
       console.log(nameLight);
       this.setCSSclass(nameLight,'is-activated',true);
     } 
     else{
-      KnxService.stopLight(numero).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Lampe numéro " + numero + " éteinte","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+      KnxService.stopLight({
+        'id' : numero,
+        'idKnx' : id
+      }).then((res) =>{
+        (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " éteinte","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });;
       let nameLight = "svg-light-" + numero + "-" + indice;
       this.setCSSclass(nameLight,'is-activated',false);
@@ -79,12 +80,12 @@ export class ControlPanelComponent implements OnInit {
   chase(event,id) : void{
     if(event.checked){
       KnxService.startChase(id).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Chenillard allumé","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Chenillard allumé","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });
     }
     else{
       KnxService.stopChase(id).then((res) =>{
-        (res.data.success) ? this.openSnackBar("Chenillard éteint","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Chenillard éteint","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
       });
       this.active =false;
     } 
@@ -92,7 +93,7 @@ export class ControlPanelComponent implements OnInit {
 
   reverse(id) : void{
     KnxService.reverse(id).then((res) =>{
-      (res.data.success) ? this.openSnackBar("Chenillard inversé","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+      (res.data.success) ? this._utils.openSnackBar("Chenillard inversé","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
     });
   }
 
@@ -101,8 +102,11 @@ export class ControlPanelComponent implements OnInit {
   }
 
   intervalChaseService(id) : void{
-    KnxService.startLight(this.interval).then((res) =>{
-      (res.data.success) ? this.openSnackBar("Interval de " + this.interval + " µs","Ok") : this.openSnackBar("Error" + res.data,"Ok");
+    KnxService.intervalValue({
+      'interval' : this.interval,
+      'idKnx' : id
+    }).then((res) =>{
+      (res.data.success) ? this._utils.openSnackBar("Interval de " + this.interval + " µs","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
     });
   }
   
