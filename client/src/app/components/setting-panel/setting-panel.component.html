@@ -1,7 +1,7 @@
 <div fxLayout="column">
   <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
     
-    <mat-horizontal-stepper fxFlex="80" [linear]="isLinear"> 
+    <mat-horizontal-stepper fxFlex="80" [linear]="isLinear" #stepper> 
         <mat-step [stepControl]="knxGroup">
             <form [formGroup]="knxGroup">  
               <div fxLayout="row">
@@ -10,23 +10,23 @@
                   </div>
                   <div fxFlex="25">
                      <mat-form-field class="example-full-width">
-                       <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx" [formControl]="inputNameKnxControl" required>
+                       <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx" formControlName="inputNameKnxControl" required>
                       </mat-form-field>
                   </div>
                   <div fxFlex="25">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx" [formControl]="inputIpKnxControl" required>
+                        <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx" formControlName="inputIpKnxControl" required>
                     </mat-form-field>
                   </div>
                   <div fxFlex="25">
                     <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Port "  [(ngModel)]="inputPortKnx" [formControl]="inputPortControl" required>
+                      <input matInput placeholder="Port " type="number" [(ngModel)]="inputPortKnx" formControlName="inputPortKnxControl" required>
                     </mat-form-field>
                   </div>
               </div>
 
             <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
-            <button mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>        
+            <button mat-button mat-raised-button type="submit" color="primary" matStepperNext>Suivant</button>        
           </form>
         </mat-step>
     
@@ -70,7 +70,7 @@
         <mat-step>
           <ng-template matStepLabel icon>Connection</ng-template>
            Le paramétrage est fini vous pouvez vous connecter      
-          <button mat-button mat-raised-button (click)="createNewKnxMachine()" color="primary" >Connection</button>      
+          <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Connection</button>      
         </mat-step>
     </mat-horizontal-stepper>
   </div>

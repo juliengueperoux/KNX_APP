@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {FormBuilder, FormGroup, FormControl} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import KnxService from '../../services/knx.service';
 import { KnxMachine } from '../../models/knx-machine';
@@ -25,9 +25,19 @@ export class SettingPanelComponent implements OnInit {
   isLinear:boolean = false;
   
   knxGroup = new FormGroup({
-    inputNameKnxControl: new FormControl(''),
-    inputIpKnxControl: new FormControl(''),
-    inputPortKnxControl: new FormControl(''),
+    inputNameKnxControl: new FormControl([
+      Validators.required,
+      Validators.minLength(4),
+    ]),
+    inputIpKnxControl: new FormControl([
+      Validators.required,
+      Validators.minLength(4),
+      Validators.pattern(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/)
+    ]),
+    inputPortKnxControl: new FormControl([
+      Validators.required,
+      Validators.maxLength(5),
+    ]),
   });
   
   lampsGroup = new FormGroup({
@@ -55,19 +65,40 @@ export class SettingPanelComponent implements OnInit {
       duration: 3000,
     });
   }
+  
+  addNewLamp():void{
+      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp));
+      this.lampsGroup.reset();
+  }
 
   createNewKnxMachine() : void{
+    console.log(JSON.stringify(this.arrayNewLamp))
     this.knx = new KnxMachine(this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
-    console.log(JSON.stringify(this.knx));
-
+    console.log(this.knx);
     KnxService.addConfig(this.knx).then((res) =>{
-      console.log(res);
+      if(res.data.success){
+        this.openSnackBar("Machine KNX  ajoutée à la base de données","Ok");
+        this.arrayKnx.push(this.knx);
+        this.arrayNewLamp = [];
+        this.knxGroup.reset();
+        this.lampsGroup.reset();
+      }
     });
   }
   
   deleteKnxMachine(id : String) : void{
     KnxService.deleteConfig(id).then((res) =>{
-      console.log(res);
+      if(res.data.success){
+        this.openSnackBar("La machine KNX a été supprimée","Ok");
+        this.arrayKnx.forEach((element, i) => {
+          if(element._id==id){
+            this.arrayKnx.splice(i, 1); 
+            return true;
+          }
+        });
+      }else{
+        this.openSnackBar("Erreur de suppression : " + res.data,"Ok");
+      }
     });
   }
 
@@ -77,16 +108,7 @@ export class SettingPanelComponent implements OnInit {
       console.log(this.arrayKnx);
     });
   }
-
-  addNewLamp():void{
-    if(this.inputIdLamp != " "  && this.inputNameLamp != " ")
-    {
-      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp));
-      this.inputIdLamp = null;
-      this.inputNameLamp = null;
-    }
-  }
-   /*
+/*
   openDialog() {
     this.dialog.open(DialogAdd, {
       data: {

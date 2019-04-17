@@ -5,7 +5,7 @@ exports.addConfig = (req, res) => {
     const config = {
         ipAddr: req.body.ipAddr,
         port: req.body.port,
-        lights : req.body.arrayLights,
+        lights : req.body.lights,
         name : req.body.name
     }
     KNXConfigModel.findOne({
