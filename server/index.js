@@ -41,7 +41,7 @@ mongoose.connection.on('disconnected', () => {
 
 http.createServer(app).listen(port, () => {
    console.log('Listening on ' + port);
-   functions.initConnections()
+   //functions.initConnections()
 });
 
 module.exports.app = app

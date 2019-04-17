@@ -4,15 +4,14 @@
     <mat-horizontal-stepper fxFlex="80" [linear]="isLinear"> 
         <mat-step [stepControl]="knxGroup">
             <form [formGroup]="knxGroup">  
-            
               <div fxLayout="row">
                   <div fxFlex="25">
                     <p>Paramètrage réseau </p>
                   </div>
                   <div fxFlex="25">
-                    <mat-form-field class="example-full-width">
-                       <!-- <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx" [formControl]="inputNameKnxControl" required>-->
-                    </mat-form-field>
+                     <mat-form-field class="example-full-width">
+                       <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx" [formControl]="inputNameKnxControl" required>
+                      </mat-form-field>
                   </div>
                   <div fxFlex="25">
                     <mat-form-field class="example-full-width">
@@ -95,50 +94,45 @@
               </div>
           </div>
 
-
-          <mat-accordion fxFlex="50">
-              <mat-expansion-panel  class="mat-elevation-z0">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                      Paramètrage réseau
-                  </mat-panel-title>
-                  <mat-panel-description>
-                     Modifier 
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                
-                <div fxLayout="row">
-                    <div fxFlex="80">
-                      <p>Adresse IP : {{ knx.ipAddr}}</p>
-                    </div>
-                    <div fxFlex="20">
-                        <div fxLayout="row">
-                          <div fxFlex="50">
-                            <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
-                          </div>  
-                        </div>
+        <mat-accordion fxFlex="50">
+          <mat-expansion-panel  class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                  Paramètrage réseau
+              </mat-panel-title>
+              <mat-panel-description>
+                  Modifier 
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <div fxLayout="row">
+                <div fxFlex="80">
+                  <p>Adresse IP : {{ knx.ipAddr}}</p>
+                </div>
+                <div fxFlex="20">
+                    <div fxLayout="row">
+                      <div fxFlex="50">
+                        <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
+                      </div>  
                     </div>
                 </div>
+            </div>
 
-                <div fxLayout="row">
-                    <div fxFlex="80">
-                      <p> Port : {{ knx.port}}</p>
-                    </div>
-                    <div fxFlex="20">
-                        <div fxLayout="row">
-                          <div fxFlex="50">
-                            <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
-                          </div>  
-                        </div>
+            <div fxLayout="row">
+                <div fxFlex="80">
+                  <p> Port : {{ knx.port}}</p>
+                </div>
+                <div fxFlex="20">
+                    <div fxLayout="row">
+                      <div fxFlex="50">
+                        <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
+                      </div>  
                     </div>
                 </div>
-                      
-                </mat-expansion-panel>
-              </mat-accordion>
-
-
-  
-          
+            </div>
+                  
+            </mat-expansion-panel>
+          </mat-accordion>
 
           <mat-accordion fxFlex="50">
               <mat-expansion-panel  class="mat-elevation-z0">

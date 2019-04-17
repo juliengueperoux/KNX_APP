@@ -38,7 +38,7 @@ export class ControlPanelComponent implements OnInit {
 
   allLights(event,indice,id): void {
     if(event.checked){
-      KnxService.startAllLights().then((res) =>{
+      KnxService.startAllLights(id).then((res) =>{
         (res.data.success) ? this.openSnackBar("Lampes allumées","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
       this.arrayKnx[indice].lights.forEach(element => {
@@ -48,7 +48,7 @@ export class ControlPanelComponent implements OnInit {
       })
     }
     else{
-      KnxService.stopAllLights().then((res) =>{
+      KnxService.stopAllLights(id).then((res) =>{
         (res.data.success) ? this.openSnackBar("Lampes éteintes","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
       this.arrayKnx[indice].lights.forEach(element => {
@@ -78,12 +78,12 @@ export class ControlPanelComponent implements OnInit {
 
   chase(event,id) : void{
     if(event.checked){
-      KnxService.startChase().then((res) =>{
+      KnxService.startChase(id).then((res) =>{
         (res.data.success) ? this.openSnackBar("Chenillard allumé","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
     }
     else{
-      KnxService.stopChase().then((res) =>{
+      KnxService.stopChase(id).then((res) =>{
         (res.data.success) ? this.openSnackBar("Chenillard éteint","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
       this.active =false;
@@ -91,7 +91,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   reverse(id) : void{
-    KnxService.reverse().then((res) =>{
+    KnxService.reverse(id).then((res) =>{
       (res.data.success) ? this.openSnackBar("Chenillard inversé","Ok") : this.openSnackBar("Error" + res.data,"Ok");
     });
   }
