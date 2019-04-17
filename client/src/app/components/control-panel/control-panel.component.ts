@@ -60,7 +60,10 @@ export class ControlPanelComponent implements OnInit {
 
   stateLight(numero,event,indice,id): void{
     if(event.checked){
-      KnxService.startLight(numero).then((res) =>{
+      KnxService.startLight({
+        'id' : numero,
+        'idKnx' : id
+      }).then((res) =>{
         (res.data.success) ? this.openSnackBar("Lampe numéro " + numero + " allumée","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });
       let nameLight = "svg-light-" + numero + "-" + indice;
@@ -68,7 +71,10 @@ export class ControlPanelComponent implements OnInit {
       this.setCSSclass(nameLight,'is-activated',true);
     } 
     else{
-      KnxService.stopLight(numero).then((res) =>{
+      KnxService.stopLight({
+        'id' : numero,
+        'idKnx' : id
+      }).then((res) =>{
         (res.data.success) ? this.openSnackBar("Lampe numéro " + numero + " éteinte","Ok") : this.openSnackBar("Error" + res.data,"Ok");
       });;
       let nameLight = "svg-light-" + numero + "-" + indice;
@@ -101,7 +107,10 @@ export class ControlPanelComponent implements OnInit {
   }
 
   intervalChaseService(id) : void{
-    KnxService.startLight(this.interval).then((res) =>{
+    KnxService.intervalValue({
+      'interval' : this.interval,
+      'idKnx' : id
+    }).then((res) =>{
       (res.data.success) ? this.openSnackBar("Interval de " + this.interval + " µs","Ok") : this.openSnackBar("Error" + res.data,"Ok");
     });
   }

@@ -3,13 +3,20 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="!(isHandset$ | async)">
-    <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list>
-      <mat-divider></mat-divider>
-      <a mat-list-item [routerLink]="'/home'" *ngIf="auth.loggedIn">Acceuil</a>
-      <mat-divider></mat-divider>
-      <a mat-list-item [routerLink]="'/setting'" *ngIf="auth.loggedIn">Paramètres</a>
-      <mat-divider></mat-divider>
+      <a (click)="nameComponent='Accueil'" [routerLink]="'/home'" style="text-decoration: none;"><mat-toolbar><img width="40" height="40" style="margin-right: 25px;" src="../../../assets/logo.png">Kniot</mat-toolbar></a>
+      
+      <mat-nav-list>
+        <mat-divider></mat-divider>
+        <a mat-list-item (click)="nameComponent='Scénarios'" [routerLink]="'/scenario'" *ngIf="auth.loggedIn">
+          <mat-icon style="margin-right: 5px">av_timer</mat-icon>
+          Scénarios
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item (click)="nameComponent='Parèmetres'" [routerLink]="'/setting'" *ngIf="auth.loggedIn">
+          <mat-icon style="margin-right: 5px">settings</mat-icon>
+          Paramètres
+        </a>
+        <mat-divider></mat-divider>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -19,11 +26,11 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        
+      >            
+        <mat-icon>menu</mat-icon>
       </button>
-      <span>Kniot</span>
-      <span flex></span>
+      {{ nameComponent }}
+      <div fxFlex></div>
       <div *ngIf="auth.loggedIn">
         <button mat-button [matMenuTriggerFor]="menu"><mat-icon aria-label="toggle icon">account_circle</mat-icon></button>
         <mat-menu #menu="matMenu">

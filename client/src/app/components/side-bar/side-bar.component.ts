@@ -12,6 +12,11 @@ import { JwtService } from '../../services/jwt.service';
 })
 export class SideBarComponent {
 
+  nameComponent : String;
+
+  ngInit(){
+    this.nameComponent = 'Accueil';
+  }
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)

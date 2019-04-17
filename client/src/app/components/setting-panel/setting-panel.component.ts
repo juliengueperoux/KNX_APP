@@ -72,9 +72,7 @@ export class SettingPanelComponent implements OnInit {
   }
 
   createNewKnxMachine() : void{
-    console.log(JSON.stringify(this.arrayNewLamp))
     this.knx = new KnxMachine(this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
-    console.log(this.knx);
     KnxService.addConfig(this.knx).then((res) =>{
       if(res.data.success){
         this.openSnackBar("Machine KNX  ajoutée à la base de données","Ok");

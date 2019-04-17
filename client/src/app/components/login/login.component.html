@@ -1,20 +1,25 @@
 
-<div fxLayout="row" fxLayoutAlign="center">
-  <mat-card fxFlex.gt-sm="30">
-    <form (ngSubmit)="submit()">
-        <div fxLayout="column" (ngSubmit)="submit()">
-          <mat-form-field fxFlex="30" class="example-full-width">
-            <input matInput placeholder="Login" type="text" name="username" [(ngModel)]="username" />
-          </mat-form-field>
-        
-          <mat-form-field fxFlex="30" class="example-full-width">
-            <input matInput placeholder="Password" type="password" name="password" [(ngModel)]="password" />
-          </mat-form-field>
-    
-          <div class="form-group col-3">
-            <button mat-button  type="submit">Login</button>
+<div fxLayout="column" fxLayoutAlign="center">
+  <div fxLayout="row">
+    <img width="200" height="200" src="../../../assets/logo.png">
+  </div>
+  <div fxLayout="row">
+    <mat-card fxFlex.gt-sm="30">
+      <form (ngSubmit)="submit()">
+          <div fxLayout="column" (ngSubmit)="submit()">
+            <mat-form-field fxFlex="30" class="example-full-width">
+              <input matInput placeholder="Login" type="text" name="username" [(ngModel)]="username" />
+            </mat-form-field>
+          
+            <mat-form-field fxFlex="30" class="example-full-width">
+              <input matInput placeholder="Password" type="password" name="password" [(ngModel)]="password" />
+            </mat-form-field>
+      
+            <div class="form-group col-3">
+              <button mat-button  type="submit">Login</button>
+            </div>
           </div>
-        </div>
-    </form>
-  </mat-card>
+      </form>
+    </mat-card>
+  </div>
 </div>
