@@ -19,9 +19,13 @@ export class ScenarioComponent {
   displayedColumns = [];
   @ViewChild(MatSort) sort: MatSort;
   
+  action = "Eteindre";
+
   arrayScenario : Array<Scenario>;
   arrayKnx:Array<KnxMachine> = [];
   arrayLamp: Array<Lamp> = [];
+
+  scenarioObj: Scenario;
 
   columnNames = [{
     id: "nameScenario",
@@ -53,6 +57,7 @@ export class ScenarioComponent {
     this.displayedColumns = this.columnNames.map(x => x.id);
     this.createTable();
     this.getAllLights();
+    this.scenarioObj = new Scenario("","","",[],false,new Date(),"");
   }
 
   getAllLights() : void{
@@ -62,14 +67,27 @@ export class ScenarioComponent {
   }
 
   setCurrentLampArray(id,idKnx): void{
-    console.log("Ici :" + id);
     document.getElementById(id).removeAttribute("disabled");
     this.arrayKnx.forEach((element, i) => {
+      console.log(element);
       if(element._id==idKnx){
+        //this.scenarioObj.setName(element.name);
+        //this.scenarioObj.setIdKnx(element._id);
         this.arrayLamp = element.lights;
         return true;
       }
     });
+  }
+
+  setArrayLamp(id, arrayLamp): void{
+    console.log("PARA : " + arrayLamp);
+    this.scenarioObj.setLights(arrayLamp);
+    (arrayLamp.length > 0) ? document.getElementById(id).removeAttribute("disabled") : document.getElementById(id).setAttribute("disabled","disabled");
+  }
+
+  changeAction(event){
+    this.scenarioObj.setAction(event);
+    this.action = (event.checked) ? "Allumer" : "Eteindre";
   }
 
   createTable() {

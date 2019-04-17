@@ -9,6 +9,7 @@ export class Scenario {
     date: Date;
     repetition: Object;
 
+    
     constructor(name: string, idKnx: string, nameKnx: string, lights:Array<Lamp>, action: boolean, date: Date, repetition: Object){
         this.name = name;
         this.idKnx  = idKnx;
@@ -19,5 +20,32 @@ export class Scenario {
         this.repetition = repetition;
     }
 
+    setName(name: string): void{
+        this.name = name;
+    }
+
+    setIdKnx(id : string): void{
+        this.idKnx = id;
+    }
+
+    setNameKnx(name : string): void{
+        this.nameKnx = name;
+    }
+
+    setLights(lights: Array<Lamp>): void{
+        this.lights = lights;
+    }
+
+    setAction(action: Boolean): void{
+        this.action = action;
+    }
+
+    setDate(date: Date): void{
+        this.date = date;
+    }
+
+    setRepetion(repetition: Object): void{
+        this.repetition = repetition;
+    }
 
 }

@@ -29,7 +29,6 @@
               </div>
 
             <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
-            <div fxFlex></div>
             <button mat-button mat-raised-button type="submit" color="primary" matStepperNext>Suivant</button>        
           </form>
         </mat-step>
@@ -68,7 +67,6 @@
             
 
             <ng-template matStepLabel>Ajouts des éléments </ng-template>
-            <div fxFlex></div>
             <button mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>          
             <button mat-button mat-raised-button color="" matStepperPrevious>Retour</button>        
           </form>
@@ -76,8 +74,7 @@
     
         <mat-step>
           <ng-template matStepLabel icon>Connection</ng-template>
-           Le paramétrage est fini vous pouvez vous connecter   
-           <div fxFlex></div>   
+           Le paramétrage est fini vous pouvez vous connecter      
           <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Connection</button>      
         </mat-step>
     </mat-horizontal-stepper>
