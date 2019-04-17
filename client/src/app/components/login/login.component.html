@@ -1,9 +1,12 @@
 
 <div fxLayout="column" fxLayoutAlign="center">
-  <div fxLayout="row">
+  <div fxLayout="row" fxLayoutAlign="center">
     <img width="200" height="200" src="../../../assets/logo.png">
   </div>
-  <div fxLayout="row">
+  <div fxLayout="row" fxLayoutAlign="center">
+      <p><font size="6">Kniot</font></p>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
     <mat-card fxFlex.gt-sm="30">
       <form (ngSubmit)="submit()">
           <div fxLayout="column" (ngSubmit)="submit()">
@@ -16,7 +19,8 @@
             </mat-form-field>
       
             <div class="form-group col-3">
-              <button mat-button  type="submit">Login</button>
+              <div fxFlex></div>
+              <button mat-button  type="submit">Se connecter</button>
             </div>
           </div>
       </form>

@@ -38,6 +38,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatAutocompleteModule } from '@angular/material/';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 
 
 
@@ -88,7 +91,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatDialogModule,
     MatStepperModule,
     MatAutocompleteModule, 
-    MatGridListModule
+    MatGridListModule,
+    MatSortModule,
+    MatTableModule
   ],
   providers: [StatesService,JwtService,AuthGuard],
   bootstrap: [AppComponent]

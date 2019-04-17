@@ -21,7 +21,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
+      <button *ngIf="auth.loggedIn"
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
@@ -29,7 +29,9 @@
       >            
         <mat-icon>menu</mat-icon>
       </button>
-      {{ nameComponent }}
+      <div *ngIf="auth.loggedIn">
+        {{ nameComponent }}
+      </div>
       <div fxFlex></div>
       <div *ngIf="auth.loggedIn">
         <button mat-button [matMenuTriggerFor]="menu"><mat-icon aria-label="toggle icon">account_circle</mat-icon></button>
