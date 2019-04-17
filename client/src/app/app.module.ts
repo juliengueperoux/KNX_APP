@@ -20,6 +20,7 @@ import { ControlPanelComponent } from './components/control-panel/control-panel.
 import { SettingPanelComponent } from './components/setting-panel/setting-panel.component';
 import { DialogAddComponent } from './components/dialog-add/dialog-add.component';
 import { ScenarioComponent } from './components/scenario/scenario.component';
+import { DialogUpdateComponent } from './components/dialog-update/dialog-update.component';
 
 /** Material Component **/
 
@@ -55,8 +56,9 @@ import { MatSortModule } from '@angular/material/sort';
     SettingPanelComponent,
     DialogAddComponent,
     ScenarioComponent,
+    DialogUpdateComponent,
   ],
-  entryComponents:[DialogAddComponent],
+  entryComponents:[DialogAddComponent,DialogUpdateComponent],
   imports: [
     JwtModule.forRoot({
       config: {

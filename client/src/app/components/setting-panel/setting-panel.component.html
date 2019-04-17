@@ -1,6 +1,7 @@
 <div fxLayout="column">
   <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
     
+
     <mat-horizontal-stepper fxFlex="80" [linear]="isLinear" #stepper> 
         <mat-step [stepControl]="knxGroup">
             <form [formGroup]="knxGroup">  
@@ -55,10 +56,12 @@
 
               <mat-grid-list cols="2" rowHeight="50px">
                 <div *ngFor="let lamp of arrayNewLamp">
-                  <mat-grid-tile><p> Id : {{ lamp.id }} </p></mat-grid-tile>
-                  <mat-grid-tile><p> Nom : {{ lamp.name }} </p></mat-grid-tile>
+                  <div fxLayout="row">
+                    <mat-grid-tile><p> Id : {{ lamp.id }} </p></mat-grid-tile>
+                    <mat-grid-tile><p> Nom : {{ lamp.name }} </p></mat-grid-tile>
+                  </div>
                 </div>
-                </mat-grid-list>
+              </mat-grid-list>
             
 
             <ng-template matStepLabel>Ajouts des éléments </ng-template>
@@ -106,30 +109,14 @@
             </mat-expansion-panel-header>
             
             <div fxLayout="row">
-                <div fxFlex="80">
-                  <p>Adresse IP : {{ knx.ipAddr}}</p>
+                <div fxFlex="90">
+                  <p>{{ knx.name }} |  {{ knx.ipAddr}} : {{ knx.port }}</p>
                 </div>
-                <div fxFlex="20">
-                    <div fxLayout="row">
-                      <div fxFlex="50">
-                        <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
-                      </div>  
-                    </div>
+                <div fxFlex="10">
+                  <button mat-button (click)="updateSettingKnxMachine(i)" ><mat-icon aria-label="toggle icon">edit</mat-icon></button>
                 </div>
             </div>
 
-            <div fxLayout="row">
-                <div fxFlex="80">
-                  <p> Port : {{ knx.port}}</p>
-                </div>
-                <div fxFlex="20">
-                    <div fxLayout="row">
-                      <div fxFlex="50">
-                        <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
-                      </div>  
-                    </div>
-                </div>
-            </div>
                   
             </mat-expansion-panel>
           </mat-accordion>
@@ -151,7 +138,6 @@
                           <p>Ajouter des lumières </p>
                         </div>
                         <div fxFlex="20">
-                          <button mat-button (click)="openDialog()"><mat-icon aria-label="toggle icon">add</mat-icon></button>                  
                         </div>
                     </div>
                     <div fxLayout="row" *ngFor="let numero of knx.lights">

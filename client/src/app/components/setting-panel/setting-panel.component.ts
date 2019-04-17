@@ -1,16 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import KnxService from '../../services/knx.service';
 import { KnxMachine } from '../../models/knx-machine';
 import { Lamp } from '../../models/lamp';
+import { DialogUpdateComponent } from '../dialog-update/dialog-update.component';
 
-
-export interface DialogData {
-  animal: 'panda' | 'unicorn' | 'lion';
-}
 
 @Component({
   selector: 'app-setting-panel',
@@ -23,7 +20,10 @@ export class SettingPanelComponent implements OnInit {
   constructor(private snackBar: MatSnackBar, public dialog: MatDialog,private _formBuilder: FormBuilder) { }
   
   isLinear:boolean = false;
-  
+  animal: string;
+  name: string;
+
+
   knxGroup = new FormGroup({
     inputNameKnxControl: new FormControl([
       Validators.required,
@@ -106,15 +106,44 @@ export class SettingPanelComponent implements OnInit {
       console.log(this.arrayKnx);
     });
   }
-/*
-  openDialog() {
-    this.dialog.open(DialogAdd, {
-      data: {
-        animal: 'panda'
-      }
+
+
+  /**
+   * UPDATA : Knx Setting 
+   * Construction de l'objet  à envoyer à la dialog générique pour la construire 
+   * name : le noms
+   * imputs : array des champs à modifier
+   * function : service pour update
+   * @param indice 
+   */
+  updateSettingKnxMachine(indice){
+    let data = {
+      name: this.arrayKnx[indice].name, 
+      inputs: {
+        'name' : this.arrayKnx[indice].name,
+        'ipAddr' : this.arrayKnx[indice].ipAddr,
+        'port' : this.arrayKnx[indice].port
+      },
+      //function : 
+    }
+    this.openDialogUpdate(data);
+  }
+
+  /**
+   * Call la dialog générique avec les paramètres à afficher 
+   * @param dataToUpdate 
+   */
+  openDialogUpdate(dataToUpdate) {
+    const dialogRef = this.dialog.open(DialogUpdateComponent, {
+      width: '450px',
+      data: dataToUpdate
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
     });
   }
-*/
+
   /**
    * KNX PART 
    */
@@ -131,12 +160,3 @@ export class SettingPanelComponent implements OnInit {
   }
 }
 
-/*
-@Component({
-  selector: '../dialog-add/app-dialog-add',
-  templateUrl: '../dialog-add/dialog-add.component.html',
-})
-export class DialogAdd {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-}*/
