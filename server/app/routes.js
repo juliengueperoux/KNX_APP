@@ -1,5 +1,7 @@
 const express = require('express');
 const knxController = require('./controllers/knxController');
+const scenarioController = require('./controllers/scenarioController');
+
 module.exports = (app,auth) => {
 
     app.get('/api/kniot/connect/:idKnx',auth.isAuth, knxController.connect);
@@ -24,6 +26,12 @@ module.exports = (app,auth) => {
     app.post('/api/kniot/addKnxConfig', auth.isAuth, knxController.addConfig)
     app.get('/api/kniot/deleteKnxConfig/:idKnx', auth.isAuth, knxController.deleteConfig)
     app.get('/api/kniot/findKNXConfigs',auth.isAuth, knxController.findConfigs)
+
+    // SCENARIO 
+    app.post('/api/kniot/addScenario', auth.isAuth, scenarioController.addScenario)
+    app.get('/api/kniot/deleteScenario/:idKnx', auth.isAuth, scenarioController.deleteScenario)
+    app.get('/api/kniot/findAllScenario',auth.isAuth, scenarioController.findAll)
+
 
     //AUTH
     app.post('/api/login', auth.login);

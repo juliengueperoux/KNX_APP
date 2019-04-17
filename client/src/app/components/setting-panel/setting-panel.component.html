@@ -21,12 +21,15 @@
                   </div>
                   <div fxFlex="25">
                     <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Port " type="number" [(ngModel)]="inputPortKnx" formControlName="inputPortKnxControl" required>
+                      <input matInput placeholder="Port " #inputPort type="number" [(ngModel)]="inputPortKnx" formControlName="inputPortKnxControl" required>
+                      <mat-hint align="end">{{inputPort.value?.length || 0}}/5</mat-hint>
+
                     </mat-form-field>
                   </div>
               </div>
 
             <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
+            <div fxFlex></div>
             <button mat-button mat-raised-button type="submit" color="primary" matStepperNext>Suivant</button>        
           </form>
         </mat-step>
@@ -65,6 +68,7 @@
             
 
             <ng-template matStepLabel>Ajouts des éléments </ng-template>
+            <div fxFlex></div>
             <button mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>          
             <button mat-button mat-raised-button color="" matStepperPrevious>Retour</button>        
           </form>
@@ -72,7 +76,8 @@
     
         <mat-step>
           <ng-template matStepLabel icon>Connection</ng-template>
-           Le paramétrage est fini vous pouvez vous connecter      
+           Le paramétrage est fini vous pouvez vous connecter   
+           <div fxFlex></div>   
           <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Connection</button>      
         </mat-step>
     </mat-horizontal-stepper>
@@ -83,7 +88,7 @@
 <br>
     <mat-card fxFlex="80"  *ngFor="let knx of arrayKnx; index as i" style="margin-bottom: 20px;margin-left:10%;margin-right:10%">
       <mat-card-title>
-        Machine KNX : {{ knx.name }}  <button mat-button style="float:right" (click)="deleteKnxMachine(knx._id)"><mat-icon aria-label="toggle icon">delete</mat-icon></button>
+        Machine KNX : {{ knx.name }}  <button mat-button style="float:right" (click)="deleteKnxMachine(i)"><mat-icon aria-label="toggle icon">delete</mat-icon></button>
 
       </mat-card-title>
       <mat-card-content>

@@ -1,17 +1,20 @@
-
-
 <div fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="center">
 
     <mat-horizontal-stepper fxFlex="80" [linear]="isLinear" #stepper> 
         <mat-step > <!--[stepControl]="knxGroup"-->
             <form> <!-- [formGroup]="knxGroup" -->  
-              <!-- 
-                Choix machine knx
-              -->
-              
+              <mat-form-field>
+                  <mat-label>Machine Knx</mat-label>
+                  <mat-select (selectionChange)="setCurrentLampArray('nextLamp',$event.value)">
+                    <mat-option *ngFor="let knx of arrayKnx" [value]="knx._id">
+                      {{knx.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
             <ng-template matStepLabel>Choix de la machine Knx</ng-template>  
-            <button mat-button mat-raised-button type="submit" color="primary" matStepperNext>Suivant</button>        
+            <div fxFlex></div>
+            <button mat-button mat-raised-button id="nextLamp" type="submit" color="primary" matStepperNext disabled>Suivant</button>        
           </form>
         </mat-step>
     
@@ -20,10 +23,20 @@
               <!-- 
                 Choix de la lamp
               -->
+              <mat-form-field>
+                  <mat-label>Machine Knx</mat-label>
+                  <mat-select (selectionChange)="setCurrentLampArray('nextLamp',$event.value)">
+                      <mat-option *ngFor="let lamp of arrayLamp" [value]="lamp.id">
+                        {{lamp.name}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+             
               <!-- 
                 Choix de l action (eteindre allumer)
               -->
-            <ng-template matStepLabel>Lampe</ng-template>  
+            <ng-template matStepLabel>Lampe</ng-template> 
+            <div fxFlex></div> 
             <button mat-button mat-raised-button type="submit" color="primary" matStepperNext>Suivant</button>        
           </form>
         </mat-step>

@@ -1,6 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
+import { Scenario } from "../../models/scenario";
+import ScenarioService  from "../../services/scenario.service";
+import KnxService  from "../../services/knx.service";
+import { KnxMachine } from '../../models/knx-machine';
+import { Lamp } from '../../models/lamp';
 
 @Component({
   selector: 'app-scenario',
@@ -10,55 +15,96 @@ import { DataSource } from '@angular/cdk/table';
 
 
 export class ScenarioComponent {
-      dataSource;
-      displayedColumns = [];
-      @ViewChild(MatSort) sort: MatSort;
-      
-      
-      columnNames = [{
-        id: "nameKnx",
-        value: "Knx machine"
+  dataSource;
+  displayedColumns = [];
+  @ViewChild(MatSort) sort: MatSort;
+  
+  arrayScenario : Array<Scenario>;
+  arrayKnx:Array<KnxMachine> = [];
+  arrayLamp: Array<Lamp> = [];
 
-      }, {
-        id: "nameLamp",
-        value: "Lamp"
-      },
-      {
-        id: "action",
-        value: "Action"
-      },
-      {
-        id: "hours",
-        value: "Heures"
-      },
-      {
-        id: "repition",
-        value: "Activation"
-      }];
+  columnNames = [{
+    id: "nameScenario",
+    value: "Nom Scénario"
 
-      ngOnInit() {
-        this.displayedColumns = this.columnNames.map(x => x.id);
-        this.createTable();
+  },
+  {
+    id: "nameKnx",
+    value: "Machine"
+  }, 
+  {
+    id: "nameLamp",
+    value: "Lamp"
+  },
+  {
+    id: "action",
+    value: "Action"
+  },
+  {
+    id: "hours",
+    value: "Heures"
+  },
+  {
+    id: "repetition",
+    value: "Activation"
+  }];
+
+  ngOnInit() {
+    this.displayedColumns = this.columnNames.map(x => x.id);
+    this.createTable();
+    this.getAllLights();
+  }
+
+  getAllLights() : void{
+    KnxService.findConfigs().then((res) =>{
+      this.arrayKnx = res.data;
+    });
+  }
+
+  setCurrentLampArray(id,idKnx): void{
+    console.log("Ici :" + id);
+    document.getElementById(id).removeAttribute("disabled");
+    this.arrayKnx.forEach((element, i) => {
+      if(element._id==idKnx){
+        this.arrayLamp = element.lights;
+        return true;
       }
+    });
+  }
 
-      createTable() {
-        let tableArr: Element[] = [{ nameKnx: "Test", nameLamp: 'Hydrogen', action: "Allumer", hours: '10h', repition: '12 mars 2018' },
-        { nameKnx: "Test", nameLamp: 'Helium', action: "Allumer", hours: '14h', repition: 'Tous les jours' },
-        { nameKnx: "Test", nameLamp: 'Lithium', action: "Eteindre", hours: '16h', repition: '1 fois par semaines'},
-        { nameKnx: "Test", nameLamp: 'Beryllium', action: "Allumer", hours: '6h', repition: '14 avril 2019' },
-        { nameKnx: "Test", nameLamp: 'Boron', action: "Eteindre", hours: '5h', repition: 'Tous les jours' },
-        { nameKnx: "Test", nameLamp: 'Carbon', action: "Allumer", hours: '6h30', repition: 'Tous les jours' }
-        ];
-        this.dataSource = new MatTableDataSource(tableArr);
-        this.dataSource.sort = this.sort;
+  createTable() {
+    ScenarioService.getAllScenario().then((res) =>{
+      console.log(res.data);
+      if(res.data){
+        var arrayElement = Array<Element>();
+        res.data.forEach(element => {
+          let nameLamp = "";
+          element.lights.forEach(e => {
+            nameLamp+= e.name + ", "
+          });
+          arrayElement.push({
+            nameScenario : element.name,
+            nameKnx : element.nameKnx,
+            nameLamp : nameLamp,
+            action: (element.action) ? 'Allumer' : 'Eteindre',
+            hours: element.date,
+            repetition: element.repetition
+          });
+          this.dataSource = new MatTableDataSource(arrayElement);
+          this.dataSource.sort = this.sort;
+        });
       }
+    });
+    
+  }
 
 }
 
 export interface Element {
+  nameScenario: string,
   nameKnx: string,
   nameLamp: string,
   action: string,
   hours: string,
-  repition: string
+  repetition: string
 }

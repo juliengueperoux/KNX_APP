@@ -3,6 +3,7 @@ import 'hammerjs';
 import { Router } from '@angular/router';
 import { JwtService } from '../../services/jwt.service';
 import { StatesService } from "../../services/states.service";
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({

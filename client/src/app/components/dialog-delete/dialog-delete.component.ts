@@ -1,22 +1,23 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import UtilsService from '../../services/utils.service';
 
 export interface DialogData {
-  name : '',
-  inputs : {}
+  animal: 'panda' | 'unicorn' | 'lion';
 }
 
 @Component({
-  selector: 'app-dialog-update',
-  templateUrl: './dialog-update.component.html',
-  styleUrls: ['./dialog-update.component.css']
+  selector: 'app-dialog-delete',
+  templateUrl: './dialog-delete.component.html',
+  styleUrls: ['./dialog-delete.component.css']
 })
-export class DialogUpdateComponent implements OnInit {
+export class DialogDeleteComponent implements OnInit {
 
   data : DialogData;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogUpdateComponent>,
+    public dialogRef: MatDialogRef<DialogDeleteComponent>,
+    private _utils: UtilsService,
     @Inject(MAT_DIALOG_DATA) public d: DialogData) {
       this.data =d;
     }
