@@ -26,28 +26,10 @@ export class SettingPanelComponent implements OnInit {
   animal: string;
   name: string;
 
+  knxGroup: FormGroup;
+  lampsGroup: FormGroup;
+  isOptional = false;
 
-  knxGroup = new FormGroup({
-    inputNameKnxControl: new FormControl([
-      Validators.required,
-      Validators.minLength(4),
-    ]),
-    inputIpKnxControl: new FormControl([
-      Validators.required,
-      Validators.minLength(4),
-      Validators.pattern(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/)
-    ]),
-    inputPortKnxControl: new FormControl([
-      Validators.required,
-      Validators.maxLength(5),
-    ]),
-  });
-  
-  lampsGroup = new FormGroup({
-    inputNameLampControl: new FormControl(''),
-    inputIdLampControl: new FormControl(''),
-  });
-  
   inputNameKnx: string;
   inputIpKnx: string;
   inputPortKnx: number;
@@ -60,6 +42,51 @@ export class SettingPanelComponent implements OnInit {
   arrayKnx:Array<KnxMachine> = [];
 
   ngOnInit() {
+    this.knxGroup = this._formBuilder.group({
+      inputNameKnxControl: [
+        '',
+        Validators.compose([
+          Validators.required, 
+          Validators.minLength(2),
+          Validators.maxLength(254)
+        ])
+      ],
+      inputIpKnxControl: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(7),
+          Validators.maxLength(15),
+          Validators.pattern(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/)
+        ])
+      ],
+      inputPortKnxControl: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(1),
+          Validators.pattern("^[0-9]*$"),
+          Validators.maxLength(5),
+        ]) 
+      ],
+
+    });
+    this.lampsGroup = this._formBuilder.group({
+      inputIdLampControl: [ '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(10),
+        ]) 
+      ],
+      inputNameLampControl: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.maxLength(254),
+        ])
+      ],
+    });
     this.getAllLights();
   }
   

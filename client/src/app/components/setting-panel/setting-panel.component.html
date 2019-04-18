@@ -1,8 +1,7 @@
 <div fxLayout="column">
   <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
-    
 
-    <mat-horizontal-stepper fxFlex="80" [linear]="isLinear" #stepper> 
+    <mat-horizontal-stepper fxFlex="80" linear #stepper> 
         <mat-step [stepControl]="knxGroup">
             <form [formGroup]="knxGroup">  
               <div fxLayout="row">
@@ -21,7 +20,7 @@
                   </div>
                   <div fxFlex="25">
                     <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Port " #inputPort type="number" [(ngModel)]="inputPortKnx" formControlName="inputPortKnxControl" required>
+                      <input matInput placeholder="Port " #inputPort maxlength="5" [(ngModel)]="inputPortKnx" formControlName="inputPortKnxControl" required>
                       <mat-hint align="end">{{inputPort.value?.length || 0}}/5</mat-hint>
 
                     </mat-form-field>
@@ -29,12 +28,15 @@
               </div>
 
             <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
-            <button mat-button mat-raised-button type="submit" color="primary" matStepperNext>Suivant</button>        
+            <p style="float: right; display: inline-block; white-space: nowrap;clear:right;"><button mat-button  mat-raised-button matStepperNext>Suivant</button></p>
+          
           </form>
         </mat-step>
     
-        <mat-step [stepControl]="lampsGroup">
+        <mat-step >  
           <form [formGroup]="lampsGroup">
+            
+            <ng-template matStepLabel #step>Ajouts des éléments </ng-template>
           
             <div fxLayout="row">
                   <div fxFlex="25">
@@ -47,11 +49,11 @@
                   </div>
                   <div fxFlex="25">
                       <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Nom " [(ngModel)]="inputNameLamp"  formControlName="inputIdLampControl"  required>
+                          <input matInput placeholder="Nom" [(ngModel)]="inputNameLamp"  formControlName="inputIdLampControl"  required>
                       </mat-form-field>
                   </div>
                   <div fxFlex="25">
-                      <button mat-button color="primary" (click)="addNewLamp()" >Ajouter</button>                  
+                      <button mat-button mat-raised-button color="primary" type="submit" (click)="addNewLamp()" >Ajouter</button>                  
                   </div>
               </div>
 
@@ -65,17 +67,19 @@
                 </div>
               </mat-grid-list>
             
-
-            <ng-template matStepLabel>Ajouts des éléments </ng-template>
-            <button mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>          
-            <button mat-button mat-raised-button color="" matStepperPrevious>Retour</button>        
+              <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+                  <button mat-button mat-raised-button  matStepperPrevious>Retour</button>        
+                  <button style="margin-left:20px" mat-button mat-raised-button  matStepperNext>Suivant</button>          
+              </p>
           </form>
         </mat-step>
     
-        <mat-step>
-          <ng-template matStepLabel icon>Connection</ng-template>
-           Le paramétrage est fini vous pouvez vous connecter      
-          <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Connection</button>      
+        <mat-step >
+          <ng-template matStepLabel #step icon>Connection</ng-template>
+           Le paramétrage est fini vous pouvez vous connecter  
+          <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+              <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Connection</button>      
+          </p>    
         </mat-step>
     </mat-horizontal-stepper>
   </div>
