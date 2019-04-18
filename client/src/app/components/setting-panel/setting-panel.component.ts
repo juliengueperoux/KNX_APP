@@ -26,28 +26,10 @@ export class SettingPanelComponent implements OnInit {
   animal: string;
   name: string;
 
+  knxGroup: FormGroup;
+  lampsGroup: FormGroup;
+  isOptional = false;
 
-  knxGroup = new FormGroup({
-    inputNameKnxControl: new FormControl([
-      Validators.required,
-      Validators.minLength(4),
-    ]),
-    inputIpKnxControl: new FormControl([
-      Validators.required,
-      Validators.minLength(4),
-      Validators.pattern(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/)
-    ]),
-    inputPortKnxControl: new FormControl([
-      Validators.required,
-      Validators.maxLength(5),
-    ]),
-  });
-  
-  lampsGroup = new FormGroup({
-    inputNameLampControl: new FormControl(''),
-    inputIdLampControl: new FormControl(''),
-  });
-  
   inputNameKnx: string;
   inputIpKnx: string;
   inputPortKnx: number;
@@ -60,6 +42,51 @@ export class SettingPanelComponent implements OnInit {
   arrayKnx:Array<KnxMachine> = [];
 
   ngOnInit() {
+    this.knxGroup = this._formBuilder.group({
+      inputNameKnxControl: [
+        '',
+        Validators.compose([
+          Validators.required, 
+          Validators.minLength(2),
+          Validators.maxLength(254)
+        ])
+      ],
+      inputIpKnxControl: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(7),
+          Validators.maxLength(15),
+          Validators.pattern(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/)
+        ])
+      ],
+      inputPortKnxControl: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(1),
+          Validators.pattern("^[0-9]*$"),
+          Validators.maxLength(5),
+        ]) 
+      ],
+
+    });
+    this.lampsGroup = this._formBuilder.group({
+      inputIdLampControl: [ '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(10),
+        ]) 
+      ],
+      inputNameLampControl: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.maxLength(254),
+        ])
+      ],
+    });
     this.getAllLights();
   }
   
@@ -72,7 +99,7 @@ export class SettingPanelComponent implements OnInit {
     this.knx = new KnxMachine(this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
     KnxService.addConfig(this.knx).then((res) =>{
       if(res.data.success){
-        this._utils.openSnackBar("Machine KNX  ajoutée à la base de données","Ok");
+        this._utils.openSnackBar("Machine KNX  ajoutée à la base de données","Ok","success-snackbar");
         this.arrayKnx.push(this.knx);
         this.arrayNewLamp = [];
         this.knxGroup.reset();
@@ -90,7 +117,7 @@ export class SettingPanelComponent implements OnInit {
       fun : function (id){
         KnxService.deleteConfig(id).then((res) =>{
           if(res.data.success){
-            this._utils.openSnackBar("La machine KNX a été supprimée","Ok");
+            this._utils.openSnackBar("La machine KNX a été supprimée","Ok","success-snackbar");
             this.arrayKnx.forEach((element, i) => {
               if(element._id==id){
                 this.arrayKnx.splice(i, 1); 
@@ -98,7 +125,7 @@ export class SettingPanelComponent implements OnInit {
               }
             });
           }else{
-            this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok");
+            this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok","error-snackbar");
           }
         });
     }
@@ -164,11 +191,11 @@ export class SettingPanelComponent implements OnInit {
   connect(event,id):void{
     if(event.checked){
       KnxService.connect(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Connecté à KNX","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Connecté à KNX","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
     }else{
       KnxService.disconnect(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Deconnecté à KNX","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Deconnecté à KNX","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
     }
   }
