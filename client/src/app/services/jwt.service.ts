@@ -19,7 +19,7 @@ export class JwtService {
     })
   }
 
-  login(username:string, password:string) {
+  async login(username:string, password:string) {
       return new Promise((resolve, reject) => {
         api.post('/login',  {username, password})
           .then(res => {
@@ -45,7 +45,10 @@ export class JwtService {
   }
 
   autoConnectSocket(){
-    if(!!localStorage.getItem('access_token')) this.states.login()
+    if(!!localStorage.getItem('access_token')){
+      axios.defaults.headers.common['Authorization'] = localStorage.getItem("access_token")
+      this.states.login()
+    } 
   }
 
   public get loggedIn(): boolean{
