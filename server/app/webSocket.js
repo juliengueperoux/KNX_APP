@@ -26,8 +26,7 @@ io.on("connection", socket => {
         })
     })
 
-    setInterval(()=>{
-        console.log("un beau message !")
+     setInterval(()=>{
         socket.emit('hello',"un beau message !")
     },10000)
 
