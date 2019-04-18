@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Scnearios = new mongoose.Schema({
+const Scenario = new mongoose.Schema({
 	name: {
 		type : String,
 		resuired : true
@@ -34,4 +34,4 @@ const Scnearios = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Scnearios', Scnearios);
+module.exports = mongoose.model('Scenario', Scenario);

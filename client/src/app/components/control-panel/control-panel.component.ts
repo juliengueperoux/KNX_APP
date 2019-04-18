@@ -1,23 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import KnxService from '../../services/knx.service';
 import {MatSnackBar} from '@angular/material';
 import UtilsService from '../../services/utils.service';
+import { StatesService } from "../../services/states.service";
+import { takeUntil } from 'rxjs/operators';
+import {componentDestroyed} from "@w11k/ngx-componentdestroyed";
 
 @Component({
   selector: 'app-control-panel',
   templateUrl: './control-panel.component.html',
   styleUrls: ['./control-panel.component.css']
 })
-export class ControlPanelComponent implements OnInit {
+export class ControlPanelComponent implements OnInit, OnDestroy {
 
   arrayKnx = [];
   interval = 1000;
   active = true; 
-  constructor(private snackBar: MatSnackBar, private _utils: UtilsService) { }
+  constructor(private snackBar: MatSnackBar, private _utils: UtilsService,private states: StatesService) { }
 
   ngOnInit() {
     // FINIR DE TRAITER LA PROMISE
     this.getAllLights();
+    this.initReceptionWebSocket()
+  }
+  ngOnDestroy(){
+
+  }
+
+
+
+  initReceptionWebSocket(){
+    if (this.states.socketCreated()){
+      console.log("socket created")
+      this.states
+        .getMessages().pipe(takeUntil(componentDestroyed(this))).subscribe((message: String)=>{
+          console.log("message in controlPanel :"+message)
+      });
+    }
   }
 
   getAllLights() : void{

@@ -1,5 +1,4 @@
 const knx = require('knx');
-const variable = require('./variables');
 let ipAddress = '192.168.0.5'
 let ipPort = 3671
 
@@ -15,6 +14,7 @@ const connection = new knx.Connection({
     // wait for connection establishment before sending anything!
     connected: function () {
       console.log('Connecté');
+      this.connect = true
     },
 
     // get notified for all KNX events:
