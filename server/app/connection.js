@@ -17,10 +17,41 @@ const connection = new knx.Connection({
       this.connect = true
     },
 
-    // get notified for all KNX events:
+    /**
+      ***** LAMPS *****
+      data = {
+          'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
+          'action' : {
+              'value' : 1 || 2, ( 1 ->  eteindre 2 -> allumer ) 
+              'idLamp' : '0/3/0'
+          }
+        }
+      ***** INTERVAL *****
+      data = {
+          'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
+          'action' : {
+              'value' : 3 || 4, ( 3 -> down 4 -> up ) 
+          }
+        }
+      ***** CHASE *****
+      data = {
+          'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
+          'action' : {
+              'value' : 5 || 6 || 7 , ( 5 ->  start 6 -> stop 7 -> reverse) 
+          }
+        }
+     */
+    
     event: function (evt, src, dest, value) {
       // cette commande permet d'envoyer un message à toutes les sockets
-      io.sockets.emit(dest)
+     /* let  data = {
+        'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
+        'action' : {
+            'value' : 5, 
+        }
+      }*/
+
+      io.sockets.emit("data");
 
       if (dest == "0/3/4") {
         console.log("Appui dernier à droite : " + this.interval);

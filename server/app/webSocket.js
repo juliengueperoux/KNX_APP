@@ -8,6 +8,8 @@ io.on("connection", socket => {
     // Log whenever a user connects
     console.log("user connected");
 
+    let int = 1;
+
     let auth_timeout = setTimeout(function () {
         console.log("timeout lancé")
         socket.disconnect('unauthorized');
@@ -27,9 +29,16 @@ io.on("connection", socket => {
     })
 
     setInterval(()=>{
-        console.log("un beau message !")
-        socket.emit('hello',"un beau message !")
-    },10000)
+        this.int = (this.int == 1) ?  2 : 1;
+        data = {
+            'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
+            'action' : {
+                'value' : this.int,
+                'idLamp' : '0/3/0'
+            }
+        }
+        socket.emit('hello',JSON.stringify(data))
+    },3000)
 
     // Log whenever a client disconnects from our websocket server
     socket.on("disconnect", function () {
