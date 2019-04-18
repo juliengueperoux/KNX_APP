@@ -99,7 +99,7 @@ export class SettingPanelComponent implements OnInit {
     this.knx = new KnxMachine(this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
     KnxService.addConfig(this.knx).then((res) =>{
       if(res.data.success){
-        this._utils.openSnackBar("Machine KNX  ajoutée à la base de données","Ok");
+        this._utils.openSnackBar("Machine KNX  ajoutée à la base de données","Ok","success-snackbar");
         this.arrayKnx.push(this.knx);
         this.arrayNewLamp = [];
         this.knxGroup.reset();
@@ -117,7 +117,7 @@ export class SettingPanelComponent implements OnInit {
       fun : function (id){
         KnxService.deleteConfig(id).then((res) =>{
           if(res.data.success){
-            this._utils.openSnackBar("La machine KNX a été supprimée","Ok");
+            this._utils.openSnackBar("La machine KNX a été supprimée","Ok","success-snackbar");
             this.arrayKnx.forEach((element, i) => {
               if(element._id==id){
                 this.arrayKnx.splice(i, 1); 
@@ -125,7 +125,7 @@ export class SettingPanelComponent implements OnInit {
               }
             });
           }else{
-            this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok");
+            this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok","error-snackbar");
           }
         });
     }
@@ -191,11 +191,11 @@ export class SettingPanelComponent implements OnInit {
   connect(event,id):void{
     if(event.checked){
       KnxService.connect(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Connecté à KNX","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Connecté à KNX","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
     }else{
       KnxService.disconnect(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Deconnecté à KNX","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Deconnecté à KNX","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
     }
   }

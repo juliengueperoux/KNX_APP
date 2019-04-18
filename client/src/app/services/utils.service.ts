@@ -8,13 +8,15 @@ import { MatSnackBar } from '@angular/material';
 export default class UtilsService{
 
   public snackBar : MatSnackBar;
+
   constructor( private s: MatSnackBar) { 
     this.snackBar = s;
   }
 
-  public openSnackBar(message: string, action: string) {
+  openSnackBar(message: string, action: string, className: string) {
     this.snackBar.open(message, action, {
       duration: 3000,
+      panelClass: [className]
     });
   }
 

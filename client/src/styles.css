@@ -8,3 +8,19 @@ html,
 body{
     height: 100%;
 }
+
+.default-snackbar{
+    background: rgb(41, 43, 41); 
+}
+
+.success-snackbar{
+    background: rgb(1, 161, 28); 
+}
+
+.warning-snackbar{
+    background: yellow;
+}
+
+.error-snackbar{
+    background: red;
+}

@@ -34,7 +34,7 @@ export class ControlPanelComponent implements OnInit {
   allLights(event,indice,id): void {
     if(event.checked){
       KnxService.startAllLights(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
       this.arrayKnx[indice].lights.forEach(element => {
         let nameLight = "svg-light-" + element.id + "-" + indice;
@@ -44,7 +44,7 @@ export class ControlPanelComponent implements OnInit {
     }
     else{
       KnxService.stopAllLights(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Lampes éteintes","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Lampes éteintes","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
       this.arrayKnx[indice].lights.forEach(element => {
         let nameLight = "svg-light-" + element.id + "-" + indice;
@@ -59,7 +59,7 @@ export class ControlPanelComponent implements OnInit {
         'id' : numero,
         'idKnx' : id
       }).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " allumée","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " allumée","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
       let nameLight = "svg-light-" + numero + "-" + indice;
       console.log(nameLight);
@@ -70,7 +70,7 @@ export class ControlPanelComponent implements OnInit {
         'id' : numero,
         'idKnx' : id
       }).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " éteinte","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " éteinte","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });;
       let nameLight = "svg-light-" + numero + "-" + indice;
       this.setCSSclass(nameLight,'is-activated',false);
@@ -80,12 +80,12 @@ export class ControlPanelComponent implements OnInit {
   chase(event,id) : void{
     if(event.checked){
       KnxService.startChase(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Chenillard allumé","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Chenillard allumé","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
     }
     else{
       KnxService.stopChase(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Chenillard éteint","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+        (res.data.success) ? this._utils.openSnackBar("Chenillard éteint","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
       this.active =false;
     } 
@@ -93,7 +93,7 @@ export class ControlPanelComponent implements OnInit {
 
   reverse(id) : void{
     KnxService.reverse(id).then((res) =>{
-      (res.data.success) ? this._utils.openSnackBar("Chenillard inversé","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+      (res.data.success) ? this._utils.openSnackBar("Chenillard inversé","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
     });
   }
 
@@ -106,7 +106,7 @@ export class ControlPanelComponent implements OnInit {
       'interval' : this.interval,
       'idKnx' : id
     }).then((res) =>{
-      (res.data.success) ? this._utils.openSnackBar("Interval de " + this.interval + " µs","Ok") : this._utils.openSnackBar("Error" + res.data,"Ok");
+      (res.data.success) ? this._utils.openSnackBar("Interval de " + this.interval + " µs","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
     });
   }
   
