@@ -1,6 +1,6 @@
 <div fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="center">
-    <mat-horizontal-stepper fxFlex="80" linear="isLinear" #stepper>
+    <mat-horizontal-stepper fxFlex="90" linear="isLinear" #stepper>
       <mat-step [stepControl]="knxGroup">
         <form [formGroup]="knxGroup">
           <div fxLayout="column">
@@ -79,15 +79,15 @@
             </div>
           </div>
           <ng-template matStepLabel>Horaire</ng-template>
-          <button mat-button mat-raised-button  color="primary" matStepperNext (click)="recapObject()">Suivant</button>
+          <button mat-button mat-raised-button color="primary" matStepperNext (click)="recapObject()">Suivant</button>
         </form>
       </mat-step>
 
       <mat-step>
         <ng-template matStepLabel icon>Validation</ng-template>
         <mat-list>
-         <p> Recapitulatif et validation du scénario</p>
-        <p>Nom du scnénario : {{scenarioObj.name}}</p>
+          <p> Recapitulatif et validation du scénario</p>
+          <p>Nom du scnénario : {{scenarioObj.name+" | "}}action:{{" "+action}}</p>
           <mat-list-item>
             <h3 mat-subheader> Machine KNX: </h3>
           </mat-list-item>
@@ -106,28 +106,51 @@
             <h3 mat-subheader>Heure et répétition:</h3>
           </mat-list-item>
           <mat-list-item>
-            <h4 mat-line>{{scenarioObj.time.hour+":"+scenarioObj.time.minutes}} --- Répétition tous les :
-                {{scenarioObj.repetition}}</h4>
+            <h4 mat-line>{{scenarioObj.time.hours+":"+scenarioObj.time.minutes}} --- Répétition tous les :
+              {{scenarioObj.repetition}}</h4>
           </mat-list-item>
           <mat-list-item>
-            <button mat-button mat-raised-button (click)="createNewScenario();resetFormGroups();stepper.reset()"
+            <button mat-button mat-raised-button (click)="createNewScenario();stepper.reset()"
               color="primary">Valider</button>
           </mat-list-item>
         </mat-list>
       </mat-step>
     </mat-horizontal-stepper>
   </div>
-
+  <div fxLayout="column">
   <div fxLayout="row" style="margin-top:20px" fxLayoutAlign="center">
-    <mat-table #table [dataSource]="dataSource" matSort fxFlex="80">
+    <mat-table #table [dataSource]="dataSource" matSort fxFlex="90">
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+
       <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
         <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
       </ng-container>
 
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>
     </mat-table>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+        <button mat-raised-button color="error" (click)="removeSelectedRows()">
+            Supprimer les lignes séléctionnées
+          </button>
+    </div>
   </div>
 
 </div>
