@@ -133,8 +133,27 @@ export class SettingPanelComponent implements OnInit {
     this.openDialog(data,DialogDeleteComponent);
   }
 
-  public deleteKnxMachineValidate(id) : void{
-    
+  deleteLamp(idKnx,idLamp) : void{
+    let lights = []
+    this.arrayKnx.forEach(element => {
+      if(element._id==idKnx){
+        element.lights.forEach((lamp,i) =>{
+          if(lamp.id == idLamp)element.lights.splice(i,1)
+        })
+        lights = element.lights;
+      }
+    });
+    let data = {
+      idKnx : idKnx,
+      light : lights    
+    }
+    KnxService.removeLight(data).then((res) =>{
+      if(res.data.success){
+        this._utils.openSnackBar("La lampes a été supprimée","Ok","success-snackbar");
+      }else{
+        this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok","error-snackbar");
+      }
+    });
   }
 
   getAllLights() : void{
