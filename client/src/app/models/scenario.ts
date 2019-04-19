@@ -6,17 +6,17 @@ export class Scenario {
     nameKnx: String;
     lights: Array<Lamp>;
     action: Boolean;
-    date: Date;
-    repetition: Object;
+    time: Object;
+    repetition: Array<Object>;
 
     
-    constructor(name: string, idKnx: string, nameKnx: string, lights:Array<Lamp>, action: boolean, date: Date, repetition: Object){
+    constructor(name: string, idKnx: string, nameKnx: string, lights:Array<Lamp>, action: boolean, time: Object, repetition: Array<Object>){
         this.name = name;
         this.idKnx  = idKnx;
         this.nameKnx = nameKnx;
         this.lights = lights;
         this.action = action;
-        this.date = date;
+        this.time = time;
         this.repetition = repetition;
     }
 
@@ -40,11 +40,11 @@ export class Scenario {
         this.action = action;
     }
 
-    setDate(date: Date): void{
-        this.date = date;
+    setDate(time: Object): void{
+        this.time = time;
     }
 
-    setRepetion(repetition: Object): void{
+    setRepetion(repetition: Array<Object>): void{
         this.repetition = repetition;
     }
 
