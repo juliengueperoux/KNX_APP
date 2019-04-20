@@ -31,10 +31,22 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
 
   initReceptionWebSocket(){
     if (this.states.socketCreated()){
-      console.log("socket created")
+      console.log("socket created");
       this.states
-        .getMessages().pipe(takeUntil(componentDestroyed(this))).subscribe((message: String)=>{
-          console.log("message in controlPanel :"+message)
+        .getMessages().pipe(takeUntil(componentDestroyed(this))).subscribe((message: string)=>{
+          let data = JSON.parse(message);
+          let nameLight = "";
+          switch(data.action.value){
+            case 1 :
+                nameLight = "svg-light-" + data.action.idLamp + "-" + data.idKnx;
+                this.setCSSclass(nameLight,'is-activated',true);
+              break;
+            case 2 :
+                nameLight = "svg-light-" + data.action.idLamp + "-" + data.idKnx;
+                this.setCSSclass(nameLight,'is-activated',false);
+              break;
+          }
+          console.log(data);
       });
     }
   }
@@ -56,7 +68,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
         (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
       this.arrayKnx[indice].lights.forEach(element => {
-        let nameLight = "svg-light-" + element.id + "-" + indice;
+        let nameLight = "svg-light-" + element.id + "-" + this.arrayKnx[indice]._id;
         this.setCSSclass(nameLight,'is-activated',true);
         document.getElementById(nameLight).classList.add();
       })
@@ -66,7 +78,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
         (res.data.success) ? this._utils.openSnackBar("Lampes éteintes","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
       this.arrayKnx[indice].lights.forEach(element => {
-        let nameLight = "svg-light-" + element.id + "-" + indice;
+        let nameLight = "svg-light-" + element.id + "-" + this.arrayKnx[indice]._id;
         this.setCSSclass(nameLight,'is-activated',false);
       })
     } 
@@ -80,7 +92,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
       }).then((res) =>{
         (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " allumée","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
-      let nameLight = "svg-light-" + numero + "-" + indice;
+      let nameLight = "svg-light-" + numero + "-" + this.arrayKnx[indice]._id;
       console.log(nameLight);
       this.setCSSclass(nameLight,'is-activated',true);
     } 
@@ -91,7 +103,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
       }).then((res) =>{
         (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " éteinte","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });;
-      let nameLight = "svg-light-" + numero + "-" + indice;
+      let nameLight = "svg-light-" + numero + "-" + this.arrayKnx[indice]._id;
       this.setCSSclass(nameLight,'is-activated',false);
     } 
   }

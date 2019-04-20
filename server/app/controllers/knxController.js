@@ -42,7 +42,6 @@ exports.addConfig = (req, res) => {
 }
 
 exports.deleteConfig = (req, res) => {
-    console.log(res);
     KNXConfigModel.findOne({_id : req.params.idKnx},
         (err, result) => {
             if (err) return res.send({
@@ -69,7 +68,6 @@ exports.deleteConfig = (req, res) => {
 
 exports.findConfigs = (req,res) => {
     KNXConfigModel.find({}, (err, results) => {
-        console.log(results);
         if (err) return res.send({
             success: false,
             errorMessage: "Erreur lors de la récupération des configurations KNX: " + err
@@ -168,45 +166,33 @@ exports.addLight = (req, res) => {
     const light = req.body.light;
     const idKnx = req.body.idKnx
     var state = functions.addLight(light,idKnx);
-    addLight(light,idKnx)
-    (state) ? res.send({
-        success: true
-    }): res.send(state);
+    addLightFunction(light,idKnx,res);
 };
 
 exports.removeLight = (req, res) => {
     const light = req.body.light;
     const idKnx = req.body.idKnx
-    var state = functions.removeLight(light,idKnx);
-    removeLight(light,idKnx,(res)=>{
-        (state && res.success) ? res.send({
-            success: true
-        }): res.send(state);
-    })
+    functions.removeLight(light,idKnx);
+    removeLightFunction(light,idKnx,res);
 };
 
-addLight = (light,idKnx,callback)=>{
+addLightFunction = (light,idKnx,res)=>{
     KNXConfigModel.findOneAndUpdate(
         { _id: idKnx }, 
-        { $push: { lights: light  } },
-       function (error, res) {
-             if (error) {
-                return callback({success:false, errorMessage:"Erreur lors de l'ajout de la lumière dans la base de données: "+err})
-             } else {
-                return callback({success:true})
-             }
+        { $set: { lights: light } },
+        (error, resultat) => {
+            if(error) res.send({success:false, errorMessage:"Erreur lors de l'ajout de la lumière dans la base de données: "+error})
+            else res.send({success:true})
+        });
+}
+
+removeLightFunction = (light,idKnx,res)=>{
+    KNXConfigModel.findOneAndUpdate(
+        { _id: idKnx }, 
+        { $set: { lights: light  } },
+        (error, resultat) => {
+             if(error) res.send({success:false, errorMessage:"Erreur lors de la suppression de la lumière dans la base de données: "+error})
+             else res.send({success:true})
          });
 }
 
-removeLight = (light,idKnx,callback)=>{
-    KNXConfigModel.findOneAndUpdate(
-        { _id: idKnx }, 
-        { $pull: { lights: light  } },
-       function (error, res) {
-             if (error) {
-                 return callback({success:false, errorMessage:"Erreur lors de la suppression de la lumière dans la base de données: "+err})
-             } else {
-                return callback({success:true})
-             }
-         });
-}
