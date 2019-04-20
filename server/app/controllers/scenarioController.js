@@ -10,7 +10,7 @@ exports.addScenario = (req, res) => {
         nameKnx: req.body.nameKnx,
         action: req.body.action,
         lights: req.body.lights,
-        date: req.body.date,
+        time: req.body.time,
         repetition:req.body.repetition 
     }
     ScenarioModel.create(config, (err, result) => {
@@ -19,7 +19,7 @@ exports.addScenario = (req, res) => {
             errorMessage: "Erreur lors de l'ajout d'un Scénario : " + err
         })
         return res.send({
-            success: true
+            success: true, data : result
         });
     })
 }

@@ -28,6 +28,7 @@ io.on("connection", socket => {
         })
     })
 
+
     setInterval(()=>{
         this.int = (this.int == 1) ?  2 : 1;
         data = {
@@ -39,6 +40,7 @@ io.on("connection", socket => {
         }
         socket.emit('hello',JSON.stringify(data))
     },3000)
+
 
     // Log whenever a client disconnects from our websocket server
     socket.on("disconnect", function () {

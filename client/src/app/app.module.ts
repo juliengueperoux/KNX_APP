@@ -43,6 +43,8 @@ import { MatAutocompleteModule } from '@angular/material/';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 
 
@@ -71,6 +73,7 @@ import { MatSortModule } from '@angular/material/sort';
         blacklistedRoutes: ['http://localhost:3000/auth/login']
       }
     }),
+    MatCheckboxModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,

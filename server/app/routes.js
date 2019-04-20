@@ -29,7 +29,7 @@ module.exports = (app,auth) => {
 
     // SCENARIO 
     app.post('/api/kniot/addScenario', auth.isAuth, scenarioController.addScenario)
-    app.get('/api/kniot/deleteScenario/:idKnx', auth.isAuth, scenarioController.deleteScenario)
+    app.get('/api/kniot/deleteScenario/:id', auth.isAuth, scenarioController.deleteScenario)
     app.get('/api/kniot/findAllScenario',auth.isAuth, scenarioController.findAll)
 
 
