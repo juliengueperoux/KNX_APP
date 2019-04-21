@@ -1,6 +1,6 @@
 
 const ScenarioModel = require('../models/scenario')
-
+const functions = require('../functions');
 
 exports.addScenario = (req, res) => {
     console.log("ICI : " + JSON.stringify(req.body));
@@ -18,6 +18,8 @@ exports.addScenario = (req, res) => {
             success: false,
             errorMessage: "Erreur lors de l'ajout d'un Scénario : " + err
         })
+
+        functions.addScenario(result)
         return res.send({
             success: true, data : result
         });
@@ -41,6 +43,10 @@ exports.deleteScenario = (req, res) => {
                         success: false,
                         errorMessage: "Erreur lors de la suppression du scénario KNX: " + err
                     })
+
+                    const indexScenario = functions.scenarioList.findIndex(i => i._id === req.params.id);
+                    if(indexScenario > -1) functions.connectionsList.splice(indexScenario,1)
+
                     return res.send({
                         success: true
                     });

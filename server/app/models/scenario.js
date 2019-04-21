@@ -27,7 +27,7 @@ const Scenario = new mongoose.Schema({
     required: true
   },
   repetition: {
-    type: Object,
+    type: Array,
     required: true
   },
   active : {
