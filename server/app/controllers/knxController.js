@@ -33,6 +33,7 @@ exports.addConfig = (req, res) => {
                         success: false,
                         errorMessage: "Erreur lors de l'ajout d'une nouvelle configuration KNX: " + err
                     })
+                    functions.addConnection(result)
                     return res.send({
                         success: true
                     });
@@ -58,6 +59,10 @@ exports.deleteConfig = (req, res) => {
                         success: false,
                         errorMessage: "Erreur lors de la suppression de la configuration KNX: " + err
                     })
+
+                    const indexConnection = functions.connectionsList.findIndex(i => i._id === req.params.idKnx);
+                    if(indexConnection > -1) functions.connectionsList.splice(indexConnection,1)
+
                     return res.send({
                         success: true
                     });
