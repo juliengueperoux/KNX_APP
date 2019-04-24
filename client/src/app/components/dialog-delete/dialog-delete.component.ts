@@ -14,6 +14,7 @@ export interface DialogData {
 export class DialogDeleteComponent implements OnInit {
 
   data : DialogData;
+  test : String;
 
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteComponent>,
@@ -27,6 +28,7 @@ export class DialogDeleteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.test = "ici TEZST";
     console.log(this.data);
   }
 

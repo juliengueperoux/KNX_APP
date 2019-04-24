@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { SettingPanelComponent } from './components/setting-panel/setting-panel.component';
+import { HelpComponent } from './components/help/help.component';
 import { ScenarioComponent } from './components/scenario/scenario.component';
 import { AuthGuard } from './auth.guard';
 
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent,canActivate:[AuthGuard] },
   { path: 'setting', component: SettingPanelComponent,canActivate:[AuthGuard] },
   { path: 'scenario', component: ScenarioComponent,canActivate:[AuthGuard] },
+  { path: 'help', component: HelpComponent,canActivate:[AuthGuard] },
   { path: 'login', component: LoginComponent}
 ];
 

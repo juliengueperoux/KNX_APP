@@ -21,6 +21,8 @@ export class ScenarioComponent implements OnInit {
   displayedColumns = [];
   @ViewChild(MatSort) sort: MatSort;
 
+  responsive: boolean = false;
+
   knxGroup: FormGroup;
   lampGroup: FormGroup;
   repetitionsGroup: FormGroup
@@ -64,7 +66,7 @@ export class ScenarioComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
-
+    this.responsive = (window.innerWidth < 500) ? true : false;
     this.knxGroup = this._formBuilder.group({
       selectKnxControl: ['', Validators.required],
       inputNameScenarioControl: ['', Validators.required]

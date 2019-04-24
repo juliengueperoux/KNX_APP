@@ -21,6 +21,8 @@ export class SettingPanelComponent implements OnInit {
 
   constructor( public dialog: MatDialog,private _formBuilder: FormBuilder, private _utils: UtilsService) { }
   
+  responsive: boolean = false;
+
   isLinear: boolean = false;
   validate: boolean = false;
   animal: string;
@@ -43,6 +45,7 @@ export class SettingPanelComponent implements OnInit {
   arrayKnx:Array<KnxMachine> = [];
 
   ngOnInit() {
+    this.responsive = (window.innerWidth < 500) ? true : false;
     this.knxGroup = this._formBuilder.group({
       inputNameKnxControl: [
         '',
