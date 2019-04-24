@@ -1,6 +1,7 @@
 import axios from 'axios'
-const axiosInstance = axios.create({
-baseURL: "http://localhost:3000/api"
+
+var axiosInstance = axios.create({
+baseURL: "http://" + localStorage.getItem('ipServer') + ":3000/api"
 })
 
 export default axiosInstance

@@ -32,7 +32,7 @@ io.on("connection", socket => {
     setInterval(()=>{
         this.int = (this.int == 1) ?  2 : 1;
         data = {
-            'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
+            'idKnx' : "5cbed53fc5c601314775d27a",
             'action' : {
                 'value' : this.int,
                 'idLamp' : '0/3/0'

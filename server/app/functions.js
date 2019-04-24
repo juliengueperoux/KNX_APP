@@ -16,7 +16,6 @@ exports.initConnections = async () => {
         return results
     })
     allConfigs.forEach((config) => {
-        console.log(config)
         const connection = new require('./connection')
         connection.ipPort = config.port
         connection.ipAddr = config.ipAddr

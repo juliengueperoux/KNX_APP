@@ -11,6 +11,7 @@ export class JwtService {
 
   constructor(private states : StatesService, private router : Router) { 
     this.autoConnectSocket()
+    
 
     api.interceptors.response.use(response => response, error =>{
       if(error.response.status === 401){
@@ -54,4 +55,6 @@ export class JwtService {
   public get loggedIn(): boolean{
     return localStorage.getItem('access_token') !==  null;
   }
+
+
 }

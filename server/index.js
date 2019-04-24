@@ -39,7 +39,7 @@ mongoose.connection.on('disconnected', () => {
    console.log('MongoDB connection close')
 });
 
-http.createServer(app).listen(port, () => {
+http.createServer(app).listen(port,'0.0.0.0', () => {
    console.log('Listening on ' + port);
    functions.initConnections()
    functions.initScenarios()

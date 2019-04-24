@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Modification : {{ data.name }}</h1>
+<div mat-dialog-content>
+  {{ data.inputs }}
+  <div *ngFor="let element of data.inputs">
+    <mat-form-field>
+        <input matInput [(ngModel)]="element">
+    </mat-form-field>  
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div fxFlex></div>
+  <button mat-button (click)="onNoClick()">Annuler</button>
+  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Valider</button>
+</div>
