@@ -1,7 +1,6 @@
 const KNXConfigModel = require('./models/knxConfig');
 const ScenarioModel = require('./models/scenario');
 const CronJob = require('cron').CronJob;
-const connectionInstance = require('./connection')
 const connectionsList = []
 let scenarioList = []
 
@@ -15,7 +14,7 @@ exports.initConnections = async () => {
         return results
     })
     allConfigs.forEach((config) => {
-        const connection = {...connectionInstance}
+        const connection = new (require('./connection'))()
         connection.ipPort = config.port
         connection.ipAddr = config.ipAddr
         connection._id = config._id
@@ -23,12 +22,14 @@ exports.initConnections = async () => {
         connection.startChain = false,
         connection.arrayLamp = config.lights
         connection.sensDirect = true
+        connection.Connect()
         connectionsList.push(connection)
+       // connection.connect()
     })
 }
 
 exports.addConnection = async (config) => {
-    const connection = {...connectionInstance}
+    const connection = new (require('./connection'))()
     connection.ipPort = config.port
     connection.ipAddr = config.ipAddr
     connection._id = config._id
@@ -36,6 +37,7 @@ exports.addConnection = async (config) => {
     connection.startChain = false,
         connection.arrayLamp = config.lights
     connection.sensDirect = true
+    connection.Connect()
     connectionsList.push(connection)
 }
 
