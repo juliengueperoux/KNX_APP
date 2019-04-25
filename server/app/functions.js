@@ -16,20 +16,20 @@ exports.initConnections = async () => {
         return results
     })
     allConfigs.forEach((config) => {
-        const connection = new require('./connection')
+        const connection = new (require('./connection'))()
         connection.ipPort = config.port
         connection.ipAddr = config.ipAddr
         connection._id = config._id
         connection.interval = 1000
         connection.startChain = false,
-            connection.arrayLamp = config.lights
+        connection.arrayLamp = config.lights
         connection.sensDirect = true
         connectionsList.push(connection)
     })
 }
 
 exports.addConnection = async (config) => {
-    const connection = new require('./connection')
+    const connection = new (require('./connection'))()
     connection.ipPort = config.port
     connection.ipAddr = config.ipAddr
     connection._id = config._id
