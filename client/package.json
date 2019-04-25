@@ -1,6 +1,7 @@
 {
-  "name": "todo-app",
+  "name": "kniot",
   "version": "0.0.0",
+  "author": "Guépéroux Stéphant",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

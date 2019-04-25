@@ -10,8 +10,7 @@
         
               <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
                 
-                
-                <div fxFlex="5" *ngFor="let numero of knx.lights">
+                <div  fxFlex.gt-lg="10" fxFlex.gt-sm="20"  *ngFor="let numero of knx.lights">
         
                     <svg id="svg-light-{{numero.id}}-{{ knx._id }}" class="svg-content light-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
                       <path id="bulb" d="M315.764 331.543c0-48.588 88.86-76.217 88.86-182.92C404.623 66.544 338.083 0 256 0S107.38 66.542 107.38 148.624c0 106.702 88.86 134.33 88.86 182.92h119.526z" />

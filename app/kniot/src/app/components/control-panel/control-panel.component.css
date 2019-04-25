@@ -1,0 +1,25 @@
+
+.light-bulb #bulb {
+    fill: #dce7eb;
+  }
+  .light-bulb #wires {
+    fill: #adc4c9;
+  }
+  .light-bulb #filament {
+    fill: #adc4c9;
+    opacity: 0.5;
+  }
+  .light-bulb.is-activated #bulb {
+    fill: #FFC843;
+  }
+  .light-bulb.is-activated #wires {
+    fill: #D49000;
+  }
+  .light-bulb.is-activated #filament {
+    fill: #fff;
+    opacity: 1;
+  }
+  
+  #blockLight{
+      margin-bottom: 2%;
+  }

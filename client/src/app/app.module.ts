@@ -22,6 +22,7 @@ import { DialogAddComponent } from './components/dialog-add/dialog-add.component
 import { ScenarioComponent } from './components/scenario/scenario.component';
 import { DialogUpdateComponent } from './components/dialog-update/dialog-update.component';
 import { DialogDeleteComponent } from './components/dialog-delete/dialog-delete.component';
+import { HelpComponent } from './components/help/help.component';
 
 
 /** Material Component **/
@@ -62,6 +63,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ScenarioComponent,
     DialogUpdateComponent,
     DialogDeleteComponent,
+    HelpComponent,
   ],
   entryComponents:[DialogAddComponent,DialogUpdateComponent,DialogDeleteComponent],
   imports: [

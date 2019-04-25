@@ -54,7 +54,7 @@ function newConnection(){
         }
       }*/
 
-      io.sockets.emit("data");
+     // io.sockets.emit("data");
 
       if (dest == "0/3/4") {
         console.log("Appui dernier à droite : " + this.interval);
