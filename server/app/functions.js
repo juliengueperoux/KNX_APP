@@ -1,10 +1,9 @@
 const KNXConfigModel = require('./models/knxConfig');
 const ScenarioModel = require('./models/scenario');
 const CronJob = require('cron').CronJob;
+const connectionInstance = require('./connection')
 const connectionsList = []
-exports.connectionsList = connectionsList
 let scenarioList = []
-exports.scenarioList = scenarioList
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -16,7 +15,7 @@ exports.initConnections = async () => {
         return results
     })
     allConfigs.forEach((config) => {
-        const connection = new (require('./connection'))()
+        const connection = {...connectionInstance}
         connection.ipPort = config.port
         connection.ipAddr = config.ipAddr
         connection._id = config._id
@@ -29,7 +28,7 @@ exports.initConnections = async () => {
 }
 
 exports.addConnection = async (config) => {
-    const connection = new (require('./connection'))()
+    const connection = {...connectionInstance}
     connection.ipPort = config.port
     connection.ipAddr = config.ipAddr
     connection._id = config._id
@@ -345,3 +344,6 @@ setDayStringCron = (days, DayInt) => {
     })
     if (result.length > 0) return result.substring(0, result.length - 1)
 }
+
+exports.connectionsList = connectionsList
+exports.scenarioList = scenarioList

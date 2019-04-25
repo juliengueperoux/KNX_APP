@@ -4,9 +4,7 @@ let ipPort = 3671
 
 const io = require('./webSocket')
 
-function newConnection(){
-
- return new knx.Connection({
+const connection = new knx.Connection({
   // ip address and port of the KNX router or interface
   ipAddr: ipAddress,
   ipPort: ipPort,
@@ -80,8 +78,7 @@ function newConnection(){
     }
   }
 });
-}
-module.exports = newConnection
+module.exports = connection
 
 // dernier droit 3/4
 // a sa gauche 3/3
