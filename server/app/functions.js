@@ -38,8 +38,9 @@ exports.addConnection = async (config) => {
     connection.startChain = false,
     connection.arrayLamp = config.lights
     connection.sensDirect = true
-    connection.Connect()
-    connectionsList.push(connection)
+    const myConnection = new knx.Connection(connection)
+    myConnection.Connect()
+    connectionsList.push(myConnection)
 }
 
 exports.initScenarios = async () => {
@@ -211,7 +212,7 @@ const stopAllLights = (idKnx) => {
     if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         for (i = 0; i < connection.arrayLamp.length; i++) {
-            connection.write(connection.arrayLamp[i], 0); // eteindre
+            connection.write(connection.arrayLamp[i].id, 0); // eteindre
         }
         return true;
     } catch (error) {
@@ -230,9 +231,9 @@ exports.startChase = async (idKnx) => {
             var index = 0;
             for (i = 0; i < connection.arrayLamp.length; i++) {
                 index = (!connection.sensDirect) ? connection.arrayLamp.length - 1 - i : i; // si connection.sensDirect = true connection.sensDirect normal sinon connection.sensDirect à l envers!
-                connection.write(connection.arrayLamp[index], 1); // allumer
+                connection.write(connection.arrayLamp[index].id, 1); // allumer
                 await sleep(connection.interval);
-                connection.write(connection.arrayLamp[index], 0); // allumer
+                connection.write(connection.arrayLamp[index].id, 0); // allumer
             }
         }
         return true;
