@@ -115,7 +115,7 @@ exports.addScenario = async (scenario) => {
 exports.connectionKnx = (idUser, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
-        connection.connected();
+        connection.Connect()
         return true;
     } catch (error) {
         return error;
