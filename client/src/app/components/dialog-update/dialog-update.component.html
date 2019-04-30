@@ -1,14 +1,31 @@
-<h1 mat-dialog-title>Modification : {{ data.name }}</h1>
-<div mat-dialog-content>
-  {{ data.inputs }}
-  <div *ngFor="let element of data.inputs">
-    <mat-form-field>
-        <input matInput [(ngModel)]="element">
-    </mat-form-field>  
-  </div>
+
+<h1 mat-dialog-title>Update </h1>
+<div mat-dialog-content style="height: 300px">
+  {{data.sentence}}
+  <form *ngIf="type == 1" (ngSubmit)="updateMachineKnx()"> 
+    <div fxLayout="column">
+      <div fxFlex="100">
+        <mat-form-field class="example-full-width" style="width:100%">
+            <input matInput placeholder="Nom" [(ngModel)]="knxMachine.name" [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+      </div>
+      <div fxFlex="100">
+          <mat-form-field class="example-full-width" style="width:100%">
+              <input matInput placeholder="Ip" [(ngModel)]="knxMachine.ipAddr"  [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+      </div>
+      <div fxFlex="100">
+          <mat-form-field class="example-full-width" style="width:100%">
+              <input matInput placeholder="Port" [(ngModel)]="knxMachine.port"  [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+        <div fxFlex></div>
+        
+        <button mat-button  type="submit" cdkFocusInitial>Valider</button>
+        <button mat-button (click)="onNoClick()">Fermer</button>
+      </div>
+  </form>
 </div>
-<div mat-dialog-actions>
-  <div fxFlex></div>
-  <button mat-button (click)="onNoClick()">Annuler</button>
-  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Valider</button>
-</div>
+

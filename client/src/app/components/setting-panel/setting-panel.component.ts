@@ -7,6 +7,7 @@ import KnxService from '../../services/knx.service';
 import UtilsService from '../../services/utils.service'
 import { KnxMachine } from '../../models/knx-machine';
 import { Lamp } from '../../models/lamp';
+import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 import { DialogUpdateComponent } from '../dialog-update/dialog-update.component';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 
@@ -43,6 +44,7 @@ export class SettingPanelComponent implements OnInit {
   
   arrayNewLamp:Array<Lamp> = [];
   arrayKnx:Array<KnxMachine> = [];
+  
 
   ngOnInit() {
     this.responsive = (window.innerWidth < 500) ? true : false;
@@ -99,8 +101,19 @@ export class SettingPanelComponent implements OnInit {
       this.lampsGroup.reset();
   }
 
+  addNewLampToExistingMachine(indice): void{
+    let data = {
+      id: this.arrayKnx[indice]._id,
+      name: this.arrayKnx[indice].name, 
+      sentence : 'Ajouter une lampe à la machine : ' + this.arrayKnx[indice].name,
+     
+    }
+    this.openDialog(data,DialogAddComponent);
+  }
+
+
   createNewKnxMachine() : void{
-    this.knx = new KnxMachine(this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
+    this.knx = new KnxMachine(null,this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
     KnxService.addConfig(this.knx).then((res) =>{
       if(res.data.success){
         this._utils.openSnackBar("Machine KNX  ajoutée à la base de données","Ok","success-snackbar");
@@ -114,27 +127,56 @@ export class SettingPanelComponent implements OnInit {
   
   deleteKnxMachine(indice) : void{
     let data = {
-      validate : this.validate,
       id: this.arrayKnx[indice]._id,
       name: this.arrayKnx[indice].name, 
       sentence : 'Étes-vous sur de vouloir supprimer la machine Knx' + this.arrayKnx[indice].name,
-      fun : function (id){
-        KnxService.deleteConfig(id).then((res) =>{
-          if(res.data.success){
-            this._utils.openSnackBar("La machine KNX a été supprimée","Ok","success-snackbar");
-            this.arrayKnx.forEach((element, i) => {
-              if(element._id==id){
-                this.arrayKnx.splice(i, 1); 
-                return true;
-              }
-            });
-          }else{
-            this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok","error-snackbar");
-          }
-        });
-    }
     }
     this.openDialog(data,DialogDeleteComponent);
+  }
+
+  addLamp(idKnx) : void{
+    let lights = []
+    let light = new Lamp(this.inputNameLamp,this.inputIdLamp);
+    this.arrayKnx.forEach(element => {
+      if(element._id==idKnx){
+        element.lights.push(light);
+        lights = element.lights;
+      }
+    });
+    let data = {
+      idKnx : idKnx,
+      light : lights
+    }
+    KnxService.addLight(data).then((res) =>{
+      if(res.data.success){
+        this._utils.openSnackBar("La lampes a été supprimée","Ok","success-snackbar");
+      }else{
+        this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok","error-snackbar");
+      }
+    });
+  }
+
+  /**
+   * UPDATA : Knx Setting 
+   * Construction de l'objet  à envoyer à la dialog générique pour la construire 
+   * name : le noms
+   * knxMachine : array des champs à modifier
+   * @sentence : service pour update
+   * @param indice 
+   */
+ 
+
+  updateKnxMachine(indice) : void{
+    let data = {
+      type:1, // type == 1 update machine type == 2 update lamp
+      knxMachine : new KnxMachine(this.arrayKnx[indice]._id, 
+                                  this.arrayKnx[indice].name,
+                                  this.arrayKnx[indice].ipAddr,
+                                  this.arrayKnx[indice].port,
+                                  this.arrayKnx[indice].lights),
+      sentence : 'Modifier la machine Knx' + this.arrayKnx[indice].name,
+    }
+    this.openDialog(data,DialogUpdateComponent);
   }
 
   deleteLamp(idKnx,idLamp) : void{
@@ -160,27 +202,9 @@ export class SettingPanelComponent implements OnInit {
     });
   }
 
-  addLamp(idKnx) : void{
-    let lights = []
-    let light = new Lamp(this.inputNameLamp,this.inputIdLamp);
-    this.arrayKnx.forEach(element => {
-      if(element._id==idKnx){
-        element.lights.push(light);
-        lights = element.lights;
-      }
-    });
-    let data = {
-      idKnx : idKnx,
-      light : lights
-    }
-    KnxService.addLight(data).then((res) =>{
-      if(res.data.success){
-        this._utils.openSnackBar("La lampes a été supprimée","Ok","success-snackbar");
-      }else{
-        this._utils.openSnackBar("Erreur de suppression : " + res.data,"Ok","error-snackbar");
-      }
-    });
-  }
+ 
+
+  
 
   getAllLights() : void{
     KnxService.findConfigs().then((res) =>{
@@ -190,26 +214,7 @@ export class SettingPanelComponent implements OnInit {
   }
 
   
-  /**
-   * UPDATA : Knx Setting 
-   * Construction de l'objet  à envoyer à la dialog générique pour la construire 
-   * name : le noms
-   * imputs : array des champs à modifier
-   * function : service pour update
-   * @param indice 
-   */
-  updateSettingKnxMachine(indice){
-    let data = {
-      name: this.arrayKnx[indice].name, 
-      inputs: {
-        'name' : this.arrayKnx[indice].name,
-        'ipAddr' : this.arrayKnx[indice].ipAddr,
-        'port' : this.arrayKnx[indice].port
-      },
-      //function : 
-    }
-    this.openDialog(data,DialogUpdateComponent);
-  }
+  
 
   /**
    * Call la dialog générique avec les paramètres à afficher 
@@ -220,12 +225,27 @@ export class SettingPanelComponent implements OnInit {
       width: '450px',
       data: data
     });
-    
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log('RESULT :  ' + result)
-      this.validate = result;
-      console.log("VALIDATE : " + this.validate);
+      if(result.type){
+        switch(result.type){
+          case 1 :
+            this.arrayKnx.forEach(element => {
+              if(element._id==result.idKnx){
+                element.lights.push(result.light);
+              }
+            });
+            break;
+          case 2: 
+            this.arrayKnx.forEach((element, i) => {
+              if(element._id==result.idKnx){
+                this.arrayKnx.splice(i, 1); 
+                return true;
+              }
+            });
+            break;
+
+        }
+      }
     });
   }
 
