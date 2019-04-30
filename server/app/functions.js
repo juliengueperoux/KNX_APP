@@ -1,6 +1,7 @@
 const KNXConfigModel = require('./models/knxConfig');
 const ScenarioModel = require('./models/scenario');
 const CronJob = require('cron').CronJob;
+const knx = require('knx');
 const connectionsList = []
 let scenarioList = []
 
@@ -22,8 +23,9 @@ exports.initConnections = async () => {
         connection.startChain = false,
         connection.arrayLamp = config.lights
         connection.sensDirect = true
-        connection.Connect()
-        connectionsList.push(connection)
+        const myConnection = new knx.Connection(connection)
+        myConnection.Connect()
+        connectionsList.push(myConnection)
     })
 }
 
@@ -135,7 +137,9 @@ exports.deconnectionKnx = (idKnx) => {
 exports.startLight = (id, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
+        console.log("connection Trouvée")
         if(connection.connect){
+            console.log("connection.connected ouiiii"+id)
         connection.write(id, 1);
         return true;
     }   

@@ -1,15 +1,13 @@
 const knx = require('knx');
-let ipAddress = '192.168.0.5'
-let ipPort = 3671
 
 const io = require('./webSocket')
 
 function newConnection(){
 
-  return new knx.Connection({
+  return {
   // ip address and port of the KNX router or interface
-  ipAddr: ipAddress,
-  ipPort: ipPort,
+  ipAddr: "",
+  ipPort: "",
   manualConnect: true,
   // in case you need to specify the multicast interface (say if you have more than one)
   // define your event handlers here:
@@ -80,7 +78,7 @@ function newConnection(){
       console.log("** ERROR: %j", connstatus);
     }
   }
-});
+}
 }
 module.exports = newConnection
 
