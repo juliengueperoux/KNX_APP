@@ -242,6 +242,14 @@
 
   </div>
   <div fxLayout="column">
+  <div fxLayout="row" style ="margin-top:4%">
+    <div fxFlex.gt-lg="75" fxFlex.gt-sm="50"></div>
+    <div fxFlex.gt-lg="25" fxFlex.gt-sm="50">
+      <button mat-raised-button color="error" (click)="removeSelectedRows()">
+          Supprimer les lignes séléctionnées
+        </button>
+    </div>
+  </div>
   <div fxLayout="row" style="margin-top:20px" fxLayoutAlign="center">
     <mat-table #table [dataSource]="dataSource" matSort fxFlex="90">
 
@@ -270,11 +278,7 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>
     </mat-table>
   </div>
-  <div fxLayout="row" fxLayoutAlign="center" style ="margin-top:4%">
-        <button mat-raised-button color="error" (click)="removeSelectedRows()">
-            Supprimer les lignes séléctionnées
-          </button>
-    </div>
-  </div>
+  
+</div>
 
 </div>

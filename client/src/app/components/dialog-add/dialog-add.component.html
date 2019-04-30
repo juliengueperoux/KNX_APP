@@ -1,11 +1,26 @@
-<h1 mat-dialog-title>Hi {{data.name}}</h1>
-<div mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.animal">
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
-</div>
+
+<h1 mat-dialog-title>Ajout de lampe</h1>
+  <div mat-dialog-content style="height: 150px">
+    {{data.sentence}}
+    <form [formGroup]="lampsGroup" (ngSubmit)="addLight()"> 
+      <div fxLayout="row">
+        <div fxFlex="100">
+          <mat-form-field class="example-full-width">
+              <input matInput placeholder="ID" [(ngModel)]="idLamp" formControlName="inputNameLampControl"  required>
+          </mat-form-field>
+        </div>
+        <div fxFlex="100">
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nom" [(ngModel)]="nameLamp"  formControlName="inputIdLampControl"  required>
+            </mat-form-field>
+        </div>
+      </div>
+      <div mat-dialog-actions>
+          <div fxFlex></div>
+          
+          <button mat-button  type="submit" cdkFocusInitial>Valider</button>
+          <button mat-button (click)="onNoClick()">Fermer</button>
+        </div>
+    </form>
+  </div>
+

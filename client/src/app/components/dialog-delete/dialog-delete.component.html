@@ -5,5 +5,5 @@
 <div mat-dialog-actions>
   <div fxFlex></div>
   <button mat-button (click)="onNoClick()">Annuler</button>
-  <button mat-button [mat-dialog-close]="data.validate" (click)="data.validate=true;data.fun(data.id);" cdkFocusInitial>Valider</button>
+  <button mat-button (click)="deleteKnxMachine()" cdkFocusInitial>Valider</button>
 </div>

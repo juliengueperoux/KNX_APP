@@ -184,7 +184,7 @@ exports.removeLight = (req, res) => {
 addLightFunction = (light,idKnx,res)=>{
     KNXConfigModel.findOneAndUpdate(
         { _id: idKnx }, 
-        { $set: { lights: light } },
+        { $push: { lights: light } },
         (error, resultat) => {
             if(error) res.send({success:false, errorMessage:"Erreur lors de l'ajout de la lumière dans la base de données: "+error})
             else res.send({success:true})

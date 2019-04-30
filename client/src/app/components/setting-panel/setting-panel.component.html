@@ -212,7 +212,7 @@
                   <p>{{ knx.name }} |  {{ knx.ipAddr}} : {{ knx.port }}</p>
                 </div>
                 <div fxFlex="10">
-                  <button mat-button (click)="updateSettingKnxMachine(i)" ><mat-icon aria-label="toggle icon">edit</mat-icon></button>
+                  <button mat-button (click)="updateKnxMachine(i)" ><mat-icon aria-label="toggle icon">edit</mat-icon></button>
                 </div>
             </div>
 
@@ -233,14 +233,15 @@
                 
                 <div fxLayout="column">
                     <div fxLayout="row">
-                        <div fxFlex="80" fxFlex.gt-sm="50">
+                        <div fxFlex="90" >
                           <p>Ajouter des lumières </p>
                         </div>
-                        <div fxFlex="20">
+                        <div fxFlex="10">
+                            <button mat-button (click)="addNewLampToExistingMachine(i)"><mat-icon aria-label="toggle icon">add</mat-icon></button>
                         </div>
                     </div>
                     <div fxLayout="row" *ngFor="let numero of knx.lights">
-                        <div fxFlex="80" fxFlex.gt-sm="50">
+                        <div fxFlex="80" >
                           <p>Lampe {{ numero.name }} | ID {{ numero.id }}</p>
                         </div>
                         <div fxFlex="20">
