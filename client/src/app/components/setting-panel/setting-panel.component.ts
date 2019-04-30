@@ -243,6 +243,17 @@ export class SettingPanelComponent implements OnInit {
               }
             });
             break;
+          case 3: 
+            this.arrayKnx.forEach((element, i) => {
+
+              console.log("ICI : " + JSON.stringify(result));
+              console.log("ELEMENT ID : " + element._id + " RESULT :" + result.knxMachine._id)
+              if(element._id==result.knxMachine._id){
+                  element = result.knxMachine;
+                return true;
+              }
+            });
+            break;
 
         }
       }
