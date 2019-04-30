@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const KNXConfig = new mongoose.Schema({
 	name : {
 		type : String,
-		resuired : true
+		required : true
 	},
 	ipAddr: {
 		type: String,
@@ -16,7 +16,9 @@ const KNXConfig = new mongoose.Schema({
 	lights:[
 		{
 		  id: String,
-		  name: String
+			name: String,
+			state : Boolean,
+			default : false
 		}
 	  ]
 });
