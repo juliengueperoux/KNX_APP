@@ -55,7 +55,7 @@ function newConnection(){
       }*/
 
      // io.sockets.emit("data");
-
+      console.log("evt:"+evt+",src:"+src+",dest:"+dest+",value:"+value)
       if (dest == "0/3/4") {
         console.log("Appui dernier à droite : " + this.interval);
         this.interval += 1000;

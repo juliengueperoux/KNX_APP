@@ -24,7 +24,6 @@ exports.initConnections = async () => {
         connection.sensDirect = true
         connection.Connect()
         connectionsList.push(connection)
-       // connection.connect()
     })
 }
 
@@ -35,7 +34,7 @@ exports.addConnection = async (config) => {
     connection._id = config._id
     connection.interval = 1000
     connection.startChain = false,
-        connection.arrayLamp = config.lights
+    connection.arrayLamp = config.lights
     connection.sensDirect = true
     connection.Connect()
     connectionsList.push(connection)
@@ -126,6 +125,7 @@ exports.deconnectionKnx = (idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
         connection.Disconnect();
+        connection.connect = false
         return true;
     } catch (error) {
         return error;
@@ -135,8 +135,11 @@ exports.deconnectionKnx = (idKnx) => {
 exports.startLight = (id, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
+        if(connection.connect){
         connection.write(id, 1);
         return true;
+    }   
+    else return false
     } catch (error) {
         return error;
     }
@@ -145,8 +148,11 @@ exports.startLight = (id, idKnx) => {
 exports.stopLight = (id, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
+        if(connection.connect){
         connection.write(id, 0);
-        return true;
+        
+        return true;}
+        else return false
     } catch (error) {
         return error;
     }
@@ -168,6 +174,7 @@ const startAllLights = (idKnx) => {
 const startLights = (idKnx, arrayLamp) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     for (i = 0; i < arrayLamp.length; i++) {
         try {
             connection.write(connection.arrayLamp[i].id, 1); // allumer        
@@ -181,6 +188,7 @@ const startLights = (idKnx, arrayLamp) => {
 const stopLights = (idKnx, arrayLamp) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     for (i = 0; i < arrayLamp.length; i++) {
         try {
             connection.write(connection.arrayLamp[i].id, 0); // eteindre        
@@ -196,6 +204,7 @@ exports.startAllLights = startAllLights
 const stopAllLights = (idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         for (i = 0; i < connection.arrayLamp.length; i++) {
             connection.write(connection.arrayLamp[i], 0); // eteindre
@@ -210,6 +219,7 @@ exports.stopAllLights = stopAllLights
 exports.startChase = async (idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         connection.startChain = true;
         while (connection.startChain) {
@@ -231,6 +241,7 @@ exports.startChase = async (idKnx) => {
 exports.stopChase = (idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         connection.startChain = false;
         return true;
@@ -242,6 +253,7 @@ exports.stopChase = (idKnx) => {
 exports.setInterval = (interval, idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         console.log("INTERVAL : " + connection.interval);
         (connection.interval >= 500) ? connection.interval = interval: connection.interval = 500;
@@ -254,6 +266,7 @@ exports.setInterval = (interval, idKnx) => {
 exports.setUpInterval = (idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         connection.interval += 1000;
         return true;
@@ -266,6 +279,7 @@ exports.setUpInterval = (idKnx) => {
 exports.setDownInterval = (idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         if (connection.interval > 1000) connection.interval -= 1000;
         return true;
@@ -278,6 +292,7 @@ exports.setDownInterval = (idKnx) => {
 exports.reverse = (idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         connection.sensDirect = (connection.sensDirect) ? false : true;
         return true;
@@ -290,6 +305,7 @@ exports.reverse = (idKnx) => {
 exports.getAllLight = (idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         return {
             'success': true,
@@ -303,6 +319,7 @@ exports.getAllLight = (idKnx) => {
 exports.addLight = (name, idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         connection.arrayLamp.push(name);
         return true;
@@ -314,6 +331,7 @@ exports.addLight = (name, idKnx) => {
 exports.removeLight = (name, idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
+    if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         let index = connection.arrayLamp.indexOf(name);
         connection.arrayLamp.splice(index, 1);
