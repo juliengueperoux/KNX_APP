@@ -133,6 +133,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
   }
 
   intervalChaseService(id) : void{
+    console.log("id:"+id)
     KnxService.intervalValue({
       'interval' : this.interval,
       'idKnx' : id

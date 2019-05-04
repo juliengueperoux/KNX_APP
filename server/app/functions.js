@@ -15,12 +15,12 @@ exports.initConnections = async () => {
         return results
     })
     allConfigs.forEach((config) => {
-        const connection = new (require('./connection'))()
+        const connection = new(require('./connection'))()
         connection.ipPort = config.port
         connection.ipAddr = config.ipAddr
         connection._id = config._id
         connection.interval = 1000
-        connection.startChain = false,
+        connection.startChain = false
         connection.arrayLamp = config.lights
         connection.sensDirect = true
         const myConnection = new knx.Connection(connection)
@@ -30,16 +30,17 @@ exports.initConnections = async () => {
 }
 
 exports.addConnection = async (config) => {
-    const connection = new (require('./connection'))()
+    const connection = new(require('./connection'))()
     connection.ipPort = config.port
     connection.ipAddr = config.ipAddr
     connection._id = config._id
     connection.interval = 1000
-    connection.startChain = false,
+    connection.startChain = false
     connection.arrayLamp = config.lights
     connection.sensDirect = true
-    connection.Connect()
-    connectionsList.push(connection)
+    const myConnection = new knx.Connection(connection)
+    myConnection.Connect()
+    connectionsList.push(myConnection)
 }
 
 exports.initScenarios = async () => {
@@ -117,6 +118,7 @@ exports.connectionKnx = (idUser, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
         connection.Connect()
+        connection.connect = true
         return true;
     } catch (error) {
         return error;
@@ -138,12 +140,11 @@ exports.startLight = (id, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
         console.log("connection Trouvée")
-        if(connection.connect){
-            console.log("connection.connected ouiiii"+id)
-        connection.write(id, 1);
-        return true;
-    }   
-    else return false
+        if (connection.connect) {
+            console.log("connection.connected ouiiii" + id)
+            connection.write(id, 1);
+            return true;
+        } else return false
     } catch (error) {
         return error;
     }
@@ -152,11 +153,10 @@ exports.startLight = (id, idKnx) => {
 exports.stopLight = (id, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
-        if(connection.connect){
-        connection.write(id, 0);
-        
-        return true;}
-        else return false
+        if (connection.connect) {
+            connection.write(id, 0);
+            return true;
+        } else return false
     } catch (error) {
         return error;
     }
@@ -181,7 +181,7 @@ const startLights = (idKnx, arrayLamp) => {
     if (!connection.connect) return new Error("Knx machine not Connected")
     for (i = 0; i < arrayLamp.length; i++) {
         try {
-            connection.write(connection.arrayLamp[i].id, 1); // allumer        
+            connection.write(arrayLamp[i].id, 1); // allumer        
         } catch (error) {
             return error;
         }
@@ -195,7 +195,7 @@ const stopLights = (idKnx, arrayLamp) => {
     if (!connection.connect) return new Error("Knx machine not Connected")
     for (i = 0; i < arrayLamp.length; i++) {
         try {
-            connection.write(connection.arrayLamp[i].id, 0); // eteindre        
+            connection.write(arrayLamp[i].id, 0); // eteindre        
         } catch (error) {
             return error;
         }
@@ -211,7 +211,7 @@ const stopAllLights = (idKnx) => {
     if (!connection.connect) return new Error("Knx machine not Connected")
     try {
         for (i = 0; i < connection.arrayLamp.length; i++) {
-            connection.write(connection.arrayLamp[i], 0); // eteindre
+            connection.write(connection.arrayLamp[i].id, 0); // eteindre
         }
         return true;
     } catch (error) {
@@ -230,9 +230,9 @@ exports.startChase = async (idKnx) => {
             var index = 0;
             for (i = 0; i < connection.arrayLamp.length; i++) {
                 index = (!connection.sensDirect) ? connection.arrayLamp.length - 1 - i : i; // si connection.sensDirect = true connection.sensDirect normal sinon connection.sensDirect à l envers!
-                connection.write(connection.arrayLamp[index], 1); // allumer
+                connection.write(connection.arrayLamp[index].id, 1); // allumer
                 await sleep(connection.interval);
-                connection.write(connection.arrayLamp[index], 0); // allumer
+                connection.write(connection.arrayLamp[index].id, 0); // allumer
             }
         }
         return true;
@@ -254,13 +254,12 @@ exports.stopChase = (idKnx) => {
     }
 }
 
-exports.setInterval = (interval, idKnx) => {
+exports.setInterval = (newInterval, idKnx) => {
     const connection = getKNXConfig(idKnx)
     if (!connection) return new Error("Knx machine not found")
     if (!connection.connect) return new Error("Knx machine not Connected")
     try {
-        console.log("INTERVAL : " + connection.interval);
-        (connection.interval >= 500) ? connection.interval = interval: connection.interval = 500;
+        newInterval >= 500 ? connection.interval = newInterval: connection.interval = 500;
         return true;
     } catch (error) {
         return error;

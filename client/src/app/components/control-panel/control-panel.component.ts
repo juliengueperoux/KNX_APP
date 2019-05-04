@@ -122,13 +122,13 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
     } 
   }
 
-  reverse(id) : void{
+  reverse(event,id) : void{
     KnxService.reverse(id).then((res) =>{
       (res.data.success) ? this._utils.openSnackBar("Chenillard inversé","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
     });
   }
 
-  setIntervalChase(event,id) : void{
+  setIntervalChase(event) : void{
     this.interval = event.value;
   }
 

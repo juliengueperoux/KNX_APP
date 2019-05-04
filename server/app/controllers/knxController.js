@@ -146,17 +146,18 @@ exports.stopChase = (req, res) => {
     }): res.send(state);
 };
 
-exports.setInterval = (req, res) => {
+exports.setInterval = async (req, res) => {
     const interval = req.body.interval;
     const idKnx = req.body.idKnx
-    var state = functions.setInterval(interval,idKnx);
+    console.log("interval "+interval+ " idKnx:"+idKnx)
+    var state = await functions.setInterval(interval,idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);
 };
 
-exports.reverse = (req, res) => {
-    var state = functions.reverse(req.params.idKnx);
+exports.reverse = async (req, res) => {
+    var state = await functions.reverse(req.params.idKnx);
     (state) ? res.send({
         success: true
     }): res.send(state);

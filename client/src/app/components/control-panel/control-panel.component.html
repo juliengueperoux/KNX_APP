@@ -103,7 +103,7 @@
                                     style="width:100%"
                                     thumbLabel
                                     (input)="setIntervalChase($event)"
-                                    (mouseup)="intervalChaseService()"
+                                    (mouseup)="intervalChaseService(knx._id)"
                                     [displayWith]="formatLabel"
                                     tickInterval="500"
                                     min="500"

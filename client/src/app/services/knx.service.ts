@@ -39,7 +39,7 @@ export default {
     return Api.post('/kniot/interval',param)
   },
   reverse (param){
-    return Api.get('/kniot/reverse/',param)
+    return Api.get('/kniot/reverse/'+param)
   },
   getAllLight(param){
     return Api.get('kniot/allLight/'+param)
