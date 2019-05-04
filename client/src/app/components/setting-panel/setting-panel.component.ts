@@ -202,19 +202,12 @@ export class SettingPanelComponent implements OnInit {
     });
   }
 
- 
-
-  
-
   getAllLights() : void{
     KnxService.findConfigs().then((res) =>{
       this.arrayKnx = res.data;
       console.log(this.arrayKnx);
     });
   }
-
-  
-  
 
   /**
    * Call la dialog générique avec les paramètres à afficher 
@@ -239,6 +232,17 @@ export class SettingPanelComponent implements OnInit {
             this.arrayKnx.forEach((element, i) => {
               if(element._id==result.idKnx){
                 this.arrayKnx.splice(i, 1); 
+                return true;
+              }
+            });
+            break;
+          case 3: 
+            this.arrayKnx.forEach((element, i) => {
+
+              if(element._id==result.knxMachine._id){
+                  console.log("ELEMENT : " + JSON.stringify(element));
+                  console.log("result.knxMachine : " + JSON.stringify(result.knxMachine));
+                  element = result.knxMachine;
                 return true;
               }
             });

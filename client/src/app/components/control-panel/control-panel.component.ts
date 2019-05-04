@@ -31,22 +31,22 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
 
   initReceptionWebSocket(){
     if (this.states.socketCreated()){
-      console.log("socket created");
       this.states
         .getMessages().pipe(takeUntil(componentDestroyed(this))).subscribe((message: string)=>{
           let data = JSON.parse(message);
+          console.log(data);
           let nameLight = "";
           switch(data.action.value){
+            case 0 :
+                nameLight = "svg-light-" + data.action.idLamp + "-" + data.idKnx;
+                this.setCSSclass(nameLight,'is-activated',false);
+              break;
             case 1 :
                 nameLight = "svg-light-" + data.action.idLamp + "-" + data.idKnx;
                 this.setCSSclass(nameLight,'is-activated',true);
               break;
-            case 2 :
-                nameLight = "svg-light-" + data.action.idLamp + "-" + data.idKnx;
-                this.setCSSclass(nameLight,'is-activated',false);
-              break;
           }
-          console.log(data);
+          
       });
     }
   }
@@ -69,7 +69,6 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
       });
       this.arrayKnx[indice].lights.forEach(element => {
         let nameLight = "svg-light-" + element.id + "-" + this.arrayKnx[indice]._id;
-        this.setCSSclass(nameLight,'is-activated',true);
         document.getElementById(nameLight).classList.add();
       })
     }
