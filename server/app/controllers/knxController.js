@@ -109,57 +109,57 @@ exports.connect = (req, res) => {
 
 exports.disconnect = (req, res) => {
     var state = functions.deconnectionKnx(req.params.idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 }
 
 exports.startAllLights = (req, res) => {
     var state = functions.startAllLights(req.params.idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 };
 
 exports.stopAllLights = (req, res) => {
     var state = functions.stopAllLights(req.params.idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 };
 
 exports.startLight = (req, res) => {
     const id = req.body.id;
     const idKnx = req.body.idKnx
     var state = functions.startLight(id,idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 }
 
 exports.stopLight = (req, res) => {
     const id = req.body.id;
     const idKnx = req.body.idKnx
     var state = functions.stopLight(id,idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 }
 
 exports.startChase = (req, res) => {
     const idKnx = req.params.idKnx
     var state = functions.startChase(idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 };
 
 exports.stopChase = (req, res) => {
     const idKnx = req.params.idKnx
     var state = functions.stopChase(idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 };
 
 exports.setInterval = async (req, res) => {
@@ -167,16 +167,16 @@ exports.setInterval = async (req, res) => {
     const idKnx = req.body.idKnx
     console.log("interval "+interval+ " idKnx:"+idKnx)
     var state = await functions.setInterval(interval,idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 };
 
 exports.reverse = async (req, res) => {
     var state = await functions.reverse(req.params.idKnx);
-    (state) ? res.send({
+    (state.success) ? res.send({
         success: true
-    }): res.send(state);
+    }): res.send(state.errorMessage);
 };
 
 exports.getAllLight = (req, res) => {

@@ -26,25 +26,31 @@ exports.initConnections = async () => {
         connection.lights = config.lights
         connection.sensDirect = true
         myConnection.Connect()
-        if(myConnection.connected) connection.connect = true
-        connectionsList.push({params:connection,connection:myConnection})
+        if (myConnection.connected) connection.connect = true
+        connectionsList.push({
+            params: connection,
+            connection: myConnection
+        })
     })
 }
 
 exports.addConnection = async (config) => {
     const connection = new(require('./connection'))()
     connection.ipPort = config.port
-        connection.ipAddr = config.ipAddr
-        connection._id = config._id
-        const myConnection = new knx.Connection(connection)
-        connection.name = config.name
-        connection.interval = 1000
-        connection.startChain = false
-        connection.lights = config.lights
-        connection.sensDirect = true
-        myConnection.Connect()
-        if(myConnection.connected) connection.connect = true
-        connectionsList.push({params:connection,connection:myConnection})
+    connection.ipAddr = config.ipAddr
+    connection._id = config._id
+    const myConnection = new knx.Connection(connection)
+    connection.name = config.name
+    connection.interval = 1000
+    connection.startChain = false
+    connection.lights = config.lights
+    connection.sensDirect = true
+    myConnection.Connect()
+    if (myConnection.connected) connection.connect = true
+    connectionsList.push({
+        params: connection,
+        connection: myConnection
+    })
 }
 
 exports.initScenarios = async () => {
@@ -121,58 +127,64 @@ exports.addScenario = async (scenario) => {
 exports.connectionKnx = (idUser, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
+        if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
         connection.connection.Connect()
-        if(connection.connection.connected) connection.params.connect = true
+        if (connection.connection.connected) connection.params.connect = true
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 exports.deconnectionKnx = (idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
+        if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
         connection.connection.Disconnect();
         connection.connection.connect = false
         connection.params.connect = false
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 exports.startLight = (id, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
-        if (connection.connection.connect) {
+        if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+        if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
             connection.connection.write(id, 1);
+            connection.params.lights.find(light => light.id === id).state = true
             return true;
-        } else return false
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 exports.stopLight = (id, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
-        if (connection.connection.connect) {
+        if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+        if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
             connection.connection.write(id, 0);
+            connection.params.lights.find(light => light.id === id).state = false
             return true;
-        } else return false
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 const startAllLights = (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     for (i = 0; i < connection.params.lights.length; i++) {
         try {
-            connection.connection.write(connection.params.lights[i].id, 1); // allumer        
+            connection.connection.write(connection.params.lights[i].id, 1); // allumer
+            connection.params.lights.forEach((light) => light.state = true)
         } catch (error) {
-            return error;
+             return {success:false, errorMessage:error}
         }
     }
     return true;
@@ -180,13 +192,18 @@ const startAllLights = (idKnx) => {
 
 const startLights = (idKnx, lights) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     for (i = 0; i < lights.length; i++) {
         try {
-            connection.connection.write(lights[i].id, 1); // allumer        
+            connection.connection.write(lights[i].id, 1); // allumer    
+            connection.params.lights.forEach((light) => {
+                if (lights.some(e => e.id === light.id)) {
+                    light.state = true
+                }
+            })
         } catch (error) {
-            return error;
+             return {success:false, errorMessage:error}
         }
     }
     return true;
@@ -194,13 +211,18 @@ const startLights = (idKnx, lights) => {
 
 const stopLights = (idKnx, lights) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     for (i = 0; i < lights.length; i++) {
         try {
-            connection.connection.write(lights[i].id, 0); // eteindre        
+            connection.connection.write(lights[i].id, 0); // eteindre 
+            connection.params.lights.forEach((light) => {
+                if (lights.some(e => e.id === light.id)) {
+                    light.state = false
+                }
+            })
         } catch (error) {
-            return error;
+             return {success:false, errorMessage:error}
         }
     }
     return true;
@@ -210,23 +232,24 @@ exports.startAllLights = startAllLights
 
 const stopAllLights = (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         for (i = 0; i < connection.lights.length; i++) {
             connection.connection.write(connection.params.lights[i].id, 0); // eteindre
+            connection.params.lights.forEach((light) => light.state = false)
         }
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 exports.stopAllLights = stopAllLights
 
 exports.startChase = async (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.startChain = true;
         while (connection.params.startChain) {
@@ -240,110 +263,110 @@ exports.startChase = async (idKnx) => {
         }
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 
 }
 
 exports.stopChase = (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.startChain = false;
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 exports.setInterval = (newInterval, idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
-        newInterval >= 500 ? connection.params.interval = newInterval: connection.params.interval = 500;
+        newInterval >= 500 ? connection.params.interval = newInterval : connection.params.interval = 500;
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 exports.setUpInterval = (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.interval += 1000;
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 
 };
 
 exports.setDownInterval = (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         if (connection.params.interval > 1000) connection.params.interval -= 1000;
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 
 };
 
 exports.reverse = (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.sensDirect = (connection.params.sensDirect) ? false : true;
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 
 }
 
 exports.getAllLight = (idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         return {
             'success': true,
             'data': connection.params.lights
         };
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 exports.addLight = (name, idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.lights.push(name);
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
 exports.removeLight = (name, idKnx) => {
     const connection = getKNXConfig(idKnx)
-    if (!connection.connection) return new Error("Knx machine not found")
-    if (!connection.connection.connect) return new Error("Knx machine not Connected")
+    if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+    if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         let index = connection.params.lights.indexOf(name);
         connection.params.lights.splice(index, 1);
         return true;
     } catch (error) {
-        return error;
+         return {success:false, errorMessage:error}
     }
 }
 
