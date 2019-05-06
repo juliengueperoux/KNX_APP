@@ -1,6 +1,5 @@
 const functions = require('../functions');
 const KNXConfigModel = require('../models/knxConfig')
-
 exports.addConfig = (req, res) => {
     const config = {
         ipAddr: req.body.ipAddr,
@@ -93,13 +92,9 @@ exports.deleteConfig = (req, res) => {
 }
 
 exports.findConfigs = (req,res) => {
-    KNXConfigModel.find({}, (err, results) => {
-        if (err) return res.send({
-            success: false,
-            errorMessage: "Erreur lors de la récupération des configurations KNX: " + err
-        })
-       return res.send(results)
-    })
+    let configs = functions.connectionsList;
+    configs = configs.map(elt => elt.params)
+    res.send(configs)
 }
 
 exports.connect = (req, res) => {
