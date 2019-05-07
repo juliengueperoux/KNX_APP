@@ -1,5 +1,6 @@
 const functions = require('../functions');
 const KNXConfigModel = require('../models/knxConfig')
+const ScenarioModel = require('../models/scenario')
 exports.addConfig = (req, res) => {
     const config = {
         ipAddr: req.body.ipAddr,
@@ -74,18 +75,22 @@ exports.deleteConfig = (req, res) => {
                 errorMessage: "Aucune machine KNX n'éxiste avec ces options"
             })
             else {
-                KNXConfigModel.deleteOne({_id: result._id}, (err, result) => {
-                    if (err) return res.send({
-                        success: false,
-                        errorMessage: "Erreur lors de la suppression de la configuration KNX: " + err
+                ScenarioModel.deleteMany({idKnx  :result._id},(errScenario, resultScenario)=>{
+                    if(errScenario) return res.send({success : false, errorMessage : "Erreur lors de la suppression des Scenarios: "+errScenario})
+                    functions.scenarioList = functions.scenarioList.filter( el => {return !(el.idKnx === result._id)});
+                    KNXConfigModel.deleteOne({_id: result._id}, (err, result) => {
+                        if (err) return res.send({
+                            success: false,
+                            errorMessage: "Erreur lors de la suppression de la configuration KNX: " + err
+                        })
+    
+                        const indexConnection = functions.connectionsList.findIndex(i => i._id === req.params.idKnx);
+                        if(indexConnection > -1) functions.connectionsList.splice(indexConnection,1)
+    
+                        return res.send({
+                            success: true
+                        });
                     })
-
-                    const indexConnection = functions.connectionsList.findIndex(i => i._id === req.params.idKnx);
-                    if(indexConnection > -1) functions.connectionsList.splice(indexConnection,1)
-
-                    return res.send({
-                        success: true
-                    });
                 })
             }
         })
@@ -109,74 +114,74 @@ exports.connect = (req, res) => {
 
 exports.disconnect = (req, res) => {
     var state = functions.deconnectionKnx(req.params.idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 }
 
 exports.startAllLights = (req, res) => {
     var state = functions.startAllLights(req.params.idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 };
 
 exports.stopAllLights = (req, res) => {
     var state = functions.stopAllLights(req.params.idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 };
 
 exports.startLight = (req, res) => {
     const id = req.body.id;
     const idKnx = req.body.idKnx
     var state = functions.startLight(id,idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 }
 
 exports.stopLight = (req, res) => {
     const id = req.body.id;
     const idKnx = req.body.idKnx
     var state = functions.stopLight(id,idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 }
 
 exports.startChase = (req, res) => {
     const idKnx = req.params.idKnx
-    var state = functions.startChase(idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    functions.startChase(idKnx).then((state)=>{
+        (!state.success) ? res.send(
+            state.errorMessage
+        ): res.send({success: true});
+    })
 };
 
 exports.stopChase = (req, res) => {
     const idKnx = req.params.idKnx
     var state = functions.stopChase(idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 };
 
 exports.setInterval = async (req, res) => {
     const interval = req.body.interval;
     const idKnx = req.body.idKnx
-    console.log("interval "+interval+ " idKnx:"+idKnx)
     var state = await functions.setInterval(interval,idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 };
 
 exports.reverse = async (req, res) => {
     var state = await functions.reverse(req.params.idKnx);
-    (state.success) ? res.send({
-        success: true
-    }): res.send(state.errorMessage);
+    (!state.success) ? res.send(
+        state.errorMessage
+    ): res.send({success: true});
 };
 
 exports.getAllLight = (req, res) => {
