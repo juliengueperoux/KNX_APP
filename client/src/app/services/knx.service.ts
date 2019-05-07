@@ -50,6 +50,9 @@ export default {
   addLight(param){
     return Api.post('kniot/addLight' , param)
   },
+  updateLight(param){
+    return Api.post('kniot/updateLight' , param)
+  },
   removeLight(param){
     return Api.post('kniot/removeLight' , param)
   }

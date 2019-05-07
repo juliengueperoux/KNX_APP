@@ -21,6 +21,7 @@ module.exports = (app,auth) => {
     //SETTINGS
     app.get('/api/kniot/allLight/:idKnx',auth.isAuth, knxController.getAllLight)    
     app.post('/api/kniot/addLight',auth.isAuth, knxController.addLight)
+    app.post('/api/kniot/updateLight',auth.isAuth, knxController.updateLight)
     app.post('/api/kniot/removeLight',auth.isAuth, knxController.removeLight)
 
     app.post('/api/kniot/addKnxConfig', auth.isAuth, knxController.addConfig)

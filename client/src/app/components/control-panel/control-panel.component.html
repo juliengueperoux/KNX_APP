@@ -1,5 +1,7 @@
 <div fxLayout="column" id="blockLight" fxLayoutAlign="center">
-
+    <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
+        <div fxFlex="80" class="title">Panneau de commande</div>
+    </div>
     <mat-card fxFlex="80"  *ngFor="let knx of arrayKnx; index as i" style="margin-bottom: 20px;margin-left:10%;margin-right:10%">
         <mat-card-title>
           Machine KNX : {{ knx.name }}

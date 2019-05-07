@@ -67,19 +67,11 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
       KnxService.startAllLights(id).then((res) =>{
         (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
-      this.arrayKnx[indice].lights.forEach(element => {
-        let nameLight = "svg-light-" + element.id + "-" + this.arrayKnx[indice]._id;
-        document.getElementById(nameLight).classList.add();
-      })
     }
     else{
       KnxService.stopAllLights(id).then((res) =>{
         (res.data.success) ? this._utils.openSnackBar("Lampes éteintes","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
-      this.arrayKnx[indice].lights.forEach(element => {
-        let nameLight = "svg-light-" + element.id + "-" + this.arrayKnx[indice]._id;
-        this.setCSSclass(nameLight,'is-activated',false);
-      })
     } 
   }
 
@@ -91,9 +83,6 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
       }).then((res) =>{
         (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " allumée","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
-      let nameLight = "svg-light-" + numero + "-" + this.arrayKnx[indice]._id;
-      console.log(nameLight);
-      this.setCSSclass(nameLight,'is-activated',true);
     } 
     else{
       KnxService.stopLight({
@@ -101,9 +90,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
         'idKnx' : id
       }).then((res) =>{
         (res.data.success) ? this._utils.openSnackBar("Lampe numéro " + numero + " éteinte","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
-      });;
-      let nameLight = "svg-light-" + numero + "-" + this.arrayKnx[indice]._id;
-      this.setCSSclass(nameLight,'is-activated',false);
+      });
     } 
   }
 

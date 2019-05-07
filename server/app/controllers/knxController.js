@@ -191,6 +191,13 @@ exports.addLight = (req, res) => {
     addLightFunction(light,idKnx,res);
 };
 
+exports.updateLight = (req, res) => {
+    const light = req.body.light;
+    const idKnx = req.body.idKnx
+    //functions.removeLight(light,idKnx);
+    updateLightFunction(light,idKnx,res);
+}
+
 exports.removeLight = (req, res) => {
     const light = req.body.light;
     const idKnx = req.body.idKnx
@@ -203,7 +210,17 @@ addLightFunction = (light,idKnx,res)=>{
         { _id: idKnx }, 
         { $push: { lights: light } },
         (error, resultat) => {
-            if(error) res.send({success:false, errorMessage:"Erreur lors de l'ajout de la lumière dans la base de données: "+error})
+            if(error) res.send({success:false, errorMessage:"Erreur lors de l'ajout de la lampe dans la base de données: "+error})
+            else res.send({success:true})
+        });
+}
+
+updateLightFunction = (light,idKnx,res)=>{
+    KNXConfigModel.findOneAndUpdate(
+        { _id: idKnx }, 
+        { $set: { light: light } },
+        (error, resultat) => {
+            if(error) res.send({success:false, errorMessage:"Erreur lors de l'update de la lampe dans la base de données: "+error})
             else res.send({success:true})
         });
 }
@@ -213,7 +230,7 @@ removeLightFunction = (light,idKnx,res)=>{
         { _id: idKnx }, 
         { $set: { lights: light  } },
         (error, resultat) => {
-             if(error) res.send({success:false, errorMessage:"Erreur lors de la suppression de la lumière dans la base de données: "+error})
+             if(error) res.send({success:false, errorMessage:"Erreur lors de la suppression de la lampe dans la base de données: "+error})
              else res.send({success:true})
          });
 }

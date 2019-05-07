@@ -2,7 +2,7 @@
 <h1 mat-dialog-title>Ajout de lampe</h1>
   <div mat-dialog-content style="height: 150px">
     {{data.sentence}}
-    <form [formGroup]="lampsGroup" (ngSubmit)="addLight()"> 
+    <form [formGroup]="lampsGroup" > 
       <div fxLayout="row">
         <div fxFlex="100">
           <mat-form-field class="example-full-width">
@@ -18,8 +18,8 @@
       <div mat-dialog-actions>
           <div fxFlex></div>
           
-          <button mat-button  type="submit" cdkFocusInitial>Valider</button>
-          <button mat-button (click)="onNoClick()">Fermer</button>
+          <button mat-button (click)="onNoClick()">Annuler</button>
+          <button mat-button  type="submit" (click)="addLight()" cdkFocusInitial>Valider</button>
         </div>
     </form>
   </div>
