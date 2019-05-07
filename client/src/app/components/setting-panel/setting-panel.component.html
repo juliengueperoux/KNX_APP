@@ -11,19 +11,19 @@
               </div>
               <div fxFlex.gt-sm="100" fxFlex="25">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx"
+                  <input matInput placeholder="Nom machine"
                     formControlName="inputNameKnxControl" required>
                 </mat-form-field>
               </div>
               <div fxFlex.gt-sm="100" fxFlex="25">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx" formControlName="inputIpKnxControl"
+                  <input matInput placeholder="Adresse IP" formControlName="inputIpKnxControl"
                     required>
                 </mat-form-field>
               </div>
               <div fxFlex.gt-sm="100" fxFlex="25">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Port " #inputPort maxlength="5" [(ngModel)]="inputPortKnx"
+                  <input matInput placeholder="Port " #inputPort maxlength="5"
                     formControlName="inputPortKnxControl" required>
                   <mat-hint align="end">{{inputPort.value?.length || 0}}/5</mat-hint>
 
@@ -49,13 +49,13 @@
               </div>
               <div fxFlex.gt-sm="100" fxFlex="25">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="ID" [(ngModel)]="inputIdLamp" formControlName="inputNameLampControl"
+                  <input matInput placeholder="ID" formControlName="inputNameLampControl"
                     required>
                 </mat-form-field>
               </div>
               <div fxFlex.gt-sm="100" fxFlex="25">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Nom" [(ngModel)]="inputNameLamp" formControlName="inputIdLampControl"
+                  <input matInput placeholder="Nom" formControlName="inputIdLampControl"
                     required>
                 </mat-form-field>
               </div>

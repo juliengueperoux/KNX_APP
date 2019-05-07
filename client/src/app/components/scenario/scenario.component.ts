@@ -135,7 +135,6 @@ export class ScenarioComponent implements OnInit {
 
   createTable() {
     ScenarioService.getAllScenario().then((res) => {
-      console.log(res.data);
       if (res.data) {
         this.arrayElement = Array<Element>();
         res.data.forEach(element => {
@@ -197,7 +196,6 @@ export class ScenarioComponent implements OnInit {
         this.resetFormGroups()
       }
     })
-    console.log("on lance la requete !")
   }
 
 }
