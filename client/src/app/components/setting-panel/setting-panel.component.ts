@@ -229,7 +229,6 @@ export class SettingPanelComponent implements OnInit {
       data: data
     });
     dialogRef.afterClosed().subscribe(result => {
-<<<<<<< HEAD
       if(result){
         if(result.type){
           switch(result.type){
@@ -272,37 +271,6 @@ export class SettingPanelComponent implements OnInit {
               });
               break;
           }
-=======
-      if(result.type){
-        switch(result.type){
-          case 1 :
-            this.arrayKnx.forEach(element => {
-              if(element._id==result.idKnx){
-                element.lights.push(result.light);
-              }
-            });
-            break;
-          case 2: 
-            this.arrayKnx.forEach((element, i) => {
-              if(element._id==result.idKnx){
-                this.arrayKnx.splice(i, 1); 
-                return true;
-              }
-            });
-            break;
-          case 3: 
-            this.arrayKnx.forEach((element, i) => {
-
-              if(element._id==result.knxMachine._id){
-                  console.log("ELEMENT : " + JSON.stringify(element));
-                  console.log("result.knxMachine : " + JSON.stringify(result.knxMachine));
-                  element = result.knxMachine;
-                return true;
-              }
-            });
-            break;
-
->>>>>>> finish-dialogue
         }
       }
     });
