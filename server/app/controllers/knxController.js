@@ -86,7 +86,7 @@ exports.deleteConfig = (req, res) => {
     
                         const indexConnection = functions.connectionsList.findIndex(i => i._id === req.params.idKnx);
                         if(indexConnection > -1) functions.connectionsList.splice(indexConnection,1)
-    
+                        functions.connectionsList = functions.connectionsList.filter( el => {return !(el._id === result._id)});
                         return res.send({
                             success: true
                         });

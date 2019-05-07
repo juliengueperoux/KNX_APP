@@ -10,9 +10,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public username: string;
-  public password: string;
-  public ipServer: string;
   public title: string;
   public subTitle: string;
   public isIP: boolean;
@@ -62,7 +59,7 @@ export class LoginComponent implements OnInit {
   }
 
   public submit() {
-    this._auth.login(this.username, this.password).then((res:any) => {
+    this._auth.login(this.loginGroup.get("usernameControl").value, this.loginGroup.get("passwordControl").value).then((res:any) => {
       if(res.data.success){
           this.router.navigate(['home'])
           this.states.getMessages()
@@ -71,7 +68,7 @@ export class LoginComponent implements OnInit {
   }
 
   public setIpServer(){
-    localStorage.setItem('ipServer',this.ipServer);
+    localStorage.setItem('ipServer',this.ipServerGroup.get("ipServerControl").value);
     this.detectIpServer();
     this.router.navigate(['login']);
     
