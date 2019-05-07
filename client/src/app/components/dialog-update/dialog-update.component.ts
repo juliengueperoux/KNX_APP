@@ -111,6 +111,7 @@ export class DialogUpdateComponent implements OnInit {
     knxService.updateConfig(this.knxMachine).then((res) =>{
       if(res.data.success){
         this._utils.openSnackBar("La machine knx a été modifiée","Ok","success-snackbar");
+<<<<<<< HEAD
         this.dialogRef.close(dataClose);
       }else{
         this._utils.openSnackBar("Erreur de suppression : " + res.errorMessage,"Ok","error-snackbar");
@@ -118,6 +119,14 @@ export class DialogUpdateComponent implements OnInit {
       }
     });
     
+=======
+      }else{
+        this._utils.openSnackBar("Erreur de suppression : " + res.errorMessage,"Ok","error-snackbar");
+      }
+    });
+    this.dialogRef.close(dataClose);
+
+>>>>>>> finish-dialogue
   }
 
   updateLamp(): void{

@@ -67,6 +67,13 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
       KnxService.startAllLights(id).then((res) =>{
         (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok","default-snackbar") : this._utils.openSnackBar("Error" + res.data,"Ok","error-snackbar");
       });
+<<<<<<< HEAD
+=======
+      this.arrayKnx[indice].lights.forEach(element => {
+        let nameLight = "svg-light-" + element.id + "-" + this.arrayKnx[indice]._id;
+        document.getElementById(nameLight).classList.add();
+      })
+>>>>>>> finish-dialogue
     }
     else{
       KnxService.stopAllLights(id).then((res) =>{
