@@ -27,13 +27,7 @@ function newConnection(){
               'idLamp' : '0/3/0'
           }
         }
-      ***** INTERVAL *****
-      data = {
-          'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
-          'action' : {
-              'value' : 3 || 4, ( 3 -> down 4 -> up ) 
-          }
-        }
+      
       ***** CHASE *****
       data = {
           'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
@@ -52,8 +46,20 @@ function newConnection(){
         }
       }*/
 
-     // io.sockets.emit("data");
-      console.log("evt:"+evt+",src:"+src+",dest:"+dest+",value:"+JSON.stringify(JSON.parse(JSON.stringify(value))))
+      console.log("evt:"+evt+",src:"+src+",dest:"+dest+",value:"+JSON.parse(JSON.stringify(value)))
+      const state = JSON.parse(JSON.stringify(value)).data[0];
+
+      if(dest.substring(0,3) == "0/2"){
+        let idLamp = "0/1/" + dest.substring(4)
+        data = {
+          'idKnx' : this._id,
+          'action' : {
+              'value' : state,
+              'idLamp' : idLamp
+          }    
+        }  
+        io.sockets.emit('hello',JSON.stringify(data))
+      }
       if (dest == "0/3/4") {
         console.log("Appui dernier à droite : " + this.interval);
         this.interval += 1000;

@@ -32,7 +32,7 @@ export class ScenarioComponent implements OnInit {
   arrayScenario: Array<Scenario>;
   arrayKnx: Array<KnxMachine> = [];
   arrayLamp: Array<Lamp> = [];
-  repetitionList: string[] = ['Jour', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  repetitionList: string[] = ['Tous les jours', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
   scenarioObj: Scenario;
 
 

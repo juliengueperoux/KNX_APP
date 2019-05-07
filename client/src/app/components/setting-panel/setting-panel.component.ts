@@ -179,6 +179,16 @@ export class SettingPanelComponent implements OnInit {
     this.openDialog(data,DialogUpdateComponent);
   }
 
+  updateLamp(indiceKnx,indiceLamp) : void{
+    let data = {
+      type:2,
+      idKnx: this.arrayKnx[indiceKnx]._id,
+      lamp : new Lamp(this.arrayKnx[indiceKnx].lights[indiceLamp].name,this.arrayKnx[indiceKnx].lights[indiceLamp].id),
+      sentence : 'Modifier la lampe : ' + this.arrayKnx[indiceKnx].lights[indiceLamp].name,
+    }
+    this.openDialog(data,DialogUpdateComponent);
+  }
+
   deleteLamp(idKnx,idLamp) : void{
     let lights = []
     this.arrayKnx.forEach(element => {
@@ -202,19 +212,12 @@ export class SettingPanelComponent implements OnInit {
     });
   }
 
- 
-
-  
-
   getAllLights() : void{
     KnxService.findConfigs().then((res) =>{
       this.arrayKnx = res.data;
       console.log(this.arrayKnx);
     });
   }
-
-  
-  
 
   /**
    * Call la dialog générique avec les paramètres à afficher 
@@ -226,24 +229,48 @@ export class SettingPanelComponent implements OnInit {
       data: data
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result.type){
-        switch(result.type){
-          case 1 :
-            this.arrayKnx.forEach(element => {
-              if(element._id==result.idKnx){
-                element.lights.push(result.light);
-              }
-            });
-            break;
-          case 2: 
-            this.arrayKnx.forEach((element, i) => {
-              if(element._id==result.idKnx){
-                this.arrayKnx.splice(i, 1); 
-                return true;
-              }
-            });
-            break;
-
+      if(result){
+        if(result.type){
+          switch(result.type){
+            case 1 :
+              this.arrayKnx.forEach(element => {
+                if(element._id==result.idKnx){
+                  element.lights.push(result.light);
+                }
+              });
+              break;
+            case 2: 
+              this.arrayKnx.forEach((element, i) => {
+                if(element._id==result.idKnx){
+                  this.arrayKnx.splice(i, 1); 
+                  return true;
+                }
+              });
+              break;
+            case 3: 
+              this.arrayKnx.forEach((element, i) => {
+                if(element._id==result.knxMachine._id){
+                  if(element.name != result.knxMachine.name) element.name = result.knxMachine.name;
+                  if(element.ipAddr != result.knxMachine.ipAddr) element.ipAddr = result.knxMachine.ipAddr;
+                  if(element.port != result.knxMachine.port) element.port = result.knxMachine.port;
+                  return true;
+                }
+              });
+              break;
+            case 4: 
+              this.arrayKnx.forEach((element, i) => {
+                if(element._id==result.idKnx){
+                  element.lights.forEach(light =>{
+                    if(light.id == result.old_id){
+                      if(light.id != result.old_id) light.id = result.light.id;
+                      if(light.name != result.light.name) light.name = result.light.name;
+                    }
+                  })
+                  return true;
+                }
+              });
+              break;
+          }
         }
       }
     });

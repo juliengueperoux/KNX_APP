@@ -1,31 +1,60 @@
 
 <h1 mat-dialog-title>Update </h1>
-<div mat-dialog-content style="height: 300px">
+<div *ngIf="type == 1" mat-dialog-content style="height: 300px">
   {{data.sentence}}
-  <form *ngIf="type == 1" (ngSubmit)="updateMachineKnx()"> 
+
+  <form [formGroup]="knxGroup"> 
     <div fxLayout="column">
       <div fxFlex="100">
         <mat-form-field class="example-full-width" style="width:100%">
-            <input matInput placeholder="Nom" [(ngModel)]="knxMachine.name" [ngModelOptions]="{standalone: true}" required>
+            <input matInput placeholder="Nom" [(ngModel)]="knxMachine.name" formControlName="inputNameKnxControl" required>
         </mat-form-field>
       </div>
       <div fxFlex="100">
           <mat-form-field class="example-full-width" style="width:100%">
-              <input matInput placeholder="Ip" [(ngModel)]="knxMachine.ipAddr"  [ngModelOptions]="{standalone: true}" required>
+              <input matInput placeholder="Ip" [(ngModel)]="knxMachine.ipAddr"  formControlName="inputIpKnxControl" required>
           </mat-form-field>
       </div>
       <div fxFlex="100">
           <mat-form-field class="example-full-width" style="width:100%">
-              <input matInput placeholder="Port" [(ngModel)]="knxMachine.port"  [ngModelOptions]="{standalone: true}" required>
+              <input matInput placeholder="Port" [(ngModel)]="knxMachine.port" formControlName="inputPortKnxControl" required>
           </mat-form-field>
       </div>
     </div>
     <div mat-dialog-actions>
         <div fxFlex></div>
         
-        <button mat-button  type="submit" cdkFocusInitial>Valider</button>
-        <button mat-button (click)="onNoClick()">Fermer</button>
+        <button mat-button (click)="onNoClick()">Annuler</button>
+        <button mat-button  type="submit" (click)="updateMachineKnx()" cdkFocusInitial>Valider</button>
       </div>
   </form>
+
+</div>
+
+<div *ngIf="type == 2"  mat-dialog-content style="height: 220px">
+    {{data.sentence}}
+    
+  <form [formGroup]="lampsGroup"> 
+    <div fxLayout="column">
+      <div fxFlex="50">
+        <mat-form-field class="example-full-width" style="width:100%">
+            <input matInput placeholder="Nom" [(ngModel)]="lamp.name" formControlName="inputNameLampControl" required>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50">
+          <mat-form-field class="example-full-width" style="width:100%">
+              <input matInput placeholder="Id" [(ngModel)]="lamp.id" formControlName="inputIdLampControl" required>
+          </mat-form-field>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+        <div fxFlex></div>
+        
+        <button mat-button (click)="onNoClick()">Annuler</button>
+        <button mat-button  type="submit" (click)="updateLamp()" cdkFocusInitial>Valider</button>
+      </div>
+  </form>
+
+
 </div>
 
