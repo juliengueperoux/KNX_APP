@@ -102,89 +102,66 @@ exports.findConfigs = (req,res) => {
 
 exports.connect = (req, res) => {
     var state = functions.connectionKnx(req.params.idKnx);
-    if (state) {
-        res.send({
-            success: true
-        })
-        // ajouter dans la socket que le mec c'est co à la machine KNX
-    } else res.send(state);
+    res.send(state)
 }
 
 exports.disconnect = (req, res) => {
     var state = functions.deconnectionKnx(req.params.idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+    res.send(state)
 }
 
 exports.startAllLights = (req, res) => {
     var state = functions.startAllLights(req.params.idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+    res.send(state)
 };
 
 exports.stopAllLights = (req, res) => {
     var state = functions.stopAllLights(req.params.idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+    res.send(state)
 };
 
 exports.startLight = (req, res) => {
     const id = req.body.id;
     const idKnx = req.body.idKnx
     var state = functions.startLight(id,idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+   res.send(state)
 }
 
 exports.stopLight = (req, res) => {
     const id = req.body.id;
     const idKnx = req.body.idKnx
     var state = functions.stopLight(id,idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+    res.send(state)
 }
 
 exports.startChase = (req, res) => {
     const idKnx = req.params.idKnx
     functions.startChase(idKnx).then((state)=>{
-        (!state.success) ? res.send(
-            state.errorMessage
-        ): res.send({success: true});
+       res.send(state)
     })
 };
 
 exports.stopChase = (req, res) => {
     const idKnx = req.params.idKnx
     var state = functions.stopChase(idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+    res.send(state)
 };
 
 exports.setInterval = async (req, res) => {
     const interval = req.body.interval;
     const idKnx = req.body.idKnx
     var state = await functions.setInterval(interval,idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+    res.send(state)
 };
 
 exports.reverse = async (req, res) => {
     var state = await functions.reverse(req.params.idKnx);
-    (!state.success) ? res.send(
-        state.errorMessage
-    ): res.send({success: true});
+    res.send(state)
 };
 
 exports.getAllLight = (req, res) => {
     var state = functions.getAllLight(req.params.idKnx);
-    (state.success) ? res.send(state.data): res.send(state);
+    res.send(state)
 };
 
 exports.addLight = (req, res) => {

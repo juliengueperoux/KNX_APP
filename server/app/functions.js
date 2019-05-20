@@ -142,7 +142,7 @@ exports.connectionKnx = (idUser, idKnx) => {
         if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
         connection.connection.Connect()
         if (connection.connection.connected) connection.params.connect = true
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -156,7 +156,7 @@ exports.deconnectionKnx = (idKnx) => {
         connection.connection.Disconnect();
         connection.connection.connect = false
         connection.params.connect = false
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -169,7 +169,7 @@ exports.startLight = (id, idKnx) => {
         if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
             connection.connection.write(id, 1);
             connection.params.lights.find(light => light.id === id).state = true
-            return true;
+            return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -182,7 +182,7 @@ exports.stopLight = (id, idKnx) => {
         if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
             connection.connection.write(id, 0);
             connection.params.lights.find(light => light.id === id).state = false
-            return true;
+            return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -200,7 +200,7 @@ const startAllLights = (idKnx) => {
              return {success:false, errorMessage:error}
         }
     }
-    return true;
+    return {success:true};
 }
 
 const startLights = (idKnx, lights) => {
@@ -219,7 +219,7 @@ const startLights = (idKnx, lights) => {
              return {success:false, errorMessage:error}
         }
     }
-    return true;
+    return {success:true};
 }
 
 const stopLights = (idKnx, lights) => {
@@ -238,7 +238,7 @@ const stopLights = (idKnx, lights) => {
              return {success:false, errorMessage:error}
         }
     }
-    return true;
+    return {success:true};
 }
 
 exports.startAllLights = startAllLights
@@ -248,12 +248,14 @@ const stopAllLights = (idKnx) => {
     if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
-        for (i = 0; i < connection.lights.length; i++) {
+        console.log("connectionKNX not null")
+        for (i = 0; i < connection.params.lights.length; i++) {
             connection.connection.write(connection.params.lights[i].id, 0); // eteindre
             connection.params.lights.forEach((light) => light.state = false)
         }
-        return true;
+        return {success:true};
     } catch (error) {
+        console.log("errorStopallLights "+error)
          return {success:false, errorMessage:error}
     }
 }
@@ -275,7 +277,7 @@ exports.startChase = async (idKnx) => {
                 connection.connection.write(connection.params.lights[index].id, 0); // allumer
             }
         }
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -288,7 +290,7 @@ exports.stopChase = (idKnx) => {
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.startChain = false;
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -300,7 +302,7 @@ exports.setInterval = (newInterval, idKnx) => {
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         newInterval >= 500 ? connection.params.interval = newInterval : connection.params.interval = 500;
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -312,7 +314,7 @@ exports.setUpInterval = (idKnx) => {
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.interval += 1000;
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -325,7 +327,7 @@ exports.setDownInterval = (idKnx) => {
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         if (connection.params.interval > 1000) connection.params.interval -= 1000;
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -338,7 +340,7 @@ exports.reverse = (idKnx) => {
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.sensDirect = (connection.params.sensDirect) ? false : true;
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -365,7 +367,7 @@ exports.addLight = (name, idKnx) => {
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
         connection.params.lights.push(name);
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
@@ -378,7 +380,7 @@ exports.removeLight = (name, idKnx) => {
     try {
         let index = connection.params.lights.indexOf(name);
         connection.params.lights.splice(index, 1);
-        return true;
+        return {success:true};
     } catch (error) {
          return {success:false, errorMessage:error}
     }
