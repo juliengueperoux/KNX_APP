@@ -1,6 +1,6 @@
 const KNXConfigModel = require('./models/knxConfig');
 const ScenarioModel = require('./models/scenario');
-const CronJob = require('cron').CronJob;
+const schedule = require('node-schedule');
 const knx = require('knx');
 let connectionsList = []
 let scenarioList = []
@@ -93,11 +93,11 @@ exports.initScenarios = async () => {
         int: "7"
     }]
     scenarioList.forEach((scenario) => {
-        const cron = new CronJob(setCronTime(scenario, DayInt), function () {
-            if (scenario.action) startLights(scenario.idKnx, scenario.lights)
-            else stopLights(scenario.idKnx, scenario.lights)
-        }, null, false, 'Europe/Paris');
-        cron.start()
+        const cron = schedule.scheduleJob(createRule(scenario), function(scenarioCall){
+            console.log("START : " + JSON.stringify(scenarioCall));
+            if (scenarioCall.action) startLights(scenarioCall.idKnx, scenarioCall.lights)
+            else stopLights(scenarioCall.idKnx, scenarioCall.lights)
+          }.bind(null,scenario));
         scenario.cron = cron
     })
 }
@@ -125,11 +125,12 @@ exports.addScenario = async (scenario) => {
         name: "Dimanche",
         int: "7"
     }]
-    const cron = new CronJob(setCronTime(scenario, DayInt), function () {
-        if (scenario.action) startLights(scenario.idKnx, scenario.lights)
-        else stopLights(scenario.idKnx, scenario.lights)
-    }, null, false, 'Europe/Paris');
-    cron.start()
+    
+    const cron = schedule.scheduleJob(createRule(scenario), function(scenarioCall){
+        console.log("START : " + JSON.stringify(scenarioCall));
+        if (scenarioCall.action) startLights(scenarioCall.idKnx, scenarioCall.lights)
+        else stopLights(scenarioCall.idKnx, scenarioCall.lights)
+      }.bind(null,scenario));
     scenario.cron = cron
     scenarioList.push(scenario)
     return true
@@ -392,23 +393,22 @@ getKNXConfig = (idConfigKNX) => {
     });
 }
 
+createRule = (scenario) =>{
 
-setCronTime = (scenario, DayInt) => {
-    let cronTime = scenario.time.minutes + " " + scenario.time.hours + " * * " + setDayStringCron(scenario.repetition, DayInt)
-    return cronTime
+    var rule = new schedule.RecurrenceRule();
+    if(scenario.repetition.includes(-1)){
+        rule.dayOfWeek = [new schedule.Range(0, 6)];
+    }else{
+        rule.dayOfWeek = scenario.repetition;
+    }
+    rule.hour = scenario.time.hours;
+    rule.minute = scenario.time.minutes;
+    console.log("RULE : " + JSON.stringify(rule));
+
+   return rule
 }
 
-setDayStringCron = (days, DayInt) => {
-    let result = ""
-    if (days.indexOf("Jour") != -1) return "*"
-    days.forEach((day) => {
-        const dayint = DayInt.find((element) => {
-            return element.name == day
-        })
-        if (dayint) result += dayint.int + ","
-    })
-    if (result.length > 0) return result.substring(0, result.length - 1)
-}
+
 
 exports.connectionsList = connectionsList
 exports.scenarioList = scenarioList

@@ -32,7 +32,32 @@ export class ScenarioComponent implements OnInit {
   arrayScenario: Array<Scenario>;
   arrayKnx: Array<KnxMachine> = [];
   arrayLamp: Array<Lamp> = [];
-  repetitionList: string[] = ['Tous les jours', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  repetitionList: any[] = [{
+                              name: 'Tous les jours',
+                              value: -1
+                            },{
+                              name: 'Lundi',
+                              value: 1
+                            },{
+                              name: 'Mardi',
+                              value: 2
+                            },{
+                              name: 'Mercredi',
+                              value: 3
+                            },{
+                              name: 'Jeudi',
+                              value: 4
+                            },{
+                              name: 'Vendredi',
+                              value: 5
+                            },{
+                              name: 'Samedi',
+                              value: 6
+                            },
+                            {
+                              name: 'Dimanche',
+                              value: 0
+                            }];
   scenarioObj: Scenario;
 
 
@@ -167,6 +192,7 @@ export class ScenarioComponent implements OnInit {
     this.scenarioObj.name = this.knxGroup.get('inputNameScenarioControl').value
     this.scenarioObj.idKnx = this.knxGroup.get('selectKnxControl').value._id
     this.scenarioObj.nameKnx = this.knxGroup.get('selectKnxControl').value.name
+    console.log(this.repetitionsGroup.get('selectRepetitionControl').value);
     this.scenarioObj.repetition = this.repetitionsGroup.get('selectRepetitionControl').value
     this.scenarioObj.lights = this.lampGroup.get('selectLampControl').value
   }

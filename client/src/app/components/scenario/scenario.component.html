@@ -77,7 +77,7 @@
                   <mat-form-field>
                     <mat-label>Type de répétition</mat-label>
                     <mat-select multiple formControlName="selectRepetitionControl" required>
-                      <mat-option *ngFor="let valeur of repetitionList" [value]="valeur">{{valeur}}</mat-option>
+                      <mat-option *ngFor="let day of repetitionList" [value]="day.value">{{day.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
