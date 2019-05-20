@@ -32,12 +32,6 @@ export class SettingPanelComponent implements OnInit {
   knxGroup: FormGroup;
   lampsGroup: FormGroup;
   isOptional = false;
-
-  inputNameKnx: string;
-  inputIpKnx: string;
-  inputPortKnx: number;
-  inputNameLamp: string;
-  inputIdLamp: string;
   nameLight: string;
   knx: KnxMachine;
 
@@ -97,7 +91,8 @@ export class SettingPanelComponent implements OnInit {
   }
   
   addNewLamp():void{
-      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp,false));
+
+      this.arrayNewLamp.push(new Lamp(this.lampsGroup.get("inputNameLampControl").value,this.lampsGroup.get("inputIdLampControl").value));
       this.lampsGroup.reset();
   }
 
@@ -113,7 +108,7 @@ export class SettingPanelComponent implements OnInit {
 
 
   createNewKnxMachine() : void{
-    this.knx = new KnxMachine(null,this.inputNameKnx, this.inputIpKnx, this.inputPortKnx, this.arrayNewLamp);
+    this.knx = new KnxMachine(null,this.knxGroup.get("inputNameKnxControl").value, this.knxGroup.get("inputIpKnxControl").value,this.knxGroup.get("inputPortKnxControl").value, this.arrayNewLamp);
     KnxService.addConfig(this.knx).then((res) =>{
       if(res.data.success){
         this._utils.openSnackBar("Machine KNX  ajoutée à la base de données","Ok","success-snackbar");
@@ -136,7 +131,7 @@ export class SettingPanelComponent implements OnInit {
 
   addLamp(idKnx) : void{
     let lights = []
-    let light = new Lamp(this.inputNameLamp,this.inputIdLamp, false);
+    let light = new Lamp(this.lampsGroup.get("inputNameLampControl").value,this.lampsGroup.get("inputIdLampControl").value);
     this.arrayKnx.forEach(element => {
       if(element._id==idKnx){
         element.lights.push(light);

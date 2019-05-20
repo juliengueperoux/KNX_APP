@@ -16,11 +16,11 @@
       <form *ngIf="isIP" [formGroup]="loginGroup" (ngSubmit)="submit()">
           <div fxLayout="column" (ngSubmit)="submit()">
             <mat-form-field fxFlex="30" class="example-full-width">
-              <input matInput placeholder="Login" type="text" name="username" [(ngModel)]="username" formControlName="usernameControl" />
+              <input matInput placeholder="Login" type="text" name="username" formControlName="usernameControl" />
             </mat-form-field>
           
             <mat-form-field fxFlex="30" class="example-full-width">
-              <input matInput placeholder="Password" type="password" name="password" [(ngModel)]="password" formControlName="passwordControl"/>
+              <input matInput placeholder="Password" type="password" name="password" formControlName="passwordControl"/>
             </mat-form-field>
       
             <div class="form-group col-3">
@@ -32,7 +32,7 @@
       <form *ngIf="!isIP" [formGroup]="ipServerGroup" (ngSubmit)="setIpServer()">
           <div fxLayout="column" (ngSubmit)="setIpServer()">
             <mat-form-field fxFlex="30" class="example-full-width">
-              <input matInput placeholder="Adresse Ip" type="text" name="ipServer" [(ngModel)]="ipServer" formControlName="ipServerControl" />
+              <input matInput placeholder="Adresse Ip" type="text" name="ipServer" formControlName="ipServerControl" />
             </mat-form-field>
           
             <div class="form-group col-3">

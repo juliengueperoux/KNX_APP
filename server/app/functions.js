@@ -140,6 +140,7 @@ exports.deconnectionKnx = (idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
         if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
+        if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
         connection.connection.Disconnect();
         connection.connection.connect = false
         connection.params.connect = false
@@ -251,6 +252,7 @@ exports.startChase = async (idKnx) => {
     if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
     if (!connection.connection.connect) return {success:false, errorMessage:"Knx machine not connected"}
     try {
+        await stopAllLights(idKnx)
         connection.params.startChain = true;
         while (connection.params.startChain) {
             var index = 0;
