@@ -2,7 +2,7 @@ const KNXConfigModel = require('./models/knxConfig');
 const ScenarioModel = require('./models/scenario');
 const CronJob = require('cron').CronJob;
 const knx = require('knx');
-const connectionsList = []
+let connectionsList = []
 let scenarioList = []
 
 function sleep(ms) {
@@ -34,7 +34,7 @@ exports.initConnections = async () => {
     })
 }
 
-exports.addConnection = async (config) => {
+exports.addConnection = (config) => {
     const connection = new(require('./connection'))()
     connection.ipPort = config.port
     connection.ipAddr = config.ipAddr
@@ -51,6 +51,18 @@ exports.addConnection = async (config) => {
         params: connection,
         connection: myConnection
     })
+    exports.connectionsList = connectionsList
+}
+
+exports.deleteConfig= (id)=>{
+    let tamp = [];
+    connectionsList.forEach(element => {
+        if(element.params._id  != id){
+            tamp.push(element);
+        }
+    })
+    connectionsList = tamp
+    exports.connectionsList = connectionsList
 }
 
 exports.initScenarios = async () => {
