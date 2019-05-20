@@ -100,12 +100,12 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
   allLights(event,indice,id): void {
     if(event.checked){
       KnxService.startAllLights(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+        (res.data.success) ? this._utils.openSnackBar("Lampes allumées","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data.errorMessage.errorMessage,"Ok","error-snackbar");
       });
     }
     else{
       KnxService.stopAllLights(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Lampes éteintes","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+        (res.data.success) ? this._utils.openSnackBar("Lampes éteintes","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data.errorMessage,"Ok","error-snackbar");
       });
     } 
   }
@@ -129,7 +129,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
           this._utils.openSnackBar("Lampe numéro " + numero + " allumée","Ok","default-snackbar")
         }else{
           
-          this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+          this._utils.openSnackBar("Error: " + res.data.errorMessage,"Ok","error-snackbar");
         }
       });
     } 
@@ -149,7 +149,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
           })
           this._utils.openSnackBar("Lampe numéro " + numero + " éteinte","Ok","default-snackbar")
         }else{
-          this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+          this._utils.openSnackBar("Error: " + res.data.errorMessage,"Ok","error-snackbar");
         }
       });
     } 
@@ -158,12 +158,12 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
   chase(event,id) : void{
     if(event.checked){
       KnxService.startChase(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Chenillard allumé","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+        (res.data.success) ? this._utils.openSnackBar("Chenillard allumé","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data.errorMessage,"Ok","error-snackbar");
       });
     }
     else{
       KnxService.stopChase(id).then((res) =>{
-        (res.data.success) ? this._utils.openSnackBar("Chenillard éteint","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+        (res.data.success) ? this._utils.openSnackBar("Chenillard éteint","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data.errorMessage,"Ok","error-snackbar");
       });
       this.active =false;
     } 
@@ -171,7 +171,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
 
   reverse(event,id) : void{
     KnxService.reverse(id).then((res) =>{
-      (res.data.success) ? this._utils.openSnackBar("Chenillard inversé","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+      (res.data.success) ? this._utils.openSnackBar("Chenillard inversé","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data.errorMessage,"Ok","error-snackbar");
     });
   }
 
@@ -184,7 +184,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
       'interval' : this.interval,
       'idKnx' : id
     }).then((res) =>{
-      (res.data.success) ? this._utils.openSnackBar("Interval de " + this.interval + " µs","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data,"Ok","error-snackbar");
+      (res.data.success) ? this._utils.openSnackBar("Interval de " + this.interval + " µs","Ok","default-snackbar") : this._utils.openSnackBar("Error: " + res.data.errorMessage,"Ok","error-snackbar");
     });
   }
   
