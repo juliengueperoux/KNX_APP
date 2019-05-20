@@ -6,6 +6,10 @@ export class KnxMachine {
     ipAddr: string;
     port: number;
     lights: Array<Lamp>;
+    interval: number;
+    startChain: boolean;
+    sensDirect: boolean;
+
 
     constructor(id: string, n: string, i: string, p: number, l: Array<Lamp>)
     constructor(id: string, n: string, i: string, p: number, l: Array<Lamp>){
@@ -46,8 +50,21 @@ export class KnxMachine {
     }
 
     setLights(ligths: Array<Lamp>){
-        this.lights = this.lights;
+        this.lights = ligths;
     }
+
+    setInterval(interval: number){
+        this.interval = interval;
+    }
+
+    setStartChain(startChain : boolean){
+        this.startChain = startChain;
+    }
+
+    setSensDirect(sensDirect : boolean){
+        this.sensDirect = sensDirect;
+    }
+
 
 
 }

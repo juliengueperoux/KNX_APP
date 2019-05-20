@@ -97,7 +97,7 @@ export class SettingPanelComponent implements OnInit {
   }
   
   addNewLamp():void{
-      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp));
+      this.arrayNewLamp.push(new Lamp(this.inputNameLamp,this.inputIdLamp,false));
       this.lampsGroup.reset();
   }
 
@@ -136,7 +136,7 @@ export class SettingPanelComponent implements OnInit {
 
   addLamp(idKnx) : void{
     let lights = []
-    let light = new Lamp(this.inputNameLamp,this.inputIdLamp);
+    let light = new Lamp(this.inputNameLamp,this.inputIdLamp, false);
     this.arrayKnx.forEach(element => {
       if(element._id==idKnx){
         element.lights.push(light);
@@ -183,7 +183,7 @@ export class SettingPanelComponent implements OnInit {
     let data = {
       type:2,
       idKnx: this.arrayKnx[indiceKnx]._id,
-      lamp : new Lamp(this.arrayKnx[indiceKnx].lights[indiceLamp].name,this.arrayKnx[indiceKnx].lights[indiceLamp].id),
+      lamp : new Lamp(this.arrayKnx[indiceKnx].lights[indiceLamp].name,this.arrayKnx[indiceKnx].lights[indiceLamp].id, this.arrayKnx[indiceKnx].lights[indiceLamp].state),
       sentence : 'Modifier la lampe : ' + this.arrayKnx[indiceKnx].lights[indiceLamp].name,
     }
     this.openDialog(data,DialogUpdateComponent);
