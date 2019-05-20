@@ -40,7 +40,8 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
             if(machine._id == data.idKnx){
               machine.lights.forEach(light => {
                 if(light.id == data.action.idLamp){
-                  light.state = (data.action.idLamp == 0) ? false : true;
+                  console.log("data. : " + JSON.stringify(data));
+                  light.state = (data.action.value == 0) ? false : true;
                 }
               });
             }

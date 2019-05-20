@@ -273,7 +273,7 @@ exports.startChase = async (idKnx) => {
             for (i = 0; i < connection.params.lights.length; i++) {
                 index = (!connection.params.sensDirect) ? connection.params.lights.length - 1 - i : i; // si connection.sensDirect = true connection.sensDirect normal sinon connection.sensDirect à l envers!
                 connection.connection.write(connection.params.lights[index].id, 1); // allumer
-                await sleep(connection.interval);
+                await sleep(connection.params.interval);
                 connection.connection.write(connection.params.lights[index].id, 0); // allumer
             }
         }
