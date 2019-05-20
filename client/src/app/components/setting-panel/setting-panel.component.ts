@@ -91,6 +91,7 @@ export class SettingPanelComponent implements OnInit {
   }
   
   addNewLamp():void{
+
       this.arrayNewLamp.push(new Lamp(this.lampsGroup.get("inputNameLampControl").value,this.lampsGroup.get("inputIdLampControl").value));
       this.lampsGroup.reset();
   }
@@ -177,7 +178,7 @@ export class SettingPanelComponent implements OnInit {
     let data = {
       type:2,
       idKnx: this.arrayKnx[indiceKnx]._id,
-      lamp : new Lamp(this.arrayKnx[indiceKnx].lights[indiceLamp].name,this.arrayKnx[indiceKnx].lights[indiceLamp].id),
+      lamp : new Lamp(this.arrayKnx[indiceKnx].lights[indiceLamp].name,this.arrayKnx[indiceKnx].lights[indiceLamp].id, this.arrayKnx[indiceKnx].lights[indiceLamp].state),
       sentence : 'Modifier la lampe : ' + this.arrayKnx[indiceKnx].lights[indiceLamp].name,
     }
     this.openDialog(data,DialogUpdateComponent);

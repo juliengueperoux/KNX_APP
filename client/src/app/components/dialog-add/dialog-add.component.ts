@@ -63,7 +63,7 @@ export class DialogAddComponent implements OnInit {
     let data = {
       type: 1,
       idKnx : this.data.id,
-      light : new Lamp(this.nameLamp,this.idLamp)
+      light : new Lamp(this.nameLamp,this.idLamp, false)
     }
     knxService.addLight(data).then((res) =>{
       if(res.data.success){
