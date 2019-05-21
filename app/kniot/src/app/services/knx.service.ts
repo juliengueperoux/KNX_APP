@@ -5,6 +5,9 @@ export default {
   addConfig(params){
     return Api.post('/kniot/addKnxConfig',params)
   },
+  updateConfig(params){
+    return Api.post('/kniot/updateKnxConfig',params)
+  },
   deleteConfig(params){
     return Api.get('/kniot/deleteKnxConfig/'+params)
   },
@@ -38,14 +41,23 @@ export default {
   intervalValue(param){
     return Api.post('/kniot/interval',param)
   },
+  intervalUp(param) {
+    return Api.get('/kniot/intervalUp/'+param)
+  },
+  intervalDown (param) {
+    return Api.get('/kniot/intervalDown/'+param)
+  },
   reverse (param){
-    return Api.get('/kniot/reverse/',param)
+    return Api.get('/kniot/reverse/'+param)
   },
   getAllLight(param){
     return Api.get('kniot/allLight/'+param)
   },
   addLight(param){
     return Api.post('kniot/addLight' , param)
+  },
+  updateLight(param){
+    return Api.post('kniot/updateLight' , param)
   },
   removeLight(param){
     return Api.post('kniot/removeLight' , param)

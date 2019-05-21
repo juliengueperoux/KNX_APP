@@ -154,6 +154,18 @@ exports.setInterval = async (req, res) => {
     res.send(state)
 };
 
+exports.setUpInterval = async (req, res) => {
+    const idKnx = req.body.idKnx
+    var state = await functions.setUpInterval(idKnx);
+    res.send(state)
+};
+
+exports.setDownInterval = async (req, res) => {
+    const idKnx = req.body.idKnx
+    var state = await functions.setDownInterval(idKnx);
+    res.send(state)
+};
+
 exports.reverse = async (req, res) => {
     var state = await functions.reverse(req.params.idKnx);
     res.send(state)

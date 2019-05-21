@@ -1,264 +1,357 @@
 <div fxLayout="column">
   <div fxLayout="row" id="blockLight" fxLayoutAlign="center">
     <div *ngIf="!responsive" fxFlex="80">
-      <mat-horizontal-stepper  linear #stepper> 
-          <mat-step [stepControl]="knxGroup">
-              <form [formGroup]="knxGroup">  
-                 <div fxLayout="row"  fxLayout.lt-sm="column">
-                     <div fxFlex="25">
-                       <p>Paramètrage réseau </p>
-                     </div>
-                     <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx" formControlName="inputNameKnxControl" required>
-                          </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx" formControlName="inputIpKnxControl" required>
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Port " #inputPort maxlength="5" [(ngModel)]="inputPortKnx" formControlName="inputPortKnxControl" required>
-                          <mat-hint align="end">{{inputPort.value?.length || 0}}/5</mat-hint>
-        
-                        </mat-form-field>
-                      </div>
-                  </div>
-        
-                <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
-                <p style="float: right; display: inline-block; white-space: nowrap;clear:right;"><button mat-button  mat-raised-button color="primary" matStepperNext>Suivant</button></p>
-              
-              </form>
-            </mat-step>
-        
-            <mat-step >  
-              <form [formGroup]="lampsGroup">
-                
-                <ng-template matStepLabel #step>Ajouts des éléments </ng-template>
-              
+      <div class="title">Ajouter une machine Knx</div>
+      <mat-horizontal-stepper linear #stepper>
+        <mat-step [stepControl]="knxGroup">
+          <form [formGroup]="knxGroup">
+            <div fxLayout="row" fxLayout.lt-sm="column">
+              <div fxFlex="25">
+                <p>Paramètrage réseau </p>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Nom machine"
+                    formControlName="inputNameKnxControl" required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Adresse IP" formControlName="inputIpKnxControl"
+                    required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Port " #inputPort maxlength="5"
+                    formControlName="inputPortKnxControl" required>
+                  <mat-hint align="end">{{inputPort.value?.length || 0}}/5</mat-hint>
+
+                </mat-form-field>
+              </div>
+            </div>
+
+            <ng-template matStepLabel>Paramètrage Serveur</ng-template>
+            <p style="float: right; display: inline-block; white-space: nowrap;clear:right;"><button mat-button
+                mat-raised-button color="primary" matStepperNext>Suivant</button></p>
+
+          </form>
+        </mat-step>
+
+        <mat-step>
+          <form [formGroup]="lampsGroup">
+
+            <ng-template matStepLabel #step>Ajouts des éléments </ng-template>
+
+            <div fxLayout="row">
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <p>Ajouter une lampes </p>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="ID" formControlName="inputIdLampControl"
+                    required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Nom" formControlName="inputNameLampControl"
+                    required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <button mat-button mat-raised-button color="primary" type="submit"
+                  (click)="addNewLamp()">Ajouter</button>
+              </div>
+            </div>
+
+
+            <mat-grid-list cols="2" rowHeight="50px">
+              <div *ngFor="let lamp of arrayNewLamp">
                 <div fxLayout="row">
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                          <p>Ajouter une lampes </p>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="ID" [(ngModel)]="inputIdLamp" formControlName="inputNameLampControl"  required>
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                          <mat-form-field class="example-full-width">
-                              <input matInput placeholder="Nom" [(ngModel)]="inputNameLamp"  formControlName="inputIdLampControl"  required>
-                          </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                          <button mat-button mat-raised-button color="primary" type="submit" (click)="addNewLamp()" >Ajouter</button>                  
-                      </div>
-                  </div>
-        
-        
-                  <mat-grid-list cols="2" rowHeight="50px">
-                    <div *ngFor="let lamp of arrayNewLamp">
-                      <div fxLayout="row">
-                        <mat-grid-tile><p> Id : {{ lamp.id }} </p></mat-grid-tile>
-                        <mat-grid-tile><p> Nom : {{ lamp.name }} </p></mat-grid-tile>
-                      </div>
-                    </div>
-                  </mat-grid-list>
-                
-                  <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
-                      <button mat-button mat-raised-button  matStepperPrevious>Retour</button>        
-                      <button style="margin-left:20px" mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>          
-                  </p>
-              </form>
-            </mat-step>
-        
-            <mat-step >
-              <ng-template matStepLabel #step icon>Connection</ng-template>
-              Le paramétrage est fini vous pouvez vous connecter  
-              <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
-                  <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Connection</button>      
-              </p>    
-            </mat-step>
+                  <mat-grid-tile>
+                    <p> Id : {{ lamp.id }} </p>
+                  </mat-grid-tile>
+                  <mat-grid-tile>
+                    <p> Nom : {{ lamp.name }} </p>
+                  </mat-grid-tile>
+                </div>
+              </div>
+            </mat-grid-list>
+
+            <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+              <button mat-button mat-raised-button matStepperPrevious>Retour</button>
+              <button style="margin-left:20px" mat-button mat-raised-button color="primary"
+                matStepperNext>Suivant</button>
+            </p>
+          </form>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel #step icon>Connection</ng-template>
+          Le paramétrage est fini vous pouvez vous connecter
+          <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+            <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()"
+              color="primary">Connection</button>
+          </p>
+        </mat-step>
       </mat-horizontal-stepper>
     </div>
-    <div *ngIf="responsive" fxFlex="80" >
-      <mat-vertical-stepper linear #stepper> 
-          <mat-step [stepControl]="knxGroup">
-              <form [formGroup]="knxGroup">  
-                 <div fxLayout="row"  fxLayout.lt-sm="column">
-                     <div fxFlex="25">
-                       <p>Paramètrage réseau </p>
-                     </div>
-                     <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx" formControlName="inputNameKnxControl" required>
-                          </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx" formControlName="inputIpKnxControl" required>
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Port " #inputPort maxlength="5" [(ngModel)]="inputPortKnx" formControlName="inputPortKnxControl" required>
-                          <mat-hint align="end">{{inputPort.value?.length || 0}}/5</mat-hint>
-        
-                        </mat-form-field>
-                      </div>
-                  </div>
-        
-                <ng-template matStepLabel>Paramètrage Serveur</ng-template>  
-                <p style="float: right; display: inline-block; white-space: nowrap;clear:right;"><button mat-button color="primary" mat-raised-button matStepperNext>Suivant</button></p>
-              
-              </form>
-            </mat-step>
-        
-            <mat-step >  
-              <form [formGroup]="lampsGroup">
-                
-                <ng-template matStepLabel #step>Ajouts des éléments </ng-template>
-              
+    <div *ngIf="responsive" fxFlex="80">
+      <mat-vertical-stepper linear #stepper>
+        <mat-step [stepControl]="knxGroup">
+          <form [formGroup]="knxGroup">
+            <div fxLayout="row" fxLayout.lt-sm="column">
+              <div fxFlex="25">
+                <p>Paramètrage réseau </p>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Nom machine" [(ngModel)]="inputNameKnx"
+                    formControlName="inputNameKnxControl" required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Adresse IP" [(ngModel)]="inputIpKnx" formControlName="inputIpKnxControl"
+                    required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Port " #inputPort maxlength="5" [(ngModel)]="inputPortKnx"
+                    formControlName="inputPortKnxControl" required>
+                  <mat-hint align="end">{{inputPort.value?.length || 0}}/5</mat-hint>
+
+                </mat-form-field>
+              </div>
+            </div>
+
+            <ng-template matStepLabel>Paramètrage Serveur</ng-template>
+            <p style="float: right; display: inline-block; white-space: nowrap;clear:right;"><button mat-button
+                color="primary" mat-raised-button matStepperNext>Suivant</button></p>
+
+          </form>
+        </mat-step>
+
+        <mat-step>
+          <form [formGroup]="lampsGroup">
+
+            <ng-template matStepLabel #step>Ajouts des éléments </ng-template>
+
+            <div fxLayout="row">
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <p>Ajouter une lampes </p>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="ID" [(ngModel)]="inputIdLamp" formControlName="inputNameLampControl"
+                    required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Nom" [(ngModel)]="inputNameLamp" formControlName="inputIdLampControl"
+                    required>
+                </mat-form-field>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex="25">
+                <button mat-button mat-raised-button color="primary" type="submit"
+                  (click)="addNewLamp()">Ajouter</button>
+              </div>
+            </div>
+
+
+            <mat-grid-list cols="2" rowHeight="50px">
+              <div *ngFor="let lamp of arrayNewLamp">
                 <div fxLayout="row">
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                          <p>Ajouter une lampes </p>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="ID" [(ngModel)]="inputIdLamp" formControlName="inputNameLampControl"  required>
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                          <mat-form-field class="example-full-width">
-                              <input matInput placeholder="Nom" [(ngModel)]="inputNameLamp"  formControlName="inputIdLampControl"  required>
-                          </mat-form-field>
-                      </div>
-                      <div fxFlex.gt-sm="100" fxFlex="25">
-                          <button mat-button mat-raised-button color="primary" type="submit" (click)="addNewLamp()" >Ajouter</button>                  
-                      </div>
-                  </div>
-        
-        
-                  <mat-grid-list cols="2" rowHeight="50px">
-                    <div *ngFor="let lamp of arrayNewLamp">
-                      <div fxLayout="row">
-                        <mat-grid-tile><p> Id : {{ lamp.id }} </p></mat-grid-tile>
-                        <mat-grid-tile><p> Nom : {{ lamp.name }} </p></mat-grid-tile>
-                      </div>
-                    </div>
-                  </mat-grid-list>
-                
-                  <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
-                      <button mat-button mat-raised-button  matStepperPrevious>Retour</button>        
-                      <button style="margin-left:20px" mat-button mat-raised-button color="primary" matStepperNext>Suivant</button>          
-                  </p>
-              </form>
-            </mat-step>
-        
-            <mat-step >
-              <ng-template matStepLabel #step icon>Connection</ng-template>
-              Le paramétrage est fini vous pouvez vous connecter  
-              <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
-                  <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()" color="primary" >Connection</button>      
-              </p>    
-            </mat-step>
+                  <mat-grid-tile>
+                    <p> Id : {{ lamp.id }} </p>
+                  </mat-grid-tile>
+                  <mat-grid-tile>
+                    <p> Nom : {{ lamp.name }} </p>
+                  </mat-grid-tile>
+                </div>
+              </div>
+            </mat-grid-list>
+
+            <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+              <button mat-button mat-raised-button matStepperPrevious>Retour</button>
+              <button style="margin-left:20px" mat-button mat-raised-button color="primary"
+                matStepperNext>Suivant</button>
+            </p>
+          </form>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel #step icon>Connection</ng-template>
+          Le paramétrage est fini vous pouvez vous connecter
+          <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+            <button mat-button mat-raised-button (click)="createNewKnxMachine();stepper.reset()"
+              color="primary">Connection</button>
+          </p>
+        </mat-step>
       </mat-vertical-stepper>
     </div>
   </div>
 
+  <br>
+  <br>
+  <br>
 
-<br>
-<br>
-<br>
-    <mat-card fxFlex="80"  *ngFor="let knx of arrayKnx; index as i" style="margin-bottom: 20px;margin-left:10%;margin-right:10%">
-      <mat-card-title>
-        <div fxLayout="row" fxLayout.lt-sm="column">
-          <div fxFlex.gt-sm="90" fxFlex="50">
-              Machine KNX : {{ knx.name }}  
+
+</div>
+<div fxLayout="row" id="blockLight" fxLayoutAlign="center" style="margin-top:-20px">
+
+  <div fxFlex="80">
+    <div class="title">Gestion des machines Knx</div>
+  </div>
+</div>
+<div fxLayout="column" id="blockLight" fxLayoutAlign="center">
+
+  <mat-card fxFlex="80" *ngFor="let knx of arrayKnx; index as i"
+    style="margin-bottom: 20px;margin-left:10%;margin-right:10%">
+    <mat-card-title>
+      <div fxLayout="row" fxLayout.lt-sm="column">
+        <div fxFlex.gt-sm="90" fxFlex="50">
+          Machine KNX : {{ knx.name }}
+        </div>
+        <div fxFlex.gt-sm="10" fxFlex="50">
+          <button mat-button style="float:right" (click)="deleteKnxMachine(i)">
+            <mat-icon aria-label="toggle icon">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout="column">
+        <div fxLayout="row" style="margin-left: 20px">
+          <div fxFlex="90">
+            <p>Connection à Knx </p>
           </div>
-          <div fxFlex.gt-sm="10" fxFlex="50">
-            <button mat-button style="float:right" (click)="deleteKnxMachine(i)"><mat-icon aria-label="toggle icon">delete</mat-icon></button>
+          <div fxFlex="10">
+            <mat-slide-toggle [(ngModel)]="knx.connected" (change)="connect($event,knx._id)"></mat-slide-toggle>
           </div>
         </div>
-        
-
-      </mat-card-title>
-      <mat-card-content>
-        <div fxLayout="column">
-          <div fxLayout="row" style="margin-left: 20px">
-              <div fxFlex="90">
-                <p>Connection à Knx </p>
-              </div>
-              <div fxFlex="10">
-                <mat-slide-toggle  [checked]="true" (change)="connect($event,knx._id)"></mat-slide-toggle>
-              </div>
-          </div>
 
         <mat-accordion fxFlex="50">
-          <mat-expansion-panel  class="mat-elevation-z0">
+          <mat-expansion-panel class="mat-elevation-z0">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                  Paramètrage réseau
+                Paramètrage réseau
               </mat-panel-title>
               <mat-panel-description>
-                  Modifier 
+                Modifier
               </mat-panel-description>
             </mat-expansion-panel-header>
-            
+
             <div fxLayout="row">
+              <div fxFlex="40" style="margin-left: 2%">
+                <strong>Nom</strong>
+              </div>
+              <div fxFlex="40" style="margin-left: 2%">
+                <strong>IP : Port</strong>
+              </div>
+              <div fxFlex="20" style="margin-left: 2%">
+                <strong>Modifier</strong>
+              </div>
+            </div>
+
+
+            <div fxLayout="row" style="margin-top: 20px">
+              <div fxFlex="40" style="margin-top: 20px">
+                {{ knx.name }}
+              </div>
+              <div fxFlex="40" style="margin-top: 20px">
+                {{ knx.ipAddr}}:{{ knx.port }}
+              </div>
+              <div fxFlex="20" style="margin-top: 10px">
+                <button mat-button (click)="updateKnxMachine(i)">
+                  <mat-icon aria-label="toggle icon">edit</mat-icon>
+                </button>
+              </div>
+              <mat-divider style="margin-left:2%;margin-right:2%;width: 96%"></mat-divider>
+            </div>
+
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-accordion fxFlex="50">
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Paramètrage des lampes
+              </mat-panel-title>
+              <mat-panel-description>
+                Ajouter | Modifier | Supprimer
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div fxLayout="column">
+              <div fxLayout="row">
                 <div fxFlex="90">
-                  <p>{{ knx.name }} |  {{ knx.ipAddr}} : {{ knx.port }}</p>
+                  <p>Ajouter des lampes</p>
                 </div>
                 <div fxFlex="10">
-                  <button mat-button (click)="updateSettingKnxMachine(i)" ><mat-icon aria-label="toggle icon">edit</mat-icon></button>
+                  <button mat-button (click)="addNewLampToExistingMachine(i)">
+                    <mat-icon aria-label="toggle icon">add</mat-icon>
+                  </button>
                 </div>
-            </div>
+              </div>
 
-                  
-            </mat-expansion-panel>
-          </mat-accordion>
-
-          <mat-accordion fxFlex="50">
-              <mat-expansion-panel  class="mat-elevation-z0">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Paramètrage des lampes
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    Ajouter | Modifier | Supprimer
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                
-                <div fxLayout="column">
-                    <div fxLayout="row">
-                        <div fxFlex="80" fxFlex.gt-sm="50">
-                          <p>Ajouter des lumières </p>
-                        </div>
-                        <div fxFlex="20">
-                        </div>
+              <div fxLayout="row" style="margin-top: 20px">
+                <div fxFlex="40" style="margin-left: 2%">
+                  <strong>Nom</strong>
+                </div>
+                <div fxFlex="40" style="margin-left: 2%">
+                  <strong>ID</strong>
+                </div>
+                <div fxFlex="20">
+                  <div fxLayout="row">
+                    <div fxFlex="50">
+                      <strong>Modifier</strong>
                     </div>
-                    <div fxLayout="row" *ngFor="let numero of knx.lights">
-                        <div fxFlex="80" fxFlex.gt-sm="50">
-                          <p>Lampe {{ numero.name }} | ID {{ numero.id }}</p>
-                        </div>
-                        <div fxFlex="20">
-                            <div fxLayout="row">
-                              <div fxFlex="50">
-                                <button mat-button><mat-icon aria-label="toggle icon">edit</mat-icon></button>
-                              </div>
-                              <div fxFlex="50">
-                                <button mat-button><mat-icon aria-label="toggle icon" (click)="deleteLamp(knx._id,numero.id)">delete_sweep</mat-icon></button>
-                              </div>    
-                            </div>
-                        </div>
+                    <div fxFlex="50">
+                      <strong>Supprimer</strong>
                     </div>
                   </div>
-                      
-                </mat-expansion-panel>
-              </mat-accordion>
+                </div>
+              </div>
+              <div *ngIf="knx.lights.length == 0" fxLayout="row" style="margin-top: 10px">
+                <p style="display:block;margin:auto">Il n'y a pas de lampes pour cette machine</p>
+              </div>
+              <div fxLayout="row" *ngFor="let numero of knx.lights; index as j" style="margin-top: 10px">
+                <div fxFlex="40" style="margin-top: 20px">
+                  {{ numero.name }}
+                </div>
+                <div fxFlex="40" style="margin-top: 20px">
+                  {{ numero.id }}
+                </div>
+                <div fxFlex="20" style="margin-top: 10px">
+                  <div fxLayout="row">
+                    <div fxFlex="50">
+                      <button mat-button (click)="updateLamp(i,j)">
+                        <mat-icon aria-label="toggle icon">edit</mat-icon>
+                      </button>
+                    </div>
+                    <div fxFlex="50">
+                      <button mat-button (click)="deleteLamp(knx._id,numero.id)">
+                        <mat-icon aria-label="toggle icon">delete_sweep
+                        </mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider style="margin-left:2%;margin-right:2%;width: 96%"></mat-divider>
+              </div>
             </div>
-      </mat-card-content>
-    </mat-card> 
+
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

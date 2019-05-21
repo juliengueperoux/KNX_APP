@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   public title: string;
   public subTitle: string;
   public isIP: boolean;
+  ipServer: string;
 
   loginGroup: FormGroup;
   ipServerGroup: FormGroup;
@@ -69,10 +70,9 @@ export class LoginComponent implements OnInit {
   }
 
   public setIpServer(){
-    localStorage.setItem('ipServer',this.ipServerGroup.get("ipServerControl").value);
+    localStorage.setItem('ipServer',this.ipServer);
     this.detectIpServer();
-    this.router.navigate(['login']);
-    
+    window.location.reload();
   }
 
   detectIpServer(){
