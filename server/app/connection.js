@@ -1,5 +1,5 @@
 const knx = require('knx');
-
+//const functions = require('./functions');
 const io = require('./webSocket')
 
 function newConnection(){
@@ -16,6 +16,10 @@ function newConnection(){
     connected: function () {
       console.log('Connecté');
       this.connect = true
+
+      ///***********************SOCKET CONNNECT *************************** */
+
+      
     },
 
     /**
@@ -69,7 +73,9 @@ function newConnection(){
       } else if (dest == "0/3/2") {
         if (startChain) {
           startChain = false;
+       //   functions.startChase();
         } else {
+         // functions.stopChase();
           startChain = true;
           //launch();
         }

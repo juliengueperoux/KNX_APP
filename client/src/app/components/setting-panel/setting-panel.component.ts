@@ -92,7 +92,7 @@ export class SettingPanelComponent implements OnInit {
   
   addNewLamp():void{
 
-      this.arrayNewLamp.push(new Lamp(this.lampsGroup.get("inputNameLampControl").value,this.lampsGroup.get("inputIdLampControl").value,false));
+      this.arrayNewLamp.push(new Lamp(this.lampsGroup.get("inputIdLampControl").value,this.lampsGroup.get("inputNameLampControl").value,false));
       this.lampsGroup.reset();
   }
 
@@ -131,7 +131,7 @@ export class SettingPanelComponent implements OnInit {
 
   addLamp(idKnx) : void{
     let lights = []
-    let light = new Lamp(this.lampsGroup.get("inputNameLampControl").value,this.lampsGroup.get("inputIdLampControl").value,false);
+    let light = new Lamp(this.lampsGroup.get("inputIdLampControl").value,this.lampsGroup.get("inputNameLampControl").value,false);
     this.arrayKnx.forEach(element => {
       if(element._id==idKnx){
         element.lights.push(light);

@@ -20,13 +20,13 @@ exports.initConnections = async () => {
         connection.ipAddr = config.ipAddr
         connection._id = config._id
         const myConnection = new knx.Connection(connection)
+       // myConnection._id = config._id
         connection.name = config.name
         connection.interval = 1000
         connection.startChain = false
         connection.lights = config.lights
         connection.sensDirect = true
-        myConnection.Connect()
-        if (myConnection.connected) connection.connect = true
+        if (myConnection.connect) connection.connect = true
         connectionsList.push({
             params: connection,
             connection: myConnection
@@ -40,13 +40,13 @@ exports.addConnection = (config) => {
     connection.ipAddr = config.ipAddr
     connection._id = config._id
     const myConnection = new knx.Connection(connection)
+    //myConnection._id = config._id
     connection.name = config.name
     connection.interval = 1000
     connection.startChain = false
     connection.lights = config.lights
     connection.sensDirect = true
-    myConnection.Connect()
-    if (myConnection.connected) connection.connect = true
+    if (myConnection.connect) connection.connect = true
     connectionsList.push({
         params: connection,
         connection: myConnection
@@ -141,7 +141,7 @@ exports.connectionKnx = (idUser, idKnx) => {
     try {
         const connection = getKNXConfig(idKnx)
         if (!connection.connection) return {success:false, errorMessage:"Knx machine not found"}
-        connection.connection.Connect()
+        connection.connection = new knx.Connection(connection.params)
         if (connection.connection.connected) connection.params.connect = true
         return {success:true};
     } catch (error) {
