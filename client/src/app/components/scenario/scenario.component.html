@@ -113,7 +113,7 @@
             </mat-list-item>
             <mat-list-item>
               <h4 mat-line>{{scenarioObj.time.hours+":"+scenarioObj.time.minutes}} --- Répétition tous les :
-                {{scenarioObj.repetition}}</h4>
+                {{displayRepetitions}}</h4>
             </mat-list-item>
             <mat-list-item>
               <button mat-button mat-raised-button (click)="createNewScenario();stepper.reset()"

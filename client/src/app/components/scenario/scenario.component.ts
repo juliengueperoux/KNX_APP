@@ -27,67 +27,68 @@ export class ScenarioComponent implements OnInit {
   lampGroup: FormGroup;
   repetitionsGroup: FormGroup
 
+  displayRepetitions = []
   action = "Eteindre";
   arrayElement: Array<Element>; //Scenario table
   arrayScenario: Array<Scenario>;
   arrayKnx: Array<KnxMachine> = [];
   arrayLamp: Array<Lamp> = [];
   repetitionList: any[] = [{
-                              name: 'Tous les jours',
-                              value: -1
-                            },{
-                              name: 'Lundi',
-                              value: 1
-                            },{
-                              name: 'Mardi',
-                              value: 2
-                            },{
-                              name: 'Mercredi',
-                              value: 3
-                            },{
-                              name: 'Jeudi',
-                              value: 4
-                            },{
-                              name: 'Vendredi',
-                              value: 5
-                            },{
-                              name: 'Samedi',
-                              value: 6
-                            },
-                            {
-                              name: 'Dimanche',
-                              value: 0
-                            }];
+    name: 'Tous les jours',
+    value: -1
+  }, {
+    name: 'Lundi',
+    value: 1
+  }, {
+    name: 'Mardi',
+    value: 2
+  }, {
+    name: 'Mercredi',
+    value: 3
+  }, {
+    name: 'Jeudi',
+    value: 4
+  }, {
+    name: 'Vendredi',
+    value: 5
+  }, {
+    name: 'Samedi',
+    value: 6
+  },
+  {
+    name: 'Dimanche',
+    value: 0
+  }];
   scenarioObj: Scenario;
 
 
-    columnNames = [ //whithout select
-      {
-        id: "nameScenario",
-        value: "Nom Scénario"
-      },
-      {
-        id: "nameKnx",
-        value: "Machine"
-      },
-      {
-        id: "nameLamp",
-        value: "Lamp"
-      },
-      {
-        id: "action",
-        value: "Action"
-      },
-      {
-        id: "hours",
-        value: "Heures"
-      },
-      {
-        id: "repetition",
-        value: "Activation"
-      }];
+  columnNames = [ //whithout select
+    {
+      id: "nameScenario",
+      value: "Nom Scénario"
+    },
+    {
+      id: "nameKnx",
+      value: "Machine"
+    },
+    {
+      id: "nameLamp",
+      value: "Lampes"
+    },
+    {
+      id: "action",
+      value: "Action"
+    },
+    {
+      id: "hours",
+      value: "Heures"
+    },
+    {
+      id: "repetition",
+      value: "Activation"
+    }];
 
-    
+
   constructor(private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -105,7 +106,7 @@ export class ScenarioComponent implements OnInit {
       selectRepetitionControl: ['', Validators.required]
     });
 
-    this.displayedColumns = ['select',...this.columnNames.map(x => x.id)];
+    this.displayedColumns = ['select', ...this.columnNames.map(x => x.id)];
     this.createTable();
     this.getAllLights();
     this.scenarioObj = new Scenario("", "", "", [], false, { hours: 0, minutes: 0 }, [], false);
@@ -120,7 +121,6 @@ export class ScenarioComponent implements OnInit {
   removeSelectedRows() {
     this.selection.selected.forEach(item => {
       let index: number = this.arrayElement.findIndex(d => d === item);
-      console.log(this.arrayElement.findIndex(d => d === item));
       this.dataSource.data.splice(index, 1);
       ScenarioService.deleteScenario(item.id)
       this.dataSource = new MatTableDataSource<Element>(this.dataSource.data);
@@ -168,6 +168,9 @@ export class ScenarioComponent implements OnInit {
             nameLamp += e.name + ", "
           });
           nameLamp = nameLamp.slice(0, nameLamp.length - 2)
+          element.repetition =this.repetitionList.filter((e)=>{
+            return element.repetition.indexOf(e.value) != -1
+          }).map(e => e.name)
           this.arrayElement.push({
             id: element._id,
             nameScenario: element.name,
@@ -176,6 +179,7 @@ export class ScenarioComponent implements OnInit {
             action: (element.action) ? 'Allumer' : 'Eteindre',
             hours: element.time.hours + ':' + element.time.minutes,
             repetition: element.repetition
+
           });
           this.dataSource = new MatTableDataSource(this.arrayElement);
           this.dataSource.sort = this.sort;
@@ -192,9 +196,12 @@ export class ScenarioComponent implements OnInit {
     this.scenarioObj.name = this.knxGroup.get('inputNameScenarioControl').value
     this.scenarioObj.idKnx = this.knxGroup.get('selectKnxControl').value._id
     this.scenarioObj.nameKnx = this.knxGroup.get('selectKnxControl').value.name
-    console.log(this.repetitionsGroup.get('selectRepetitionControl').value);
-    this.scenarioObj.repetition = this.repetitionsGroup.get('selectRepetitionControl').value
+    if(this.repetitionsGroup.get('selectRepetitionControl').value.indexOf(-1) !=1) this.scenarioObj.repetition = [-1]
+    else this.scenarioObj.repetition = this.repetitionsGroup.get('selectRepetitionControl').value
     this.scenarioObj.lights = this.lampGroup.get('selectLampControl').value
+    this.displayRepetitions = this.repetitionList.filter((e)=>{
+      return this.scenarioObj.repetition.indexOf(e.value) != -1
+    }).map(e => e.name)
   }
 
   resetFormGroups(): void {
@@ -209,6 +216,9 @@ export class ScenarioComponent implements OnInit {
           nameLamp += e.name + ", "
         });
         nameLamp = nameLamp.slice(0, nameLamp.length - 2)
+        this.scenarioObj.repetition =this.repetitionList.filter((e)=>{
+          return this.scenarioObj.repetition.indexOf(e.value) != -1
+        }).map(e => e.name)
         this.arrayElement.push({
           id: result.data.data._id,
           nameScenario: this.scenarioObj.name,

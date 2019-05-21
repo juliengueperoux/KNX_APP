@@ -3,7 +3,7 @@ const ScenarioModel = require('../models/scenario')
 const functions = require('../functions');
 
 exports.addScenario = (req, res) => {
-    console.log("ICI : " + JSON.stringify(req.body));
+    if(req.body.repetition.indexOf(-1) !=1) req.body.repetition = [-1]
     const config = {
         name: req.body.name,
         idKnx: req.body.idKnx,
