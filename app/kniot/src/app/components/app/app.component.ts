@@ -23,6 +23,10 @@ export class AppComponent implements OnInit{
         .getMessages()
         .subscribe((message: string) => {
       });
+      this.states
+        .getConnectionStatus()
+        .subscribe((message: string) => {
+      });
     }
   }
 

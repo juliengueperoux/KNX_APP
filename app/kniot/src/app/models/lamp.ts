@@ -1,18 +1,24 @@
 export class Lamp {
     name: string;
     id: string;
+    state: boolean;
 
-    constructor(name: string, id: string){
+    constructor(name: string, id: string, state: boolean){
         this.name = name;
         this.id  = id;
+        this.state = state;
     }
 
-    getName():string{
+    getName(): string{
        return this.name;
     }
 
-    getId():string{
+    getId(): string{
         return this.id;
+     }
+
+     getState(): boolean{
+         return this.state;
      }
     
 }

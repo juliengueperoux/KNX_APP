@@ -26,11 +26,18 @@ export class StatesService {
         this.socket.emit('new-message', message);
     }
 
-    public  getMessages():Observable<string>{
+    public getMessages():Observable<string>{
       return this.observable=new Observable((observer)=>{
-        this.socket.on('hello',(data)=>{observer.next(data)}
+        this.socket.on('data',(data)=>{observer.next(data)}
       );}) 
     }
+
+    public getConnectionStatus():Observable<string>{
+      return this.observable=new Observable((observer)=>{
+        this.socket.on('connection',(data)=>{observer.next(data)}
+      );}) 
+    }
+
 
     public socketCreated(){
       return this.socket != null

@@ -4,26 +4,45 @@
     <img width="200" height="200" src="../../../assets/logo.png">
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
+      
       <p><font size="6">Kniot</font></p>
   </div>
   <div fxLayout="row" fxLayoutAlign="center center">
-    <mat-card fxFlex.gt-sm="30">
-      <form (ngSubmit)="submit()">
+    <mat-card fxFlex.gt-lg="30" fxFlex.gt-sm="80">
+      <mat-card-header>
+          <mat-card-title>{{ title }}</mat-card-title>
+          <mat-card-subtitle>{{ subTitle }}</mat-card-subtitle>
+      </mat-card-header>
+      <form *ngIf="isIP" [formGroup]="loginGroup" (ngSubmit)="submit()">
           <div fxLayout="column" (ngSubmit)="submit()">
             <mat-form-field fxFlex="30" class="example-full-width">
-              <input matInput placeholder="Login" type="text" name="username" [(ngModel)]="username" />
+              <input matInput placeholder="Login" type="text" name="username" formControlName="usernameControl" />
             </mat-form-field>
           
             <mat-form-field fxFlex="30" class="example-full-width">
-              <input matInput placeholder="Password" type="password" name="password" [(ngModel)]="password" />
+              <input matInput placeholder="Password" type="password" name="password" formControlName="passwordControl"/>
             </mat-form-field>
       
-            <div class="form-group col-3">
-              <div fxFlex></div>
-              <button mat-button  type="submit">Se connecter</button>
-            </div>
+              <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+                <button style="margin-right:10px" mat-button  (click)="isIP=false">Ip serveur</button>
+                <button mat-button mat-raised-button color="primary" type="submit">Se connecter</button>
+              </p>
+              
+          </div>
+      </form>
+      <form *ngIf="!isIP" [formGroup]="ipServerGroup" (ngSubmit)="setIpServer()">
+          <div fxLayout="column" (ngSubmit)="setIpServer()">
+            <mat-form-field fxFlex="30" class="example-full-width">
+              <input matInput placeholder="Adresse Ip" [(ngModel)]="ipServer" type="text" name="ipServer" formControlName="ipServerControl" />
+            </mat-form-field>
+          
+              <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+                <button mat-button mat-button mat-raised-button color="primary" type="submit">Valider</button>
+              </p>
           </div>
       </form>
     </mat-card>
+
+    
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import KnxService from '../../services/knx.service';
 import {MatSnackBar} from '@angular/material';
 import UtilsService from '../../services/utils.service';
@@ -7,7 +7,6 @@ import { takeUntil } from 'rxjs/operators';
 import {componentDestroyed} from "@w11k/ngx-componentdestroyed";
 import { element } from 'protractor';
 import { KnxMachine } from '../../models/knx-machine';
-
 
 @Component({
   selector: 'app-control-panel',
@@ -20,11 +19,17 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
   arrayKnx:Array<KnxMachine> = [];
   interval = 1000;
   active = true; 
-  constructor(private snackBar: MatSnackBar, private _utils: UtilsService,private states: StatesService) { }
+  matches: String[];
+  isRecording = false;
+ 
+  constructor(private snackBar: MatSnackBar, 
+              private _utils: UtilsService,
+              private states: StatesService,
+              private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.getAllLights();
-    this.initReceptionWebSocket()
+    this.initReceptionWebSocket();
   }
   ngOnDestroy(){
 

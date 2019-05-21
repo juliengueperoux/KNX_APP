@@ -23,22 +23,22 @@
               <input matInput placeholder="Password" type="password" name="password" formControlName="passwordControl"/>
             </mat-form-field>
       
-            <div class="form-group col-3">
-              <div fxFlex></div>
-              <button mat-button  type="submit">Se connecter</button>
-            </div>
+              <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+                <button style="margin-right:10px" mat-button  (click)="isIP=false">Ip serveur</button>
+                <button mat-button mat-raised-button color="primary" type="submit">Se connecter</button>
+              </p>
+              
           </div>
       </form>
       <form *ngIf="!isIP" [formGroup]="ipServerGroup" (ngSubmit)="setIpServer()">
           <div fxLayout="column" (ngSubmit)="setIpServer()">
             <mat-form-field fxFlex="30" class="example-full-width">
-              <input matInput placeholder="Adresse Ip" type="text" name="ipServer" formControlName="ipServerControl" />
+              <input matInput placeholder="Adresse Ip" [(ngModel)]="ipServer" type="text" name="ipServer" formControlName="ipServerControl" />
             </mat-form-field>
           
-            <div class="form-group col-3">
-              <div fxFlex></div>
-              <button mat-button  type="submit">Valider</button>
-            </div>
+              <p style="float: right; display: inline-block; white-space: nowrap;clear:right;">
+                <button mat-button mat-button mat-raised-button color="primary" type="submit">Valider</button>
+              </p>
           </div>
       </form>
     </mat-card>

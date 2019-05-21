@@ -25,6 +25,8 @@ import { DialogDeleteComponent } from './components/dialog-delete/dialog-delete.
 import { HelpComponent } from './components/help/help.component';
 
 
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
+
 /** Material Component **/
 
 import { MatButtonModule} from '@angular/material/button';
@@ -105,7 +107,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSortModule,
     MatTableModule
   ],
-  providers: [StatesService,JwtService,AuthGuard],
+  providers: [StatesService,JwtService,AuthGuard,SpeechRecognition],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

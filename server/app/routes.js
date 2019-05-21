@@ -16,6 +16,8 @@ module.exports = (app,auth) => {
     app.get('/api/kniot/startChase/:idKnx',auth.isAuth,  knxController.startChase);
     app.get('/api/kniot/stopChase/:idKnx',auth.isAuth,  knxController.stopChase);
     app.post('/api/kniot/interval',auth.isAuth, knxController.setInterval)
+    app.post('/api/kniot/intervalUp/:idKnx',auth.isAuth, knxController.setUpInterval)
+    app.post('/api/kniot/intervalDown/:idKnx',auth.isAuth, knxController.setDownInterval)
     app.get('/api/kniot/reverse/:idKnx',auth.isAuth,  knxController.reverse);
 
     //SETTINGS
