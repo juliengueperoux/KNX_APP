@@ -232,7 +232,7 @@
             <p>Connection à Knx </p>
           </div>
           <div fxFlex="10">
-            <mat-slide-toggle [checked]="true" (change)="connect($event,knx._id)"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="knx.connected" (change)="connect($event,knx._id)"></mat-slide-toggle>
           </div>
         </div>
 

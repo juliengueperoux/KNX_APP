@@ -1,5 +1,5 @@
 const knx = require('knx');
-//const functions = require('./functions');
+const functions = require('./functions');
 const io = require('./webSocket')
 
 function newConnection(){
@@ -15,41 +15,12 @@ function newConnection(){
     // wait for connection establishment before sending anything!
     connected: function () {
       console.log('Connecté');
-      this.connect = true
-
-      ///***********************SOCKET CONNNECT *************************** */
-
+      functions.sendSocketConnect(this._id)
       
     },
 
-    /**
-      ***** LAMPS *****
-      data = {
-          'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
-          'action' : {
-              'value' : 1 || 2, ( 1 ->  eteindre 2 -> allumer ) 
-              'idLamp' : '0/3/0'
-          }
-        }
-      
-      ***** CHASE *****
-      data = {
-          'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
-          'action' : {
-              'value' : 5 || 6 || 7 , ( 5 ->  start 6 -> stop 7 -> reverse) 
-          }
-        }
-     */
-    
+  
     event: function (evt, src, dest, value) {
-      // cette commande permet d'envoyer un message à toutes les sockets
-     /* let  data = {
-        'idKnx' : "5cb7ac9cf4fcbc3eb5f373ca",
-        'action' : {
-            'value' : 5, 
-        }
-      }*/
-
       console.log("evt:"+evt+",src:"+src+",dest:"+dest+",value:"+JSON.parse(JSON.stringify(value)))
       const state = JSON.parse(JSON.stringify(value)).data[0];
 
@@ -62,26 +33,29 @@ function newConnection(){
               'idLamp' : idLamp
           }    
         }  
-        io.sockets.emit('hello',JSON.stringify(data))
+        io.sockets.emit('data',JSON.stringify(data))
       }
       if (dest == "0/3/4") {
-        console.log("Appui dernier à droite : " + this.interval);
-        this.interval += 1000;
-      } else if (dest == "0/3/3" && this.interval > 1000) {
-        console.log("Appui dernier à droite : " + this.interval);
-        this.interval -= 1000;
-      } else if (dest == "0/3/2") {
-        if (startChain) {
-          startChain = false;
-       //   functions.startChase();
+        if (this.startAllLights) {
+          this.startAllLights = false;
+          functions.startAllLights(this._id);
         } else {
-         // functions.stopChase();
-          startChain = true;
-          //launch();
+          functions.stopAllLights(this._id);
+          this.startAllLights = true;
         }
+        this.interval += 1000;
+      } else if (dest == "0/3/3") {
+        if(!this.startChain) {
+          this.startChain = true;
+          functions.startChase(this._id);
+        } else {
+          functions.stopChase(this._id);
+          this.startChain = false;
+        }
+      } else if (dest == "0/3/2") {
+        if(this.startChain) functions.setUpInterval(this._id)
       } else if (dest == "0/3/1") {
-        if (this.sensDirect) this.sensDirect = false;
-        else this.sensDirect = true;
+        if(this.startChain) functions.setDownInterval(this._id)
       }
 
     },

@@ -63,6 +63,7 @@ export class ControlPanelComponent implements OnInit, OnDestroy {
 
   getAllLights() : void{
     KnxService.findConfigs().then((res) =>{
+      console.log(JSON.stringify(res));
       res.data.forEach(element => {
         this.arrayKnx.push(new KnxMachine(element._id, element.name, element.ipAddr, element.ipPort, element.lights));
         this.arrayKnx[this.arrayKnx.length-1].setInterval(element.interval);

@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
       if(res.data.success){
           this.router.navigate(['home'])
           this.states.getMessages()
+          this.states.getConnectionStatus()
         }
       })
   }

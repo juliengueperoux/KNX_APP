@@ -9,9 +9,9 @@ export class KnxMachine {
     interval: number;
     startChain: boolean;
     sensDirect: boolean;
+    connected: boolean;
 
 
-    constructor(id: string, n: string, i: string, p: number, l: Array<Lamp>)
     constructor(id: string, n: string, i: string, p: number, l: Array<Lamp>){
         if(id  !== null) this._id = id;
         this.name = n;

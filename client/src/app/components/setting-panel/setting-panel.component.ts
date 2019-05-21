@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material';
@@ -10,6 +10,9 @@ import { Lamp } from '../../models/lamp';
 import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 import { DialogUpdateComponent } from '../dialog-update/dialog-update.component';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
+import { StatesService } from '../../services/states.service';
+import { takeUntil } from 'rxjs/operators';
+import {componentDestroyed} from "@w11k/ngx-componentdestroyed";
 
 
 @Component({
@@ -18,9 +21,9 @@ import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component'
   styleUrls: ['./setting-panel.component.css']
 })
 
-export class SettingPanelComponent implements OnInit {
+export class SettingPanelComponent implements OnInit, OnDestroy {
 
-  constructor( public dialog: MatDialog,private _formBuilder: FormBuilder, private _utils: UtilsService) { }
+  constructor( public dialog: MatDialog,private _formBuilder: FormBuilder, private _utils: UtilsService, private states: StatesService) { }
   
   responsive: boolean = false;
 
@@ -28,6 +31,8 @@ export class SettingPanelComponent implements OnInit {
   validate: boolean = false;
   animal: string;
   name: string;
+
+  connected: boolean = false;
 
   knxGroup: FormGroup;
   lampsGroup: FormGroup;
@@ -41,6 +46,7 @@ export class SettingPanelComponent implements OnInit {
   
 
   ngOnInit() {
+    this.initReceptionWebSocket();
     this.responsive = (window.innerWidth < 500) ? true : false;
     this.knxGroup = this._formBuilder.group({
       inputNameKnxControl: [
@@ -88,6 +94,18 @@ export class SettingPanelComponent implements OnInit {
       ],
     });
     this.getAllLights();
+  }
+  ngOnDestroy(){
+
+  }
+
+  initReceptionWebSocket(): void{
+    if (this.states.socketCreated()){
+      this.states
+        .getConnectionStatus().pipe(takeUntil(componentDestroyed(this))).subscribe((message: string)=>{
+          let data = JSON.parse(message);
+      });
+    }
   }
   
   addNewLamp():void{
