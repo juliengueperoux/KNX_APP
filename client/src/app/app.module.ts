@@ -25,7 +25,6 @@ import { DialogDeleteComponent } from './components/dialog-delete/dialog-delete.
 import { HelpComponent } from './components/help/help.component';
 
 
-import { SpeechRecognition } from '@ionic-native/speech-recognition';
 
 /** Material Component **/
 
