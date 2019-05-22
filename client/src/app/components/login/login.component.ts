@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   public title: string;
   public subTitle: string;
   public isIP: boolean;
-  ipServer: string;
+  ipServer: string = localStorage.getItem('ipServer') || "";
 
   loginGroup: FormGroup;
   ipServerGroup: FormGroup;
