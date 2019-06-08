@@ -13,9 +13,3 @@ After cloning this project, do the ``` npm install ``` command in each client an
 
 * **GUEPEROUX Julien** - - [AirJulien](https://github.com/AirJulien)
 * **STEPHANT Thomas** - - [Yztoc](https://github.com/Yztoc)
-
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
